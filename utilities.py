@@ -16,7 +16,10 @@ def generate_network(n):
 
 
 # Plot network
-def plot_network(graph):
-    nx.draw(graph)
-    plt.draw()
-    plt.show()
+def plot_network(graph, weights):
+    layout = nx.spring_layout(graph)    # Calculate layout for nodes
+    nx.draw_networkx_edges(graph, layout, alpha=.3) # Plot edges
+    nx.draw_networkx_nodes(graph, layout, node_size=100, node_color=weights, cmap=plt.cm.cool)  # Plot nodes
+    plt.draw()  # Matplotlib virtual draw
+    plt.axis('off') # Disable axis
+    plt.show()  # Open matplotlib window
