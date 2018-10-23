@@ -2,13 +2,15 @@ from collections import deque
 from utilities import network_memory
 
 class polya_node:
-    def __init__(self, _red, _black):
+    def __init__(self, _red, _black, _id):
         self.init_red = _red
         self.init_black = _black
         self.neighbours = []
         self.drawn_balls = deque()
         self.red = _red
         self.black = _black
+        self.id = _id
+        self.weight = _red / (_red + _black)
 
     def add_ball(self, ball, num_balls=1):
         self.drawn_balls.append(ball)   # Add drawn ball
@@ -28,8 +30,11 @@ class polya_node:
             else:
                 self.black -= 1
 
-    def add_neightbour(self, neighbour):
+    def add_neighbour(self, neighbour):
         self.neighbours.append(neighbour)
+
+    def update_weight(self):
+        self.weight = self.red / (self.red + self.black)
 
     def get_ball(self, index):
         if index > self.red + self.black:

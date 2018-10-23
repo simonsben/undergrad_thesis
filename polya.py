@@ -1,7 +1,19 @@
 from random import randint
 from utilities import balls_added
+from copy import deepcopy
 
 
+# Run one time-step of Polya
+def run_polya(network):
+    next_network = deepcopy(network)    # Make copy of network
+    for i, node in enumerate(network):  # For each (original) node
+        drawn_ball = choose_ball(node)  # draw ball
+        next_network[i].add_ball(drawn_ball, balls_added)   # Add new ball to next network
+
+    return next_network
+
+
+# Choose ball for given node
 def choose_ball(target_node):
     # Get total number of balls in node and neighbours
     num_balls = target_node.red + target_node.black
@@ -26,4 +38,5 @@ def choose_ball(target_node):
                 ball_index = count - ball_choice    # Index of ball in node
 
     chosen_ball = chosen_node.get_ball(ball_index)  # Get ball
-    target_node.add_ball(chosen_ball, balls_added)   # Add ball
+
+    return chosen_ball  # Return drawn ball
