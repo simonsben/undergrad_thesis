@@ -2,6 +2,7 @@ from plot import generate_plot_network, plot_network
 from utilities import max_init_balls
 from polya_node import polya_node
 from random import randint
+from polya import run_polya
 
 
 class network:
@@ -9,6 +10,7 @@ class network:
         self.network_plot = generate_plot_network(n)
         self.nodes = []
         self.weights = []
+        self.steps = 1
 
         self.generate_network()
         self.calculate_weights()
@@ -32,5 +34,9 @@ class network:
             for neighbor in self.network_plot.neighbors(node):  # For each neighbour
                 self.nodes[node].add_neighbour(self.nodes[neighbor])    # Add neighbour
 
+    def run_step(self):
+        self.nodes = run_polya(self.nodes)
+        self.steps += 1
+
     def plot_network(self):
-        plot_network(self.network_plot, self.weights)
+        plot_network(self.network_plot, self.weights, self.steps)

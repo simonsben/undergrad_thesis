@@ -29,13 +29,14 @@ def choose_ball(target_node):
     ball_index = 0
 
     # Find ball
-    if num_balls < node_balls[0]:   # If ball is in target node
+    if ball_choice < node_balls[0]:   # If ball is in target node
         chosen_node = target_node   # Choose target node
     else:
         for i, count in enumerate(node_balls):  # For each neighbouring node
-            if num_balls < count:   # If the chosen ball lies within a given node
+            if ball_choice < count:   # If the chosen ball lies within a given node
                 chosen_node = target_node.neighbours[i-1]   # Pointer to node
                 ball_index = count - ball_choice    # Index of ball in node
+                break
 
     chosen_ball = chosen_node.get_ball(ball_index)  # Get ball
 

@@ -11,6 +11,7 @@ class polya_node:
         self.black = _black
         self.id = _id
         self.weight = _red / (_red + _black)
+        self.current_n = 0
 
     def add_ball(self, ball, num_balls=1):
         self.drawn_balls.append(ball)   # Add drawn ball
@@ -41,9 +42,16 @@ class polya_node:
             return None
         elif index < self.red:
             return 'r'
-        elif index < self.black:
+        else:
             return 'b'
-        return self.drawn_balls[index - self.init_black - self.init_red]
 
     def __iter__(self):
-        return self.neighbours
+        return self
+
+    def __next__(self):
+        self.current_n += 1
+        if self.current_n >= len(self.neighbours):
+            self.current_n = 0
+            raise StopIteration
+        else:
+            return self.neighbours[self.current_n]
