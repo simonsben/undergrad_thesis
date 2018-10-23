@@ -3,6 +3,9 @@ from random import random
 import networkx as nx
 import matplotlib.pyplot as plt
 
+network_memory = 10000
+balls_added = 1
+
 
 def evaluate_probability(probability):
     return random() <= probability
