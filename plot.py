@@ -36,6 +36,6 @@ def animate_network(network):
     figure = plt.figure('Network animation')    # Initialize figure
     layout = nx.spring_layout(network.network_plot)     # Generate layout
 
-    animation.FuncAnimation(figure, run_update, fargs=(network, layout), interval=250)  # Run animation
+    an = animation.FuncAnimation(figure, run_update, fargs=(network, layout), interval=250)  # Run animation
 
     plt.show()  # Show window

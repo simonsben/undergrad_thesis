@@ -9,7 +9,7 @@
 
 * Need to refine plotting
   * Make new colormap to make more useful
-  * Add animation to show progression
+  * Show colormap legend
   * Plot values
 * Calculate network exposure
 * Calculate more quantitative metrics
