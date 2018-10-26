@@ -22,6 +22,7 @@ class network:
         for i in range(len(self.weights)):
             self.weights[i] = self.nodes[i].weight
 
+    # TODO Fix how red and black balls are added, should be same total number on each node?
     def generate_network(self):
         # Generate nodes
         for node in self.network_plot:  # For each node in plot network

@@ -1,6 +1,7 @@
 from collections import deque
 from utilities import network_memory
 
+
 class polya_node:
     def __init__(self, _red, _black, _id):
         self.init_red = _red

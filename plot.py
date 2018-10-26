@@ -28,6 +28,7 @@ def run_update(tmp, network, layout):
 
     plt.title('Network after ' + str(network.steps) + ' steps') # Add title to figure
 
+    # TODO Display colormap legend
     nx.draw_networkx_edges(graph, layout, alpha=.3)  # Plot edges
     nx.draw_networkx_nodes(graph, layout, node_size=80, node_color=network.weights, cmap=plt.cm.cool)   # Plot nodes
 
