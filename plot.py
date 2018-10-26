@@ -2,7 +2,6 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from matplotlib import animation
 
-plot_layout = None  # Only define layout once
 
 # Generate new network
 def generate_plot_network(n):
@@ -11,9 +10,7 @@ def generate_plot_network(n):
 
 # Plot network
 def plot_network(graph, weights, id=1):
-    global plot_layout
-    if not plot_layout: # If first plot
-        plot_layout = nx.spring_layout(graph)    # Calculate layout for nodes
+    plot_layout = nx.spring_layout(graph)    # Calculate layout for nodes
     nx.draw_networkx_edges(graph, plot_layout, alpha=.3) # Plot edges
     nx.draw_networkx_nodes(graph, plot_layout, node_size=100, node_color=weights, cmap=plt.cm.cool)  # Plot nodes
 
@@ -23,23 +20,20 @@ def plot_network(graph, weights, id=1):
     plt.show()  # Open matplotlib window
 
 
-def run_network_update(tmp, network, plot_layout):
-    graph = network.network_plot
+def run_update(tmp, network, layout):
     network.run_step()
-    nx.draw_networkx_edges(graph, plot_layout, alpha=.3)  # Plot edges
-    nx.draw_networkx_nodes(graph, plot_layout, node_size=100, node_color=network.weights, cmap=plt.cm.cool)  # Plot nodes
+    graph = network.network_plot
 
-# animate network
-def animate_network(network, n):
-    figure = plt.figure('test figure')
-    plt.axis('off') # Disable axis
+    plt.cla()
 
-    plot_layout = network.network_plot
+    nx.draw_networkx_edges(graph, layout, alpha=.3)  # Plot edges
+    nx.draw_networkx_nodes(graph, layout, node_size=100, node_color=network.weights, cmap=plt.cm.cool)
 
-    # plot_layout = nx.spring_layout(graph)    # Generate layout
-    # nx.draw_networkx_edges(graph, plot_layout, alpha=.3) # Plot edges
-    # nx.draw_networkx_nodes(graph, plot_layout, node_size=100, node_color=network.weights, cmap=plt.cm.cool)  # Plot nodes
 
-    network_animation = animation.ArtistAnimation(figure, run_network_update, fargs=(network, plot_layout), interval=10)
+def animate_network(network):
+    figure = plt.figure('Network animation')
+    layout = nx.spring_layout(network.network_plot)
 
-    plt.show()  # Open matplotlib window
+    network_animation = animation.FuncAnimation(figure, run_update, fargs=(network, layout), interval=250)
+
+    plt.show()
