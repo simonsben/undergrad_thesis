@@ -14,28 +14,28 @@ def plot_network(graph, weights, id=1):
     nx.draw_networkx_edges(graph, plot_layout, alpha=.3) # Plot edges
     nx.draw_networkx_nodes(graph, plot_layout, node_size=100, node_color=weights, cmap=plt.cm.cool)  # Plot nodes
 
-    plt.figure(id)
+    plt.figure(id)  # Make figure
     plt.draw()  # Matplotlib virtual draw
     plt.axis('off') # Disable axis
     plt.show()  # Open matplotlib window
 
 
 def run_update(tmp, network, layout):
-    network.run_step()
-    graph = network.network_plot
+    network.run_step()  # Run one polya step
+    graph = network.network_plot    # Get pointer to network graph
 
-    plt.cla()
+    plt.cla()   # Clear figure
 
-    plt.title('Network after ' + str(network.steps) + ' steps')
+    plt.title('Network after ' + str(network.steps) + ' steps') # Add title to figure
 
     nx.draw_networkx_edges(graph, layout, alpha=.3)  # Plot edges
-    nx.draw_networkx_nodes(graph, layout, node_size=80, node_color=network.weights, cmap=plt.cm.cool)
+    nx.draw_networkx_nodes(graph, layout, node_size=80, node_color=network.weights, cmap=plt.cm.cool)   # Plot nodes
 
 
 def animate_network(network):
-    figure = plt.figure('Network animation')
-    layout = nx.spring_layout(network.network_plot)
+    figure = plt.figure('Network animation')    # Initialize figure
+    layout = nx.spring_layout(network.network_plot)     # Generate layout
 
-    network_animation = animation.FuncAnimation(figure, run_update, fargs=(network, layout), interval=250)
+    animation.FuncAnimation(figure, run_update, fargs=(network, layout), interval=250)  # Run animation
 
-    plt.show()
+    plt.show()  # Show window
