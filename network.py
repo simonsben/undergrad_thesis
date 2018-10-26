@@ -16,8 +16,11 @@ class network:
         self.calculate_weights()
 
     def calculate_weights(self):
-        for node in self.nodes:
-            self.weights.append(node.weight)
+        if len(self.weights) == 0 or len(self.weights) != len(self.nodes):
+            self.weights = [0] * len(self.nodes)
+
+        for i in range(len(self.weights)):
+            self.weights[i] = self.nodes[i].weight
 
     def generate_network(self):
         # Generate nodes
@@ -37,6 +40,18 @@ class network:
     def run_step(self):
         self.nodes = run_polya(self.nodes)
         self.steps += 1
+        self.calculate_weights()
+
+    def run_n_steps(self, n):
+        for i in range(n):
+            self.run_step()
+        self.calculate_weights()
 
     def plot_network(self):
-        plot_network(self.network_plot, self.weights, self.steps)
+        plot_network(self.network_plot, self.weights)
+
+    def __str__(self):
+        output = 'Network: '
+        for node in self.nodes:
+            output += str(node) + ' '
+        return output

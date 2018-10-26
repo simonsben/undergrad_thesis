@@ -30,6 +30,7 @@ class polya_node:
                 self.red -= 1
             else:
                 self.black -= 1
+        self.update_weight()
 
     def add_neighbour(self, neighbour):
         self.neighbours.append(neighbour)
@@ -55,3 +56,6 @@ class polya_node:
             raise StopIteration
         else:
             return self.neighbours[self.current_n]
+
+    def __str__(self):
+        return str(self.weight)

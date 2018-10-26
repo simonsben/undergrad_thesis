@@ -1,16 +1,7 @@
 from network import network
+import matplotlib.pyplot as plt
+from matplotlib import animation
 
-net = network(10)
-net.plot_network()
 
-net.run_step()
-net.plot_network()
-
-net.run_step()
-net.plot_network()
-
-net.run_step()
-net.plot_network()
-
-net.run_step()
-net.plot_network()
+figure = plt.figure('Test figure')
+layout =
