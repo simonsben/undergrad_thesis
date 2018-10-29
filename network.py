@@ -26,16 +26,17 @@ class network:
         # Generate nodes
         for node in self.network_plot:  # For each node in plot network
             # Randomize initial number of balls
+            # TODO Ensure the distribution of the default random functions are sufficient
             num_red = randint(1, balls_per_node)
             num_black = balls_per_node - num_red
 
-            new_node = polya_node(num_red, num_black, node)     # Create new node
-            self.nodes.append(new_node)                         # Add new node to network
+            new_node = polya_node(num_red, num_black, node)  # Create new node
+            self.nodes.append(new_node)  # Add new node to network
 
         # Give each node a pointer to its neighbours
         for node in self.network_plot:  # For each node
             for neighbor in self.network_plot.neighbors(node):  # For each neighbour
-                self.nodes[node].add_neighbour(self.nodes[neighbor])    # Add neighbour
+                self.nodes[node].add_neighbour(self.nodes[neighbor])  # Add neighbour
 
     def run_step(self):
         self.nodes = run_polya(self.nodes)

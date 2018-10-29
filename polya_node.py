@@ -15,7 +15,7 @@ class polya_node:
         self.current_n = 0
 
     def add_ball(self, ball, num_balls=1):
-        self.drawn_balls.append(ball)   # Add drawn ball
+        self.drawn_balls.append(ball)  # Add drawn ball
 
         # Add ball to node's current count
         if ball == 'r':
