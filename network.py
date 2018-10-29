@@ -1,5 +1,5 @@
 from plot import generate_plot_network, plot_network
-from utilities import max_init_balls
+from utilities import balls_per_node
 from polya_node import polya_node
 from random import randint
 from polya import run_polya
@@ -22,16 +22,15 @@ class network:
         for i in range(len(self.weights)):
             self.weights[i] = self.nodes[i].weight
 
-    # TODO Fix how red and black balls are added, should be same total number on each node?
     def generate_network(self):
         # Generate nodes
         for node in self.network_plot:  # For each node in plot network
             # Randomize initial number of balls
-            num_red = randint(1, max_init_balls)
-            num_black = randint(1, max_init_balls)
+            num_red = randint(1, balls_per_node)
+            num_black = balls_per_node - num_red
 
-            new_node = polya_node(num_red, num_black, node) # Create new node
-            self.nodes.append(new_node) # Add new node to network
+            new_node = polya_node(num_red, num_black, node)     # Create new node
+            self.nodes.append(new_node)                         # Add new node to network
 
         # Give each node a pointer to its neighbours
         for node in self.network_plot:  # For each node
