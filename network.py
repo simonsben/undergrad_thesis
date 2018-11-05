@@ -10,6 +10,7 @@ class network:
         self.network_plot = generate_plot_network(n)
         self.nodes = []
         self.weights = []
+        self.contagion = []
         self.steps = 1
 
         self.generate_network()
@@ -38,15 +39,26 @@ class network:
             for neighbor in self.network_plot.neighbors(node):  # For each neighbour
                 self.nodes[node].add_neighbour(self.nodes[neighbor])  # Add neighbour
 
+    def calculate_contagion(self):
+        running_avg, total_balls = 0, 0     # Initialize counting variables
+
+        for node in self.nodes: # For each node
+            total_balls += node.red + node.black    # Sum total balls
+            running_avg += node.weight * (node.red + node.black)    # Sum weighted average
+
+        avg_contagion = running_avg / total_balls
+        self.contagion.append(avg_contagion)    # Add average at time n to list
+
     def run_step(self):
         self.nodes = run_polya(self.nodes)
         self.steps += 1
         self.calculate_weights()
+        self.calculate_contagion()
 
     def run_n_steps(self, n):
         for i in range(n):
             self.run_step()
-        self.calculate_weights()
+            print('Done step ' + str(i))
 
     def plot_network(self):
         plot_network(self.network_plot, self.weights)

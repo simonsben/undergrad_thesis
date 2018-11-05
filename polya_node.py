@@ -39,6 +39,7 @@ class polya_node:
     def update_weight(self):
         self.weight = self.red / (self.red + self.black)
 
+    # TODO double check this function... I have doubts
     def get_ball(self, index):
         if index > self.red + self.black:
             return None
