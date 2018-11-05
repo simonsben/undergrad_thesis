@@ -13,6 +13,7 @@ class polya_node:
         self.id = _id
         self.weight = _red / (_red + _black)
         self.current_n = 0
+        self.degree = 0
 
     def add_ball(self, ball, num_balls=1):
         self.drawn_balls.append(ball)  # Add drawn ball
@@ -35,9 +36,13 @@ class polya_node:
 
     def add_neighbour(self, neighbour):
         self.neighbours.append(neighbour)
+        self.degree = len(self.neighbours)
 
     def update_weight(self):
         self.weight = self.red / (self.red + self.black)
+
+    def is_leaf(self):
+        return len(self.neighbours) == 1
 
     # TODO double check this function... I have doubts
     def get_ball(self, index):
