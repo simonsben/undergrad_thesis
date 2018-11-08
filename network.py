@@ -50,7 +50,7 @@ class network:
         self.contagion.append(avg_contagion)    # Add average at time n to list
 
     def run_step(self):
-        self.nodes = run_polya(self.nodes)
+        self.nodes = run_polya(self.nodes, self.steps)
         self.steps += 1
         self.calculate_weights()
         self.calculate_contagion()

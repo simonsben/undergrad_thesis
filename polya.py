@@ -7,41 +7,36 @@ from copy import deepcopy
 # TODO Ensure that polya is running as expected
 # TODO Add multi-threading
 # TODO look at way of removing the need to perform a deep copy
-def run_polya(network):
-    next_network = deepcopy(network)  # Make copy of network
-    for i, node in enumerate(network):  # For each (original) node
-        drawn_ball = choose_ball(node)  # draw ball
-        next_network[i].add_ball(drawn_ball, balls_added)  # Add new ball to next network
+def run_polya(network, steps):
+    delta_balls = steps * balls_added
+    next_network = deepcopy(network)                        # Make copy of network
+    for i, node in enumerate(network):                      # For each (original) node
+        drawn_ball = choose_ball(node, delta_balls)         # draw ball
+        next_network[i].add_ball(drawn_ball)   # Add new ball to next network
 
     return next_network
 
 
 # Choose ball for given node
-def choose_ball(target_node):
-    # Get total number of balls in node and neighbours
-    num_balls = target_node.red + target_node.black
-    node_balls = [num_balls]
+def choose_ball(target_node, delta_balls):
+    num_balls = target_node.total_balls + delta_balls   # Total number of balls in current node
+    total_balls = target_node.super_urn_balls + delta_balls * target_node.degree
 
-    for i, node in enumerate(target_node):  # For each neighbouring node
-        num_balls += node.red + node.black  # Total balls in node
-        node_balls.append(num_balls)  # Record cumulative number of balls
+    ball_choice = randint(0, total_balls-1)   # Go from ball number to index (1...n vs 0...(n-1))
 
-    # Choose ball
-    # TODO Ensure that this is actually choosing the right ball
-    ball_choice = randint(0, num_balls - 1)
-    chosen_node = None
-    ball_index = 0
+    if ball_choice < num_balls:                     # If ball is in target node
+        return target_node.get_ball(ball_choice)    # Return ball colour
 
-    # Find ball
-    if ball_choice < node_balls[0]:  # If ball is in target node
-        chosen_node = target_node  # Choose target node
-    else:
-        for i, count in enumerate(node_balls):  # For each neighbouring node
-            if ball_choice < count:  # If the chosen ball lies within a given node
-                chosen_node = target_node.neighbours[i - 1]  # Pointer to node
-                ball_index = count - ball_choice  # Index of ball in node
-                break
+    # If ball chosen in not in current node
+    ball_index = ball_choice - num_balls
 
-    chosen_ball = chosen_node.get_ball(ball_index)  # Get ball
+    for neighbour in target_node:  # For each neighbour of node
+        neighbour_total = neighbour.total_balls + delta_balls       # Node starting balls + number added through sym
 
-    return chosen_ball  # Return drawn ball
+        if ball_index < neighbour_total:    # If the index is less then the number of balls in node
+            return neighbour.get_ball(ball_index)
+
+        ball_index -= neighbour_total
+
+    print('Blow')
+    return 'b'
