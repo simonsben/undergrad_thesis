@@ -4,7 +4,7 @@ from polya_node import polya_node
 from random import randint
 from polya import run_polya
 from multiprocessing import Pool
-from copy import deepcopy
+from copy import deepcopy, copy
 
 
 class network:
@@ -66,6 +66,20 @@ class network:
 
     def plot_network(self):
         plot_network(self.network_plot, self.weights)
+
+    # self.network_plot = generate_plot_network(n)
+    # self.nodes = []
+    # self.weights = []
+    # self.contagion = []
+
+    def __deepcopy__(self, memodict={}):
+        new_net = copy(self)
+        new_net.network_plot = deepcopy(self.network_plot)
+        new_net.nodes = deepcopy(self.nodes)
+        new_net.weights = deepcopy(self.weights)
+        new_net.contagion = deepcopy(self.contagion)
+
+        return new_net
 
     def __str__(self):
         output = 'Network: '
