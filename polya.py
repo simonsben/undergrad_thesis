@@ -1,11 +1,9 @@
-from numpy.random import randint
+from random import random
 from utilities import balls_added
 from itertools import repeat
 
 
 # Run one time-step of Polya
-# TODO Add multi-threading
-# TODO look at way of removing the need to perform a deep copy
 def run_polya(network, steps, pool, use_threading=True):
     num_red, num_black = 0, 0
     delta_balls = steps * balls_added
@@ -27,26 +25,17 @@ def run_polya(network, steps, pool, use_threading=True):
     print('Steps', steps, 'red', num_red, 'black', num_black)
 
 
-# TODO re-write this to get ratios from neighbours then just run a prob, over-complicated
 # Choose ball for given node
-def choose_ball(target_node, delta_balls, steps):
-    num_balls = target_node.total_balls + delta_balls   # Total number of balls in current node
-    total_balls = target_node.super_urn_balls + delta_balls * target_node.degree    # Num balls in super urn
+def choose_ball(target_node, delta_balls, step):
+    total_balls = target_node.super_urn_balls + delta_balls * (target_node.degree + 1)    # Num balls in super urn
+    total_red = target_node.get_red_count(step)
 
-    ball_choice = randint(0, total_balls+1)         # Go from ball number to index (1...n vs 0...(n-1))
+    for neighbour in target_node:
+        total_red += neighbour.get_red_count(step)
 
-    if ball_choice < num_balls:                     # If ball is in target node
-        return target_node.get_ball(ball_choice, steps)    # Return ball colour
+    red_probability = total_red / total_balls
+    is_red = random() <= red_probability
 
-    # If ball chosen in not in current node
-    ball_index = ball_choice - num_balls
-
-    for neighbour in target_node:                                   # For each neighbour of node
-        neighbour_total = neighbour.total_balls + delta_balls       # Node starting balls + number added through sym
-
-        if ball_index <= neighbour_total:    # If the index is less then the number of balls in node
-            return neighbour.get_ball(ball_index, steps)
-
-        ball_index -= neighbour_total
-
-    raise IndexError('Ball index chosen greater than bounds of nodes')
+    if is_red:
+        return 'r'
+    return 'b'

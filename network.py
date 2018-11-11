@@ -32,7 +32,7 @@ class network:
             # TODO Ensure the distribution of the default random functions are sufficient
             # num_red = randint(1, balls_per_node-1)
             # num_black = balls_per_node - num_red
-            num_red = num_black = 5
+            num_red = num_black = int(balls_per_node / 2)
 
             new_node = polya_node(num_red, num_black, node)  # Create new node
             self.nodes.append(new_node)  # Add new node to network

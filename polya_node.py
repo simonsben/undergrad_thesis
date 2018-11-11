@@ -55,22 +55,17 @@ class polya_node:
     def is_leaf(self):
         return len(self.neighbours) == 1
 
-    # TODO double check this function... I have doubts
-    # Return the ball based on the index given
-    def get_ball(self, index, step):
+    # Returns the number of red balls at the given step
+    def get_red_count(self, step):
         num_red = self.red
         if step >= len(self.drawn_balls) and step > 0:
             new_red_count = 0
-            for i in range(step-1, len(self.drawn_balls)):
+            for i in range(step - 1, len(self.drawn_balls)):
                 if self.drawn_balls[i] == 'r':
                     new_red_count += balls_added
             num_red -= new_red_count
 
-        # print('Choosing w ratio', num_red / (self.red + self.black))
-        if index+1 < num_red:
-            return 'r'
-        else:
-            return 'b'
+        return num_red
 
     # Base method to allow iteration on object
     def __iter__(self):
