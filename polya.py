@@ -27,6 +27,7 @@ def run_polya(network, steps, pool, use_threading=True):
     print('Steps', steps, 'red', num_red, 'black', num_black)
 
 
+# TODO re-write this to get ratios from neighbours then just run a prob, over-complicated
 # Choose ball for given node
 def choose_ball(target_node, delta_balls, steps):
     num_balls = target_node.total_balls + delta_balls   # Total number of balls in current node

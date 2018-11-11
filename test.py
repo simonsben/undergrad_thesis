@@ -11,7 +11,7 @@ if __name__ == '__main__':
     # for i in range(times):
     #     running_avg += mean(net.weights)
     # print('avg', running_avg / times)
-    net = network(100)
+    net = network(10)
     print('generated', net)
     # animate_network(net)
     net.run_n_steps(10000)
