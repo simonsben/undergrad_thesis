@@ -8,16 +8,21 @@ from copy import deepcopy, copy
 
 
 class network:
-    def __init__(self, n, fix_start=False, pool_size=1):
+    def __init__(self, n, fix_start=False, op_run=False, pool_size=1):
         self.network_plot = generate_plot_network(n)
         self.nodes = []
         self.weights = []
         self.contagion = []
-        self.steps = 0
         self.pool = Pool(pool_size)
 
-        self.generate_network(fix_start)
+        self.n = n
+        self.steps = 0
+        self.current = 0
+
+        self.generate_network(fix_start, op_run)
         self.calculate_weights()
+
+    # TODO write call function to clean up deepcopy
 
     def calculate_weights(self):
         if len(self.weights) == 0 or len(self.weights) != len(self.nodes):
@@ -26,7 +31,7 @@ class network:
         for i in range(len(self.weights)):
             self.weights[i] = self.nodes[i].weight
 
-    def generate_network(self, fix_start):
+    def generate_network(self, fix_start, op_run):
         # Generate nodes
         for node in self.network_plot:  # For each node in plot network
             # Randomize initial number of balls
@@ -34,7 +39,11 @@ class network:
                 num_red = randint(1, balls_per_node-1)
                 num_black = balls_per_node - num_red
             else:
-                num_red = num_black = int(balls_per_node / 2)
+                num_red = int(balls_per_node / 2)
+                if not op_run:
+                    num_black = num_red
+                else:
+                    num_black = 0
 
             new_node = polya_node(num_red, num_black, node)  # Create new node
             self.nodes.append(new_node)  # Add new node to network
@@ -67,11 +76,7 @@ class network:
     def plot_network(self):
         plot_network(self.network_plot, self.weights)
 
-    # self.network_plot = generate_plot_network(n)
-    # self.nodes = []
-    # self.weights = []
-    # self.contagion = []
-
+    # Utility function for performing deep opy on object
     def __deepcopy__(self, memodict={}):
         new_net = copy(self)
         new_net.network_plot = deepcopy(self.network_plot)
@@ -81,6 +86,22 @@ class network:
 
         return new_net
 
+    # Utility function for starting iteration
+    def __iter__(self):
+        self.current = 0
+        return self
+
+    # Utility function for facilitating iteration on object
+    def __next__(self):
+        self.current += 1
+        if self.current >= len(self.nodes):
+            return StopIteration
+        return self.nodes[self.current]
+
+    def __len__(self):
+        return len(self.nodes)
+
+    # Utility function to return string of object for debugging
     def __str__(self):
         output = 'Network: '
         for node in self.nodes:

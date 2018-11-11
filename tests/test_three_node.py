@@ -4,9 +4,10 @@ from numpy import std
 from copy import deepcopy
 
 # TODO run this for lots of iterations to make sure its 'fair'..
+# TODO write math things to quantify how many trials are required to be 'fair'
 if __name__ == '__main__':
     red_win = 0
-    total_runs = 50
+    total_runs = 100
     run_contagion = []
     net = network(3, True)
 

@@ -76,10 +76,8 @@ class polya_node:
     def __next__(self):
         self.current_n += 1
         if self.current_n >= len(self.neighbours):
-            self.current_n = 0
             raise StopIteration
-        else:
-            return self.neighbours[self.current_n]
+        return self.neighbours[self.current_n]
 
     # toString method
     def __str__(self):
