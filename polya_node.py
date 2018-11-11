@@ -60,7 +60,7 @@ class polya_node:
         num_red = self.red
         if step >= len(self.drawn_balls) and step > 0:
             new_red_count = 0
-            for i in range(step - 1, len(self.drawn_balls)):
+            for i in range(step, len(self.drawn_balls)):
                 if self.drawn_balls[i] == 'r':
                     new_red_count += balls_added
             num_red -= new_red_count

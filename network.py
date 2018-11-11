@@ -4,10 +4,11 @@ from polya_node import polya_node
 from random import randint
 from polya import run_polya
 from multiprocessing import Pool
+from copy import deepcopy
 
 
 class network:
-    def __init__(self, n, pool_size=1):
+    def __init__(self, n, fix_start=False, pool_size=1):
         self.network_plot = generate_plot_network(n)
         self.nodes = []
         self.weights = []
@@ -15,7 +16,7 @@ class network:
         self.steps = 0
         self.pool = Pool(pool_size)
 
-        self.generate_network()
+        self.generate_network(fix_start)
         self.calculate_weights()
 
     def calculate_weights(self):
@@ -25,14 +26,15 @@ class network:
         for i in range(len(self.weights)):
             self.weights[i] = self.nodes[i].weight
 
-    def generate_network(self):
+    def generate_network(self, fix_start):
         # Generate nodes
         for node in self.network_plot:  # For each node in plot network
             # Randomize initial number of balls
-            # TODO Ensure the distribution of the default random functions are sufficient
-            # num_red = randint(1, balls_per_node-1)
-            # num_black = balls_per_node - num_red
-            num_red = num_black = int(balls_per_node / 2)
+            if not fix_start:
+                num_red = randint(1, balls_per_node-1)
+                num_black = balls_per_node - num_red
+            else:
+                num_red = num_black = int(balls_per_node / 2)
 
             new_node = polya_node(num_red, num_black, node)  # Create new node
             self.nodes.append(new_node)  # Add new node to network

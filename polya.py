@@ -5,7 +5,6 @@ from itertools import repeat
 
 # Run one time-step of Polya
 def run_polya(network, steps, pool, use_threading=True):
-    num_red, num_black = 0, 0
     delta_balls = steps * balls_added
 
     if use_threading and len(network) > 100:
@@ -17,12 +16,6 @@ def run_polya(network, steps, pool, use_threading=True):
 
     for i, ball in enumerate(balls):
         network[i].add_ball(ball)
-        if ball == 'r':
-            num_red += 1
-        else:
-            num_black += 1
-
-    print('Steps', steps, 'red', num_red, 'black', num_black)
 
 
 # Choose ball for given node
