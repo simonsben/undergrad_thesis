@@ -3,15 +3,17 @@ from utilities import balls_per_node
 from polya_node import polya_node
 from random import randint
 from polya import run_polya
+from multiprocessing import Pool
 
 
 class network:
-    def __init__(self, n):
+    def __init__(self, n, pool_size=2):
         self.network_plot = generate_plot_network(n)
         self.nodes = []
         self.weights = []
         self.contagion = []
-        self.steps = 1
+        self.steps = 0
+        self.pool = Pool(pool_size)
 
         self.generate_network()
         self.calculate_weights()
@@ -50,7 +52,7 @@ class network:
         self.contagion.append(avg_contagion)    # Add average at time n to list
 
     def run_step(self):
-        self.nodes = run_polya(self.nodes, self.steps)
+        run_polya(self.nodes, self.steps, self.pool)
         self.steps += 1
         self.calculate_weights()
         self.calculate_contagion()
@@ -58,7 +60,6 @@ class network:
     def run_n_steps(self, n):
         for i in range(n):
             self.run_step()
-            print('Done step ' + str(i))
 
     def plot_network(self):
         plot_network(self.network_plot, self.weights)
