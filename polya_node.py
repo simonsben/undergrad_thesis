@@ -1,7 +1,6 @@
 from collections import deque
 from utilities import network_memory
 from utilities import balls_added
-# from threading import Lock
 
 
 # Class definition for a polya node
@@ -14,7 +13,6 @@ class polya_node:
         self.red = _red                          # Running total of red balls
         self.black = _black                      # Running total of black balls
         self.weight = _red / self.total_balls    # Fraction of red to total balls
-        # self.lock = Lock()
 
         self.neighbours = []                     # List of neighbouring nodes
         self.drawn_balls = deque()               # List of added balls
@@ -60,8 +58,6 @@ class polya_node:
     # TODO double check this function... I have doubts
     # Return the ball based on the index given
     def get_ball(self, index, step):
-        # self.lock.acquire()
-
         num_red = self.red
         if step >= len(self.drawn_balls) and step > 0:
             new_red_count = 0
@@ -70,9 +66,8 @@ class polya_node:
                     new_red_count += balls_added
             num_red -= new_red_count
 
-        # self.lock.release()
-
-        if index < num_red:
+        # print('Choosing w ratio', num_red / (self.red + self.black))
+        if index+1 < num_red:
             return 'r'
         else:
             return 'b'
@@ -93,4 +88,4 @@ class polya_node:
 
     # toString method
     def __str__(self):
-        return str(self.weight)
+        return str(self.black) + '_' + str(self.red)

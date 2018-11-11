@@ -7,7 +7,7 @@ from multiprocessing import Pool
 
 
 class network:
-    def __init__(self, n, pool_size=2):
+    def __init__(self, n, pool_size=1):
         self.network_plot = generate_plot_network(n)
         self.nodes = []
         self.weights = []
@@ -30,7 +30,7 @@ class network:
         for node in self.network_plot:  # For each node in plot network
             # Randomize initial number of balls
             # TODO Ensure the distribution of the default random functions are sufficient
-            num_red = randint(1, balls_per_node)
+            num_red = randint(1, balls_per_node-1)
             num_black = balls_per_node - num_red
 
             new_node = polya_node(num_red, num_black, node)  # Create new node
