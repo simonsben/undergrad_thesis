@@ -43,7 +43,7 @@ class network:
                 if not op_run:
                     num_black = num_red
                 else:
-                    num_black = 0
+                    num_black = 1
 
             new_node = polya_node(num_red, num_black, node)  # Create new node
             self.nodes.append(new_node)  # Add new node to network
@@ -54,13 +54,13 @@ class network:
                 self.nodes[node].add_neighbour(self.nodes[neighbor])  # Add neighbour
 
     def calculate_contagion(self):
-        running_avg, total_balls = 0, 0     # Initialize counting variables
+        red_total, total_balls = 0, 0     # Initialize counting variables
 
-        for node in self.nodes: # For each node
-            total_balls += node.red + node.black    # Sum total balls
-            running_avg += node.weight * (node.red + node.black)    # Sum weighted average
+        for node in self.nodes:                                   # For each node
+            total_balls += node.red + node.black                  # Sum total balls
+            red_total += node.red                                 # Sum weighted average
 
-        avg_contagion = running_avg / total_balls
+        avg_contagion = red_total / total_balls
         self.contagion.append(avg_contagion)    # Add average at time n to list
 
     def run_step(self):

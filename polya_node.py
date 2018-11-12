@@ -81,4 +81,4 @@ class polya_node:
 
     # toString method
     def __str__(self):
-        return str(self.black) + '_' + str(self.red)
+        return str(self.black) + 'b' + str(self.red) + 'r (' + str(self.degree) + ')'

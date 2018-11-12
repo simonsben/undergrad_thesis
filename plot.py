@@ -1,6 +1,9 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 from matplotlib import animation
+from utilities import min_steps
+from copy import deepcopy
+from numpy import mean
 
 
 # Generate new network
@@ -38,6 +41,25 @@ def plot_contagion(network):
     plt.plot(network.contagion)
     plt.title('Network contagion over ' + str(network.steps) + ' steps')
     plt.show()
+
+
+def run_and_plot_exposure(network, num_runs=10):
+    run_exposures = []
+    for i in range(num_runs):
+        tmp_net = deepcopy(network)
+        tmp_net.run_n_steps(min_steps)
+
+        run_exposures.append(tmp_net.contagion)
+
+    average_exp = mean(run_exposures, 0)
+    plt.figure('Exposure over ' + str(min_steps) + 'steps')
+
+    for i in range(num_runs):
+        plt.plot(run_exposures[i], label='Run ' + str(i))
+    plt.plot(average_exp, label='Average')
+    plt.legend(loc='right')
+    plt.show()
+
 
 def animate_network(network):
     figure = plt.figure('Network animation')  # Initialize figure
