@@ -1,10 +1,11 @@
 from plot import generate_plot_network, plot_network
-from utilities import balls_per_node
+from utilities import balls_per_node, balls_added
 from polya_node import polya_node
 from random import randint
 from polya import run_polya
 from multiprocessing import Pool
 from copy import deepcopy, copy
+from numpy import zeros, mean
 
 
 class network:
@@ -13,6 +14,7 @@ class network:
         self.nodes = []
         self.weights = []
         self.contagion = []
+        self.exposure = []
         self.pool = Pool(pool_size)
 
         self.n = n
@@ -21,6 +23,7 @@ class network:
 
         self.generate_network(fix_start, op_run)
         self.calculate_weights()
+        self.calculate_exposure()
 
     # TODO write call function to clean up deepcopy
 
@@ -63,11 +66,32 @@ class network:
         avg_contagion = red_total / total_balls
         self.contagion.append(avg_contagion)    # Add average at time n to list
 
+    def calculate_exposure(self):
+        delta_balls = self.steps * balls_added
+        counts = zeros(len(self.nodes), dtype=(int, 2))
+        exposures = zeros(len(self.nodes))
+
+        for i, node in enumerate(self.nodes):
+            tmp_red = node.get_red_count(self.steps)
+            tmp_total = node.total_balls + delta_balls
+            counts[i] = (tmp_red, tmp_total)
+
+        for i, node in enumerate(self.nodes):
+            red_total = counts[i][0]
+            total = counts[i][1]
+            for neighbour in node:
+                red_total += counts[neighbour.id][0]
+                total += counts[neighbour.id][1]
+            exposures[i] = red_total / total
+
+        self.exposure.append(mean(exposures))
+
     def run_step(self):
         run_polya(self.nodes, self.steps, self.pool)
         self.steps += 1
         self.calculate_weights()
-        self.calculate_contagion()
+        self.calculate_exposure()
+        # self.calculate_contagion()
 
     def run_n_steps(self, n):
         for i in range(n):

@@ -26,13 +26,13 @@ def optimize_ball(network):
 
 
 def run_test(network, node_id):
-    contagion = []
+    exposure = []
 
     for i in range(min_trials):
         tmp_net = deepcopy(network)
         tmp_net.nodes[node_id].add_ball('b')
 
         tmp_net.run_n_steps(min_steps)
-        contagion.append(tmp_net.contagion[len(network.contagion)-1])
+        exposure.append(tmp_net.exposure[len(network.exposure)-1])
 
-    return mean(contagion)
+    return mean(exposure)

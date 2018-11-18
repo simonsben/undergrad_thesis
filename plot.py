@@ -43,13 +43,13 @@ def plot_contagion(network):
     plt.show()
 
 
-def run_and_plot_exposure(network, num_runs=10):
+def run_and_plot_exposure(network, num_runs=4):
     run_exposures = []
     for i in range(num_runs):
         tmp_net = deepcopy(network)
-        tmp_net.run_n_steps(min_steps)
+        tmp_net.run_n_steps(2000)
 
-        run_exposures.append(tmp_net.contagion)
+        run_exposures.append(tmp_net.exposure)
 
     average_exp = mean(run_exposures, 0)
     plt.figure('Exposure over ' + str(min_steps) + 'steps')
