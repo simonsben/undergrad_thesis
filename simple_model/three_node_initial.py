@@ -1,4 +1,5 @@
-from numpy import full, sum, argmin, argmax, copy
+from numpy import full, sum, argmin, copy
+from random import randint
 
 
 def calculate_exposure(graph):
@@ -23,6 +24,22 @@ def calculate_exposure(graph):
     return exposure
 
 
+def get_max(exposures, graph):
+    max_ind = []
+    max_val = -1
+    for i, num in enumerate(exposures):
+        if num > max_val:
+            max_val = num
+            max_ind = [i]
+        elif num == max_val:
+            max_ind.append(i)
+
+    if len(max_ind) > 1:
+        options = [graph[ind][0] for ind in max_ind]
+        return max_ind[argmin(options)]
+    return max_ind[0]
+
+
 graph = full((4, 2), 5)
 current_exposure = calculate_exposure(graph)
 print('initial exposure', current_exposure)
@@ -32,10 +49,13 @@ while True:
     for i in range(len(graph)):
         tmp_graph = copy(graph)
         tmp_graph[i][0] += 1
-        exposures.append(calculate_exposure(tmp_graph))
+        tmp_exposure = calculate_exposure(tmp_graph)
+        exposures.append(tmp_exposure)
+
+        print(tmp_graph, tmp_exposure)
 
     min_ind = argmin(exposures)
-    max_ind = argmax(exposures)
+    max_ind = get_max(exposures, graph)
     if graph[min_ind][0] - 1 < 0:
         print('neg val')
         break
@@ -44,10 +64,15 @@ while True:
     graph[max_ind][0] += 1
 
     tmp_exposure = calculate_exposure(graph)
+    print('--------------')
     print('new exposure', tmp_exposure)
+    print(graph)
+    print('--------------')
 
     if current_exposure >= tmp_exposure:
         print('done op')
         break
+
+    current_exposure = tmp_exposure
 
 print('done', graph)
