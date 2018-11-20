@@ -5,30 +5,32 @@ from utilities.utilities import balls_per_node, balls_added, generate_plot_netwo
 from model.polya_node import polya_node
 from model.polya import run_polya
 from copy import deepcopy, copy
-from numpy import zeros, mean
+from numpy import zeros, mean, sum
 from utilities.io import save_network
 
 
 class network:
     nodes: List[polya_node]
 
-    def __init__(self, n, fix_start=False, pool_size=1):
+    def __init__(self, n, fix_start=True, pool_size=1):
         self.network_plot = generate_plot_network(n)
         self.nodes = []
         self.weights = []
         self.contagion = []
-        self.exposure = []
+        self.exposures = []
+        self.node_exposures = []
 
         self.n = n
         self.steps = 0
         self.current = 0
 
         self.generate_network(fix_start)
+        print('done gen')
 
     # TODO write call function to clean up deepcopy
 
     def generate_network(self, fix_start):
-        for i, node in self.network_plot:
+        for i, node in enumerate(self.network_plot):
             if fix_start:
                 new_node = polya_node(balls_per_node, balls_per_node, i)
             else:
@@ -43,23 +45,18 @@ class network:
 
     def calculate_exposure(self):
         delta_balls = self.steps * balls_added
-        counts = zeros(len(self.nodes), dtype=(int, 2))
-        exposures = zeros(len(self.nodes))
+        # ball_counts = zeros((self.n, 2), int)
+        # for i, node in enumerate(self.nodes):
+        #     tmp_added = delta_balls * node.degree
+        #     ball_counts[i] = [node.red, node.init_total + tmp_added]
 
-        for i, node in enumerate(self.nodes):
-            tmp_red = node.get_red_count(self.steps)
-            tmp_total = node.total_balls + delta_balls
-            counts[i] = (tmp_red, tmp_total)
+        ball_counts = [[node.red, (node.init_total + delta_balls) * node.degree] for node in self.nodes]
+        urn_counts = [sum([ball_counts[neighbour.id] for neighbour in node], axis=0) for node in self.nodes]
 
-        for i, node in enumerate(self.nodes):
-            red_total = counts[i][0]
-            total = counts[i][1]
-            for neighbour in node:
-                red_total += counts[neighbour.id][0]
-                total += counts[neighbour.id][1]
-            exposures[i] = red_total / total
+        self.node_exposures = [nums[0] / nums[1] for nums in urn_counts]
+        exposure = mean(self.node_exposures)
 
-        self.exposure.append(mean(exposures))
+        return exposure
 
     def run_step(self):
         run_polya(self.nodes, self.steps, self.pool)

@@ -8,7 +8,7 @@ class polya_node:
         self.init_red = _red                     # Initial number of red balls
         self.init_black = _black                 # Initial number of black balls
         self.init_total = _red + _black
-        self.init_super_urn = self.total_balls  # Total number of balls in super urn (base)
+        self.init_super_urn = self.init_total    # Total number of balls in super urn (base)
 
         self.red = _red                          # Running total of red balls
         self.black = _black                      # Running total of black balls
