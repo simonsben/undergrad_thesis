@@ -6,11 +6,6 @@ from copy import deepcopy
 from numpy import mean
 
 
-# Generate new network
-def generate_plot_network(n):
-    return nx.barabasi_albert_graph(n, 1)
-
-
 # Plot network
 def plot_network(graph, weights, id=1):
     plot_layout = nx.spring_layout(graph)  # Calculate layout for nodes

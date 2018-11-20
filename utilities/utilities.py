@@ -1,9 +1,16 @@
+from networkx import barabasi_albert_graph
+
 # Define constants
 network_memory = 10000
 balls_added = 1
 balls_per_node = 10
 min_steps = 8000
 min_trials = 30
+
+
+# Generate new network
+def generate_plot_network(n):
+    return barabasi_albert_graph(n, 1)
 
 
 # Method to convert a dict to a list (for plotting)
