@@ -1,7 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 from matplotlib import animation
-from utilities import min_steps
+from utilities.utilities import min_steps
 from copy import deepcopy
 from numpy import mean
 

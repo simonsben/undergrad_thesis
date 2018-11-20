@@ -1,5 +1,5 @@
 from random import random
-from utilities import balls_added
+from utilities.utilities import balls_added
 from itertools import repeat
 
 

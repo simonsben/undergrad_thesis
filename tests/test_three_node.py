@@ -2,7 +2,7 @@ from network import network
 from matplotlib.pyplot import figure, scatter, show
 from numpy import std
 from copy import deepcopy
-from utilities import min_steps
+from utilities.utilities import min_steps
 
 # TODO run this for lots of iterations to make sure its 'fair'..
 # TODO write math things to quantify how many trials are required to be 'fair'

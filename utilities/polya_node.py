@@ -1,6 +1,6 @@
 from collections import deque
-from utilities import network_memory
-from utilities import balls_added
+from utilities.utilities import network_memory
+from utilities.utilities import balls_added
 
 
 # Class definition for a polya node

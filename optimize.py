@@ -1,7 +1,7 @@
-from utilities import calculate_budget
+from utilities.utilities import calculate_budget
 from numpy import mean, argmin
 from copy import deepcopy
-from utilities import min_steps, min_trials
+from utilities.utilities import min_steps, min_trials
 
 
 def optimize_starting(network):

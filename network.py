@@ -1,6 +1,6 @@
-from plot import generate_plot_network, plot_network
-from utilities import balls_per_node, balls_added
-from polya_node import polya_node
+from utilities.plot import generate_plot_network, plot_network
+from utilities.utilities import balls_per_node, balls_added
+from utilities.polya_node import polya_node
 from random import randint
 from polya import run_polya
 from multiprocessing import Pool

@@ -1,9 +1,6 @@
 from network import network
-from numpy import mean
-from networkx import closeness_centrality
-from utilities import dict_to_list
 # from plot import animate_network
-from plot import plot_contagion, plot_network
+from utilities.plot import plot_contagion
 
 if __name__ == '__main__':
     # running_avg = 0
