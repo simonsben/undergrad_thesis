@@ -1,4 +1,4 @@
-from network import network
+from model.network import network
 # from plot import animate_network
 from utilities.plot import plot_contagion
 

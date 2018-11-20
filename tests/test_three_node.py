@@ -1,4 +1,4 @@
-from network import network
+from model.network import network
 from matplotlib.pyplot import figure, scatter, show
 from numpy import std
 from copy import deepcopy
