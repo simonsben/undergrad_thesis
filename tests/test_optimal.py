@@ -1,5 +1,5 @@
 from model.network import network
-from optimize import optimize_starting
+from model.optimize import optimize_starting
 from utilities.plot import run_and_plot_exposure
 
 if __name__ == '__main__':
