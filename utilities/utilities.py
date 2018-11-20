@@ -6,6 +6,10 @@ balls_added = 1
 balls_per_node = 10
 min_steps = 8000
 min_trials = 30
+ball_colour = {
+    0: 'red',
+    1: 'black'
+}
 
 
 # Generate new network

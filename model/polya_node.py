@@ -1,4 +1,3 @@
-from utilities.utilities import network_memory
 from utilities.utilities import balls_added
 
 
@@ -27,7 +26,7 @@ class polya_node:
         self.drawn_balls.append(ball)  # Add drawn ball
 
         # Add ball to node's current count
-        if ball == 'r':
+        if ball == 0:
             self.red += balls_added
         else:
             self.black += balls_added
@@ -41,6 +40,10 @@ class polya_node:
         self.neighbours.append(neighbour)
         self.degree = len(self.neighbours)
         self.super_urn_balls += neighbour.init_total
+
+    def add_neighbours(self, neighbours):
+        self.neighbours = neighbours
+        self.degree = len(self.neighbours)
 
     # Returns whether the node is a leaf node
     def is_leaf(self):
