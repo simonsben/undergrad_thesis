@@ -1,38 +1,25 @@
-from utilities.utilities import calculate_budget
-from numpy import mean, argmin
-from copy import deepcopy
-from utilities.utilities import min_steps, min_trials
+from utilities.utilities import get_node
 
 
-def optimize_starting(network):
-    budget = calculate_budget(network.n)
-    for i in range(budget):
-        network = optimize_ball(network)
-        print('Ball', (i+1), 'done', round((i+1) / budget * 100, 2), '% complete')
-        # print(network)
+def optimize_initial(network):
+    current_exposure = network.exposures[len(network.exposures)-1]
 
-    return network
+    while True:
+        min_node, _, urn_counts = get_node(network, False)
 
+        if network.nodes[min_node] - 1 < 0:
+            print('Negative value,  breaking.')
+            break
+        network.nodes[min_node] -= 1
 
-def optimize_ball(network):
-    trials = []
-    for i in range(len(network)):
-        trials.append(run_test(network, i))
+        max_node, new_exposure, _ = get_node(network, True, urn_counts)
 
-    min_index = argmin(trials)
-    network.nodes[min_index].add_ball('b')
+        if new_exposure < current_exposure:
+            print('Worsened exposure, breaking.')
+            break
 
-    return network
+        network.nodes[max_node] += 1
+        current_exposure = new_exposure
 
-
-def run_test(network, node_id):
-    exposure = []
-
-    for i in range(min_trials):
-        tmp_net = deepcopy(network)
-        tmp_net.nodes[node_id].add_ball('b')
-
-        tmp_net.run_n_steps(min_steps)
-        exposure.append(tmp_net.exposure[len(network.exposure)-1])
-
-    return mean(exposure)
+    print('Optimization done')
+    print(network)

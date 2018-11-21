@@ -43,7 +43,6 @@ class network:
         return calculate_exposure(self)
 
     def run_step(self):
-        # picked_balls = [(0 if random() < exposure else 1) for exposure in self.node_exposures]
         picked_balls = zeros(self.n)
         for i in range(self.n):
             picked_balls[i] = 0 if random() < self.node_exposures[i] else 1
@@ -72,7 +71,7 @@ class network:
     # Utility function for facilitating iteration on object
     def __next__(self):
         self.current += 1
-        if self.current >= len(self.nodes):
+        if self.current >= self.n:
             return StopIteration
         return self.nodes[self.current]
 
