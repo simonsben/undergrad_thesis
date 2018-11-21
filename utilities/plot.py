@@ -1,43 +1,57 @@
-import networkx as nx
-from matplotlib.pyplot import figure, draw, axis, show, cm, colorbar, Normalize, subplot, title, savefig
-# from matplotlib import animation
-# from utilities.utilities import min_steps
-# from copy import deepcopy
-from numpy import min, max
+from networkx import spring_layout, draw_networkx_nodes, draw_networkx_edges
+from matplotlib.pyplot import figure, draw, axis, show, cm, colorbar, Normalize, subplot, title, savefig, plot
 
 
 # Plot network
-def plot_optimized_network(network, index, blocking=True, save_plot=True):
+def plot_optimized_network(network, blocking=True, save_plot=True):
     _title = 'Network plot'
+    figure(_title)
 
-    network.calculate_weights()
     graph = network.network_plot
+    init_weights = network.init_weights
     weights = network.weights
+    plot_layout = spring_layout(graph)
 
-    if index == 1:
-        figure(_title)
-    subplot(2, 1, index)
+    min_val = 0
+    max_val = 1
 
-    if index == 1:
-        title('Initial network')
-    else:
-        title('Optimized network')
-
-    cmap = cm.cool
-    color_vals = cm.ScalarMappable(cmap=cmap, norm=Normalize(vmin=min(weights), vmax=max(weights)))
+    cmap = cm.bwr
+    color_vals = cm.ScalarMappable(cmap=cmap, norm=Normalize(vmin=min_val, vmax=max_val))
     color_vals._A = []
 
-    plot_layout = nx.spring_layout(graph)  # Calculate layout for nodes
-    nx.draw_networkx_edges(graph, plot_layout, alpha=.3)  # Plot edges
-    nx.draw_networkx_nodes(graph, plot_layout, node_size=100, edgecolors='k', node_color=network.weights, cmap=cm.cool)
-
-    draw()  # Matplotlib virtual draw
+    subplot(2, 1, 1)
+    title('Initial network')
     colorbar(color_vals)
+
+    draw_networkx_edges(graph, plot_layout, alpha=.3)
+    draw_networkx_nodes(graph, plot_layout, node_size=100, edgecolors='k', node_color=init_weights, cmap=cmap,
+                        vmin=min_val, vmax=max_val)
     axis('off')  # Disable axis
 
-    if save_plot and index == 2:
+    subplot(2, 1, 2)
+    title('Optimized network')
+    colorbar(color_vals)
+
+    draw_networkx_edges(graph, plot_layout, alpha=.3)
+    draw_networkx_nodes(graph, plot_layout, node_size=100, edgecolors='k', node_color=weights, cmap=cmap,
+                        vmin=min_val, vmax=max_val)
+    axis('off')
+    draw()
+
+    if save_plot:
         savefig('../results/optimized_network.png')
     show(block=blocking)  # Open matplotlib window
+
+
+def plot_exposures(exposure_set):
+    num_steps = str(len(exposure_set[0]))
+    _title = 'Network exposure over ' + num_steps + ' steps'
+
+    figure('Exposure')
+    for exposures in exposure_set:
+        plot(exposures)
+    savefig('../results/network_exposure_' + num_steps + '.png')
+    show()
 
 
 # def run_update(tmp, network, layout):
