@@ -48,6 +48,10 @@ class polya_node:
     def is_leaf(self):
         return len(self.neighbours) == 1
 
+    def lock_optimization(self):
+        self.init_red = self.last_red = self.red
+        self.init_black = self.last_black = self.black
+
     def lock_step(self):
         self.last_red = self.red
         self.last_black = self.black

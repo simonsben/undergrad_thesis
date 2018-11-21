@@ -48,7 +48,6 @@ def calculate_exposure(network, add_exposure=True, ret_counts=False):
             urn_counts[i, 0] += ball_counts[node.id, 0]
             urn_counts[i, 1] += ball_counts[node.id, 1]
 
-        if ret_counts:
             network.node_exposures[i] = urn_counts[i, 0] / urn_counts[i, 1]
 
     exposure = mean(network.node_exposures)
@@ -57,7 +56,6 @@ def calculate_exposure(network, add_exposure=True, ret_counts=False):
 
     if ret_counts:
         return urn_counts, ball_counts
-    return exposure
 
 
 # Function to get the extreme index from a set (either min or max)

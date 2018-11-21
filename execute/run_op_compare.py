@@ -1,21 +1,30 @@
 from model.network import network
-from utilities.io import save_network, load_network
 from numpy import copy
 from utilities.plot import plot_exposures
 
 
-net = network(25)
-save_network(net)
+net = network(100)
 print('Network generated')
+
+num_steps = 1000
+num_trials = 25
+default_set = []
+optimized_set = []
+
 net.plot_network(1)
 
-# net.run_n_steps(500)
-# default_exposure = copy(net.exposures)
+for i in range(num_trials):
+    net.run_n_steps(num_steps)
+    default_set.append(copy(net.exposures))
+    net.clear_network()
 
-net.clear_network()
+
 net.optimize_initial()
-net.plot_network(2)
+net.plot_network(2, False)
+for i in range(num_trials):
+    net.run_n_steps(num_steps)
+    optimized_set.append(copy(net.exposures))
+    net.clear_network()
 
-# plot_exposures([default_exposure, net.exposures])
 
-
+plot_exposures(default_set, optimized_set)

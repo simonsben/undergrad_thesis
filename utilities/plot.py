@@ -1,5 +1,6 @@
 from networkx import spring_layout, draw_networkx_nodes, draw_networkx_edges
-from matplotlib.pyplot import figure, draw, axis, show, cm, colorbar, Normalize, subplot, title, savefig, plot
+from matplotlib.pyplot import figure, draw, axis, show, cm, colorbar, Normalize, subplot, title, savefig, plot, legend
+from numpy import mean
 
 
 # Plot network
@@ -43,13 +44,21 @@ def plot_optimized_network(network, blocking=True, save_plot=True):
     show(block=blocking)  # Open matplotlib window
 
 
-def plot_exposures(exposure_set):
-    num_steps = str(len(exposure_set[0]))
+def plot_exposures(default_set, optimized_set):
+    num_steps = str(len(default_set[0]))
     _title = 'Network exposure over ' + num_steps + ' steps'
 
     figure('Exposure')
-    for exposures in exposure_set:
-        plot(exposures)
+    for i, exposures in enumerate(default_set):
+        plot(exposures, alpha=.5)
+
+    for i, exposures in enumerate(optimized_set):
+        plot(exposures, alpha=.5)
+
+    plot(mean(default_set, axis=0), label='Uniform average')
+    plot(mean(optimized_set, axis=0), label='Optimal average')
+
+    legend()
     savefig('../results/network_exposure_' + num_steps + '.png')
     show()
 

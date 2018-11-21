@@ -60,22 +60,25 @@ class network:
         for i in range(n):
             self.run_step()
 
-    def plot_network(self, index):
+    def plot_network(self, index, blocking=True):
         if index == 1:
             self.calculate_weights()
             self.init_weights = copy(self.weights)
         else:
             self.calculate_weights()
             self.graph_layout = spring_layout(self.network_plot)
-            plot_optimized_network(self)
+            plot_optimized_network(self, blocking)
 
     def export_network(self):
         save_network(self.network_plot)
 
-    def optimize_initial(self):
+    def optimize_initial(self, lock=True):
         if self.steps > 0:
             raise ValueError('Cannot optimize initial after steps were run')
         optimize_initial(self)
+
+        if lock:
+            self.lock_optimization()
 
     def calculate_weights(self):
         self.weights = zeros(self.n)
@@ -90,6 +93,10 @@ class network:
         self.steps = 0
         self.exposures = []
         self.calculate_exposure()
+
+    def lock_optimization(self):
+        for i, _ in enumerate(self.nodes):
+            self.nodes[i].lock_optimization()
 
     # Utility function for starting iteration
     def __iter__(self):

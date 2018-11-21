@@ -2,7 +2,7 @@ from model.network import network
 import matplotlib.pyplot as plt
 from numpy import mean
 
-num_trials = 50
+num_trials = 10
 exposures = []
 
 for i in range(num_trials):
