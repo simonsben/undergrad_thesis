@@ -63,6 +63,13 @@ class network:
     def export_network(self):
         save_network(self.network_plot)
 
+    def calculate_weights(self):
+        self.weights = zeros(self.n)
+        delta_balls = balls_added * self.steps
+
+        for i, node in enumerate(self.nodes):
+            self.weights[i] = node.red / (node.init_total + delta_balls)
+
     # Utility function for starting iteration
     def __iter__(self):
         self.current = 0

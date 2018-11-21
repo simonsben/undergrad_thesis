@@ -28,4 +28,5 @@ def optimize_initial(network):
         network.nodes[max_node].red += 1
         network.nodes[max_node].init_total += 1
         current_exposure += exposure_change
+
         print(network)
