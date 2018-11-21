@@ -56,12 +56,12 @@ def calculate_exposure(network, add_exposure=True, ret_counts=False):
         network.exposures.append(exposure)
 
     if ret_counts:
-        return urn_counts
+        return urn_counts, ball_counts
     return exposure
 
 
 # Function to get the extreme index from a set (either min or max)
-def pull_extreme(exposures, graph, check_max):
+def pull_extreme(exposures, urn_counts, check_max):
     indexes = []                    # Initialize list of indexes
     if check_max:                   # If checking max (vs min) initialize starting value
         value = - (maxsize - 1)
@@ -70,14 +70,14 @@ def pull_extreme(exposures, graph, check_max):
 
     for i, num in enumerate(exposures):                                 # For each node
         if check_max and num > value or not check_max and num < value:  # If node exposure mode extreme
-            if check_max or not check_max and graph[i][0] > 0:          # And non-negative (for min case)
+            if check_max or not check_max and urn_counts[i][0] > 0:          # And non-negative (for min case)
                 value = num                                             # Set new extreme value
                 indexes = [i]                                           # Re-set index list
         elif num == value:                                              # If index is same as extreme, add to list
             indexes.append(i)
 
     if len(indexes) > 1:                                # If more then one element in extreme list
-        options = [graph[ind][0] for ind in indexes]    # Calculate red ball counts
+        options = [urn_counts[ind][0] for ind in indexes]    # Calculate red ball counts
         func = argmin if check_max else argmax
         return indexes[func(options)]                   # Take either the min or max (based on min or max func)
     return indexes[0]
@@ -86,7 +86,7 @@ def pull_extreme(exposures, graph, check_max):
 # Function to get the node with min/max gradient
 def get_node(network, check_max):
     # if len(urn_counts) == 0:
-    urn_counts = calculate_exposure(network, False, True)
+    urn_counts, ball_counts = calculate_exposure(network, False, True)
     # else:
     #     print('no')
     possible_exposures = zeros(len(network))
@@ -100,7 +100,7 @@ def get_node(network, check_max):
 
         possible_exposures[i] = new_exposure - old_exposure
 
-    extreme_index = pull_extreme(possible_exposures, urn_counts, check_max)
+    extreme_index = pull_extreme(possible_exposures, ball_counts, check_max)
     return extreme_index, possible_exposures[extreme_index], urn_counts
 
 
@@ -111,5 +111,3 @@ def increment_values(index, network, urn_counts, val):
     for neighbour in network.nodes[index]:
         urn_counts[neighbour.id, 0] += val
         urn_counts[neighbour.id, 1] += val
-
-    return urn_counts
