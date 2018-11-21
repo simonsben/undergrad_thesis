@@ -84,12 +84,14 @@ def pull_extreme(exposures, graph, check_max):
 
 
 # Function to get the node with min/max gradient
-def get_node(network, check_max, urn_counts=None):
-    if not urn_counts:
-        urn_counts = calculate_exposure(network, False, True)
+def get_node(network, check_max):
+    # if len(urn_counts) == 0:
+    urn_counts = calculate_exposure(network, False, True)
+    # else:
+    #     print('no')
     possible_exposures = zeros(len(network))
 
-    for i, node in enumerate(network):
+    for i, node in enumerate(network.nodes):
         old_exposure = urn_counts[i, 0] / urn_counts[i, 1]
         new_exposure = (urn_counts[i, 0] + 1) / (urn_counts[i, 1] + 1)
         for neighbour in node:
@@ -100,3 +102,14 @@ def get_node(network, check_max, urn_counts=None):
 
     extreme_index = pull_extreme(possible_exposures, urn_counts, check_max)
     return extreme_index, possible_exposures[extreme_index], urn_counts
+
+
+def increment_values(index, network, urn_counts, val):
+    # Increment values
+    urn_counts[index, 0] += val
+    urn_counts[index, 1] += val
+    for neighbour in network.nodes[index]:
+        urn_counts[neighbour.id, 0] += val
+        urn_counts[neighbour.id, 1] += val
+
+    return urn_counts
