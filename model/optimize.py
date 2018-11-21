@@ -8,7 +8,7 @@ def optimize_initial(network):
         min_node, _, urn_counts = get_node(network, False)
 
         if network.nodes[min_node].red - 1 < 0:
-            print('Negative value,  breaking.')
+            # print('Negative value,  breaking.')
             break
         network.nodes[min_node].red -= 1
         network.nodes[min_node].init_total -= 1
@@ -16,10 +16,8 @@ def optimize_initial(network):
 
         max_node, exposure_change, _ = get_node(network, True)
 
-        # new_exposure = current_exposure +
-        print('Change', exposure_change)
         if exposure_change <= 0 or min_node == max_node:
-            print('Worsened exposure, breaking.')
+            # print('Worsened exposure, breaking.')
             network.nodes[min_node].red += 1
             network.nodes[min_node].init_total += 1
             break
@@ -28,5 +26,3 @@ def optimize_initial(network):
         network.nodes[max_node].red += 1
         network.nodes[max_node].init_total += 1
         current_exposure += exposure_change
-
-        print(network)

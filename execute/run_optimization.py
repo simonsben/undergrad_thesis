@@ -1,13 +1,12 @@
 from model.network import network
 from model.optimize import optimize_initial
-from utilities.plot import plot_network
+from utilities.plot import plot_optimized_network
 
-net = network(5)
+net = network(100)
 print('Network generated')
-plot_network(net, 'initial', blocking=False)
+plot_optimized_network(net, 1, blocking=False)
 
 
 optimize_initial(net)
 print('Optimization done.')
-print(net)
-plot_network(net)
+plot_optimized_network(net, 2)

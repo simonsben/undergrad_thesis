@@ -1,17 +1,27 @@
 import networkx as nx
-from matplotlib.pyplot import figure, draw, axis, show, cm, colorbar, Normalize
-from matplotlib import animation
-from utilities.utilities import min_steps
-from copy import deepcopy
-from numpy import mean, min, max
+from matplotlib.pyplot import figure, draw, axis, show, cm, colorbar, Normalize, subplot, title, savefig
+# from matplotlib import animation
+# from utilities.utilities import min_steps
+# from copy import deepcopy
+from numpy import min, max
 
 
 # Plot network
-def plot_network(network, _title='Network plot', blocking=True):
+def plot_optimized_network(network, index, blocking=True, save_plot=True):
+    _title = 'Network plot'
+
     network.calculate_weights()
     graph = network.network_plot
     weights = network.weights
-    figure(_title)  # Make figure
+
+    if index == 1:
+        figure(_title)
+    subplot(2, 1, index)
+
+    if index == 1:
+        title('Initial network')
+    else:
+        title('Optimized network')
 
     cmap = cm.cool
     color_vals = cm.ScalarMappable(cmap=cmap, norm=Normalize(vmin=min(weights), vmax=max(weights)))
@@ -19,11 +29,14 @@ def plot_network(network, _title='Network plot', blocking=True):
 
     plot_layout = nx.spring_layout(graph)  # Calculate layout for nodes
     nx.draw_networkx_edges(graph, plot_layout, alpha=.3)  # Plot edges
-    nx.draw_networkx_nodes(graph, plot_layout, node_color=network.weights, cmap=cm.cool)
+    nx.draw_networkx_nodes(graph, plot_layout, node_size=100, edgecolors='k', node_color=network.weights, cmap=cm.cool)
 
     draw()  # Matplotlib virtual draw
     colorbar(color_vals)
-    # axis('off')  # Disable axis
+    axis('off')  # Disable axis
+
+    if save_plot and index == 2:
+        savefig('../results/optimized_network.png')
     show(block=blocking)  # Open matplotlib window
 
 
@@ -35,7 +48,6 @@ def plot_network(network, _title='Network plot', blocking=True):
 #
 #     plt.title('Network after ' + str(network.steps) + ' steps')  # Add title to figure
 #
-#     # TODO Display colormap legend
 #     nx.draw_networkx_edges(graph, layout, alpha=.3)  # Plot edges
 #     nx.draw_networkx_nodes(graph, layout, node_size=80, node_color=network.weights, cmap=plt.cm.cool)  # Plot nodes
 #

@@ -1,8 +1,7 @@
 from typing import List
-from utilities.plot import plot_network
 from utilities.utilities import balls_per_node, balls_added, generate_plot_network, calculate_exposure
 from model.polya_node import polya_node
-from numpy import mean, zeros
+from numpy import zeros
 from utilities.io import save_network
 from random import random
 
