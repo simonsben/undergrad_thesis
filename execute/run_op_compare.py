@@ -6,8 +6,8 @@ from utilities.plot import plot_exposures
 net = network(100)
 print('Network generated')
 
-num_steps = 1000
-num_trials = 25
+num_steps = 500
+num_trials = 15
 default_set = []
 optimized_set = []
 

@@ -50,10 +50,10 @@ def plot_exposures(default_set, optimized_set):
 
     figure('Exposure')
     for i, exposures in enumerate(default_set):
-        plot(exposures, alpha=.5)
+        plot(exposures, alpha=.3)
 
     for i, exposures in enumerate(optimized_set):
-        plot(exposures, alpha=.5)
+        plot(exposures, alpha=.3)
 
     plot(mean(default_set, axis=0), label='Uniform average')
     plot(mean(optimized_set, axis=0), label='Optimal average')
@@ -61,6 +61,24 @@ def plot_exposures(default_set, optimized_set):
     legend()
     savefig('../results/network_exposure_' + num_steps + '.png')
     show()
+
+
+# Plot network
+def plot_network(network, blocking=True, save_plot=True, _title='Network plot'):
+    figure(_title)
+    title(_title)
+    axis('off')  # Disable axis
+
+    graph = network.network_plot
+    plot_layout = spring_layout(graph)
+
+    draw_networkx_edges(graph, plot_layout, alpha=.3)
+    draw_networkx_nodes(graph, plot_layout, node_size=80, edgecolors='k', node_color='w')
+    draw()
+
+    if save_plot:
+        savefig('../results/network_plot.png')
+    show(block=blocking)  # Open matplotlib window
 
 
 # def run_update(tmp, network, layout):
