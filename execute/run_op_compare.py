@@ -1,6 +1,6 @@
 from model.network import network
 from numpy import copy
-from utilities.plot import plot_exposures
+from utilities.plot import plot_exposures, plot_degree_frequency
 
 
 net = network(100)
@@ -27,4 +27,5 @@ for i in range(num_trials):
     net.clear_network()
 
 
+plot_degree_frequency(net)
 plot_exposures(default_set, optimized_set)

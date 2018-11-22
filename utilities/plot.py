@@ -1,6 +1,8 @@
 from networkx import spring_layout, draw_networkx_nodes, draw_networkx_edges
-from matplotlib.pyplot import figure, draw, axis, show, cm, colorbar, Normalize, subplot, title, savefig, plot, legend
-from numpy import mean
+from matplotlib.pyplot import figure, draw, axis, show, cm, colorbar, Normalize, \
+    subplot, title, savefig, plot, legend, scatter, xlabel, ylabel
+from numpy import mean, array
+from utilities.io import save_frequencies
 
 
 # Plot network
@@ -81,48 +83,26 @@ def plot_network(network, blocking=True, save_plot=True, _title='Network plot'):
     show(block=blocking)  # Open matplotlib window
 
 
-# def run_update(tmp, network, layout):
-#     network.run_step()  # Run one polya step
-#     graph = network.network_plot  # Get pointer to network graph
-#
-#     plt.cla()  # Clear figure
-#
-#     plt.title('Network after ' + str(network.steps) + ' steps')  # Add title to figure
-#
-#     nx.draw_networkx_edges(graph, layout, alpha=.3)  # Plot edges
-#     nx.draw_networkx_nodes(graph, layout, node_size=80, node_color=network.weights, cmap=plt.cm.cool)  # Plot nodes
-#
-#
-# def plot_contagion(network):
-#     plt.figure('Network contagion over time')
-#     plt.plot(network.contagion)
-#     plt.title('Network contagion over ' + str(network.steps) + ' steps')
-#     plt.show()
-#
-#
-# def run_and_plot_exposure(network, num_runs=4):
-#     run_exposures = []
-#     for i in range(num_runs):
-#         tmp_net = deepcopy(network)
-#         tmp_net.run_n_steps(2000)
-#
-#         run_exposures.append(tmp_net.exposure)
-#
-#     average_exp = mean(run_exposures, 0)
-#     plt.figure('Exposure over ' + str(min_steps) + 'steps')
-#
-#     for i in range(num_runs):
-#         plt.plot(run_exposures[i], label='Run ' + str(i))
-#     plt.plot(average_exp, label='Average')
-#     plt.legend(loc='right')
-#     plt.show()
-#
-#
-# def animate_network(network):
-#     figure = plt.figure('Network animation')  # Initialize figure
-#     layout = nx.spring_layout(network.network_plot)  # Generate layout
-#
-#     # Run animation
-#     an = animation.FuncAnimation(figure, run_update, fargs=(network, layout), interval=250, frames=10, repeat=False)
-#
-#     plt.show()  # Show window
+def plot_degree_frequency(network, _title='Node Degree vs Degree Frequency', blocking=False, save=True):
+    frequencies = {}
+    for node in network.nodes:
+        degree = node.degree
+        if degree in frequencies:
+            frequencies[degree] += 1
+        else:
+            frequencies[degree] = 1
+
+    n = network.n
+    t_frequencies = array([(degree, frequencies[degree] / n) for degree in frequencies])
+
+    figure(_title)
+    scatter(t_frequencies[:, 0], t_frequencies[:, 1])
+    title(_title)
+    xlabel('Node Degree')
+    ylabel('Frequency')
+
+    if save:
+        savefig('../results/degree_frequencies.png')
+        save_frequencies(t_frequencies)
+
+    show(block=blocking)
