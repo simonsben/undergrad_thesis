@@ -1,7 +1,7 @@
 from networkx import spring_layout, draw_networkx_nodes, draw_networkx_edges
 from matplotlib.pyplot import figure, draw, axis, show, cm, colorbar, Normalize, \
     subplot, title, savefig, plot, legend, scatter, xlabel, ylabel
-from numpy import mean, array
+from numpy import mean, array, unique, polyfit, poly1d, linspace
 from utilities.io import save_frequencies
 
 
@@ -105,4 +105,22 @@ def plot_degree_frequency(network, _title='Node Degree vs Degree Frequency', blo
         savefig('../results/degree_frequencies.png')
         save_frequencies(t_frequencies)
 
+    show(block=blocking)
+
+
+def plot_w_best_fit(data, _title='Fitted data', filename='', blocking=False, x_label='', y_label=''):
+    figure(_title)
+    x, y = data[:, 0], data[:, 1]
+    plot(x, y, '.k', label='Execution times')
+
+    domain = linspace(min(x), max(x))
+    plot(domain, poly1d(polyfit(x, y, 2))(domain), label='Line of best fit')
+    legend()
+
+    title(_title)
+    xlabel(x_label)
+    ylabel(y_label)
+
+    if filename != '':
+        savefig(filename)
     show(block=blocking)
