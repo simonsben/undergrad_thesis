@@ -1,5 +1,5 @@
 from numpy import full, argmin, argmax, copy
-from simple_model.utils import calculate_exposure, get_node
+from three_node.utils import calculate_exposure, get_node
 import matplotlib.pyplot as plt
 
 

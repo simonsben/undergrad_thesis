@@ -51,6 +51,7 @@ class polya_node:
     def lock_optimization(self):
         self.init_red = self.last_red = self.red
         self.init_black = self.last_black = self.black
+        self.init_total = self.red + self.black
 
     def lock_step(self):
         self.last_red = self.red

@@ -83,6 +83,7 @@ def plot_network(network, blocking=True, save_plot=True, _title='Network plot'):
     show(block=blocking)  # Open matplotlib window
 
 
+# TODO generalize function
 def plot_degree_frequency(network, _title='Node Degree vs Degree Frequency', blocking=False, save=True):
     frequencies = {}
     for node in network.nodes:
@@ -108,7 +109,7 @@ def plot_degree_frequency(network, _title='Node Degree vs Degree Frequency', blo
     show(block=blocking)
 
 
-def plot_w_best_fit(data, _title='Fitted data', filename='', blocking=False, x_label='', y_label=''):
+def plot_w_best_fit(data, _title='Fitted data', filename='', blocking=False, x_label='', y_label='', data_name=''):
     figure(_title)
     x, y = data[:, 0], data[:, 1]
     plot(x, y, '.k', label='Execution times')
@@ -123,4 +124,7 @@ def plot_w_best_fit(data, _title='Fitted data', filename='', blocking=False, x_l
 
     if filename != '':
         savefig(filename)
+    if data_name != '':
+        save_frequencies(data, data_name)
+
     show(block=blocking)
