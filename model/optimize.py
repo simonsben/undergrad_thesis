@@ -1,5 +1,5 @@
-from utilities.utilities import get_node, increment_values
-
+from utilities.utilities import get_node, increment_values, balls_per_node
+from math import ceil
 
 
 def optimize_initial(network):
@@ -28,5 +28,25 @@ def optimize_initial(network):
         network.nodes[max_node].init_total += 1
         current_exposure += exposure_change
 
-# def heuristic_optimize(network):
-#
+
+# total = m(d1 + d2 + ... + dn)
+def heuristic_optimize(network):
+    total = 0
+    num_balls = network.n * balls_per_node
+    for node in network.nodes:
+        total += node.degree if node.degree > 1 else 0
+
+    m = num_balls / total
+    network.nodes = sorted(network.nodes, key=lambda n: n.degree, reverse=True)
+
+    for node in network.nodes:
+        print(node)
+        node_balls = ceil(m * node.degree) if num_balls > 0 else 0
+        num_balls -= node_balls
+        if num_balls < 0:
+            node_balls += num_balls
+            num_balls = 0
+
+        node.red = node_balls
+
+    print(network)

@@ -27,7 +27,7 @@ def merge_dict(dict_a, dict_b):
 
 
 num_trials = 150
-network_size = 35
+network_size = 150
 
 start = time_ns()
 count = {}

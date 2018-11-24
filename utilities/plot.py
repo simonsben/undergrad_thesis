@@ -1,7 +1,7 @@
 from networkx import spring_layout, draw_networkx_nodes, draw_networkx_edges
 from matplotlib.pyplot import figure, draw, axis, show, cm, colorbar, Normalize, \
     subplot, title, savefig, plot, legend, scatter, xlabel, ylabel
-from numpy import mean, array, unique, polyfit, poly1d, linspace
+from numpy import mean, array, polyfit, poly1d, linspace, zeros
 from utilities.io import save_frequencies
 
 
@@ -127,4 +127,24 @@ def plot_w_best_fit(data, _title='Fitted data', filename='', blocking=False, x_l
     if data_name != '':
         save_frequencies(data, data_name)
 
+    show(block=blocking)
+
+
+def plot_weight_delta(network, save=True, blocking=False):
+    _title = 'Node weight differences'
+    differences = zeros(network.n)
+
+    for i, node in enumerate(network.nodes):
+        differences[i] = network.weights[i] - network.init_weights[i]
+
+    figure(_title)
+    scatter(list(range(network.n)), differences, label='Residuals')
+    legend()
+    xlabel('Node')
+    ylabel('Difference of red balls')
+    title(_title)
+
+    if save:
+        filename = '../results/weight_delta_' + str(network.n) + '.png'
+        savefig(filename)
     show(block=blocking)
