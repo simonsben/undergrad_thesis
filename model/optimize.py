@@ -1,6 +1,7 @@
 from utilities.utilities import get_node, increment_values
 
 
+
 def optimize_initial(network):
     current_exposure = network.exposures[len(network.exposures)-1]
 
@@ -26,3 +27,6 @@ def optimize_initial(network):
         network.nodes[max_node].red += 1
         network.nodes[max_node].init_total += 1
         current_exposure += exposure_change
+
+# def heuristic_optimize(network):
+#

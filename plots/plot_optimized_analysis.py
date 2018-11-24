@@ -27,11 +27,12 @@ def merge_dict(dict_a, dict_b):
 
 
 num_trials = 150
+network_size = 35
 
 start = time_ns()
 count = {}
 for i in range(num_trials):
-    net = network(100)
+    net = network(network_size)
     net.optimize_initial()
 
     trial_count = sum_by_degree(net)
@@ -40,8 +41,10 @@ for i in range(num_trials):
     print('Trial', i+1, 'done', (i+1)/num_trials*100, '%  complete')
 
 end = time_ns()
-print('Time to compute = ', (end - start) / 1000000000)
+print('Time to compute = ', (end - start) / 1000000000 / 60)
 
 count_list = array([(degree, count[degree][0] / count[degree][1]) for degree in count])
-plot_w_best_fit(count_list, 'Average number of balls vs degree of node', '../results/balls_vs_degree.png',
-                True, 'Node degree', 'Average number of red balls', data_name='../data/balls_vs_degree.csv')
+
+plot_w_best_fit(count_list, 'Average number of balls vs degree of node', '../results/balls_vs_degree_' +
+                str(network_size) + '.png', False, 'Node degree', 'Average number of red balls',
+                data_name='../data/balls_vs_degree_' + str(network_size) + '.csv')
