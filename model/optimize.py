@@ -37,9 +37,9 @@ def heuristic_optimize(network):
         total += node.degree if node.degree > 1 else 0
 
     m = num_balls / total
-    network.nodes = sorted(network.nodes, key=lambda n: n.degree, reverse=True)
+    node_list = sorted(network.nodes, key=lambda n: n.degree, reverse=True)
 
-    for node in network.nodes:
+    for node in node_list:
         print(node)
         node_balls = ceil(m * node.degree) if num_balls > 0 else 0
         num_balls -= node_balls
