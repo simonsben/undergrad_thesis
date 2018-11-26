@@ -1,6 +1,6 @@
 from model.network import network
 from matplotlib.pylab import scatter, figure, show, savefig
-from time import time_ns
+from time import time_ns, time
 from numpy import array
 from multiprocessing import Pool
 from utilities.io import save_frequencies
@@ -10,7 +10,7 @@ def run_trial(n):
     net = network(n)
 
     start = time_ns()
-    net.optimize_initial(False)
+    net.optimize_initial(False, False)
     end = time_ns()
 
     print('Done', n)
@@ -19,10 +19,10 @@ def run_trial(n):
 
 if __name__ == '__main__':
     num_trials = 10
-    max_n = 1200
+    max_n = 500000
     n = 4
     times = []
-    proc_pool = Pool(2)
+    proc_pool = Pool(1)
     n_vals = []
 
     while n < max_n:
@@ -35,5 +35,5 @@ if __name__ == '__main__':
     figure('Time to run')
     scatter(times[:, 0], times[:,  1])
     savefig('../results/optimization_time.png')
-    save_frequencies(times, filename='../data/execution_times.csv')
+    save_frequencies(times, filename='../data/heuristic_times_' + str(max_n) + '.csv')
     show()

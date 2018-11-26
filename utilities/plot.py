@@ -77,7 +77,7 @@ def plot_infection(default_set, gradient_set, heuristic_set):
     _title = 'Network infection over ' + num_steps + ' steps'
 
     figure('Exposure')
-    trial_opacity = .3
+    trial_opacity = .2
     for exposures in default_set:
         plot(exposures, alpha=trial_opacity)
 
@@ -143,13 +143,13 @@ def plot_degree_frequency(network, _title='Node Degree vs Degree Frequency', blo
     show(block=blocking)
 
 
-def plot_w_best_fit(data, _title='Fitted data', filename='', blocking=False, x_label='', y_label='', data_name=''):
+def plot_w_best_fit(data, _title='Fitted data', filename='', blocking=False, x_label='', y_label='', data_name='', degree=2):
     figure(_title)
     x, y = data[:, 0], data[:, 1]
     plot(x, y, '.k', label='Execution times')
 
     domain = linspace(min(x), max(x))
-    plot(domain, poly1d(polyfit(x, y, 2))(domain), label='Line of best fit')
+    plot(domain, poly1d(polyfit(x, y, degree))(domain), label='Line of best fit')
     legend()
 
     title(_title)
