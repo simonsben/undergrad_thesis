@@ -1,7 +1,7 @@
 from typing import List
 from utilities.utilities import balls_per_node, balls_added, generate_plot_network, calculate_exposure
 from model.polya_node import polya_node
-from numpy import zeros, copy
+from numpy import zeros, copy, mean
 from utilities.io import save_network
 from random import random
 from utilities.plot import plot_optimized_network
@@ -17,6 +17,7 @@ class network:
         self.graph_layout = None
         self.nodes = []
         self.weights = []
+        self.trial_weights = []
         self.init_weights = []
         self.exposures = []
         self.node_exposures = zeros(n)
@@ -56,9 +57,12 @@ class network:
         self.steps += 1
         self.calculate_exposure()
 
-    def run_n_steps(self, n):
+    def run_n_steps(self, n, track_infection=False):
         for i in range(n):
             self.run_step()
+            if track_infection:
+                self.calculate_weights()
+                self.trial_weights.append(mean(self.weights))
 
     def plot_network(self, index, blocking=True):
         if index == 1:
@@ -95,6 +99,7 @@ class network:
             self.nodes[i].clear_node()
         self.steps = 0
         self.exposures = []
+        self.trial_weights = []
         self.calculate_exposure()
 
     def reset_network(self):

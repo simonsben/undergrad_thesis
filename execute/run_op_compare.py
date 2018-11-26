@@ -1,6 +1,6 @@
 from model.network import network
 from numpy import copy
-from utilities.plot import plot_exposures, plot_degree_frequency
+from utilities.plot import plot_infection, plot_degree_frequency
 
 
 net = network(100)
@@ -15,26 +15,26 @@ heuristic_set = []
 net.plot_network(1)
 
 for i in range(num_trials):
-    net.run_n_steps(num_steps)
-    default_set.append(copy(net.exposures))
+    net.run_n_steps(num_steps, True)
+    default_set.append(copy(net.trial_weights))
     net.clear_network()
 print('Default Complete')
 
 net.optimize_initial()
 net.plot_network(2, False)
 for i in range(num_trials):
-    net.run_n_steps(num_steps)
-    gradient_set.append(copy(net.exposures))
+    net.run_n_steps(num_steps, True)
+    gradient_set.append(copy(net.trial_weights))
     net.clear_network()
 print('Gradient complete')
 
 net.reset_network()
 net.optimize_initial(gradient=False)
 for i in range(num_trials):
-    net.run_n_steps(num_steps)
-    heuristic_set.append(copy(net.exposures))
+    net.run_n_steps(num_steps, True)
+    heuristic_set.append(copy(net.trial_weights))
     net.clear_network()
 print('Heuristic complete')
 
 plot_degree_frequency(net)
-plot_exposures(default_set, gradient_set, heuristic_set)
+plot_infection(default_set, gradient_set, heuristic_set)

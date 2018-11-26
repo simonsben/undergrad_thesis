@@ -68,7 +68,34 @@ def plot_exposures(default_set, gradient_set, heuristic_set):
     legend()
     savefig('../results/network_exposure_' + num_steps + '.png')
     xlabel('Time steps')
-    ylabel('Network Infectionc')
+    ylabel('Network Exposure')
+    show()
+
+
+def plot_infection(default_set, gradient_set, heuristic_set):
+    num_steps = str(len(default_set[0]))
+    _title = 'Network infection over ' + num_steps + ' steps'
+
+    figure('Exposure')
+    trial_opacity = .3
+    for exposures in default_set:
+        plot(exposures, alpha=trial_opacity)
+
+    for exposures in gradient_set:
+        plot(exposures, alpha=trial_opacity)
+
+    for exposure in heuristic_set:
+        plot(exposure, alpha=trial_opacity)
+
+    plot(mean(default_set, axis=0), label='Uniform average')
+    plot(mean(gradient_set, axis=0), label='Gradient average')
+    plot(mean(heuristic_set, axis=0), label='Heuristic average')
+
+    legend()
+    xlabel('Time steps')
+    ylabel('Network Infection')
+    savefig('../results/network_infection_' + num_steps + '.png')
+    title(_title)
     show()
 
 
