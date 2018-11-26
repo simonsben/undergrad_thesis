@@ -97,6 +97,12 @@ class network:
         self.exposures = []
         self.calculate_exposure()
 
+    def reset_network(self):
+        total_value = 2 * balls_per_node
+        for i, _ in enumerate(self.nodes):
+            self.nodes[i].red = self.nodes[i].black = balls_per_node
+            self.nodes[i].init_total = total_value
+
     def lock_optimization(self):
         for i, _ in enumerate(self.nodes):
             self.nodes[i].lock_optimization()

@@ -46,22 +46,29 @@ def plot_optimized_network(network, blocking=True, save_plot=True):
     show(block=blocking)  # Open matplotlib window
 
 
-def plot_exposures(default_set, optimized_set):
+def plot_exposures(default_set, gradient_set, heuristic_set):
     num_steps = str(len(default_set[0]))
     _title = 'Network exposure over ' + num_steps + ' steps'
 
     figure('Exposure')
-    for i, exposures in enumerate(default_set):
-        plot(exposures, alpha=.3)
+    trial_opacity = .3
+    for exposures in default_set:
+        plot(exposures, alpha=trial_opacity)
 
-    for i, exposures in enumerate(optimized_set):
-        plot(exposures, alpha=.3)
+    for exposures in gradient_set:
+        plot(exposures, alpha=trial_opacity)
+
+    for exposure in heuristic_set:
+        plot(exposure, alpha=trial_opacity)
 
     plot(mean(default_set, axis=0), label='Uniform average')
-    plot(mean(optimized_set, axis=0), label='Optimal average')
+    plot(mean(gradient_set, axis=0), label='Gradient average')
+    plot(mean(heuristic_set, axis=0), label='Heuristic average')
 
     legend()
     savefig('../results/network_exposure_' + num_steps + '.png')
+    xlabel('Time steps')
+    ylabel('Network Infectionc')
     show()
 
 
