@@ -6,7 +6,7 @@ from utilities.io import save_network
 from random import random
 from utilities.plot import plot_optimized_network
 from networkx import spring_layout
-from model.optimize import optimize_initial,  heuristic_optimize
+from model.optimize import get_optimization_method
 
 
 class network:
@@ -76,13 +76,11 @@ class network:
     def export_network(self):
         save_network(self.network_plot)
 
-    def optimize_initial(self, lock=True, gradient=True):
+    def optimize_initial(self, lock=True, method=0):
         if self.steps > 0:
             raise ValueError('Cannot optimize initial after steps were run')
-        if gradient:
-            optimize_initial(self)
-        else:
-            heuristic_optimize(self)
+        optimizer = get_optimization_method(method)
+        optimizer(self)
 
         if lock:
             self.lock_optimization()

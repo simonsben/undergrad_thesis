@@ -1,15 +1,25 @@
 from utilities.utilities import get_node, increment_values, balls_per_node
 from math import ceil
+from random import randint
 
 
-def optimize_initial(network):
+def get_optimization_method(method):
+
+    if method in methods:
+        print('Running', method_names.get(method))
+        return methods.get(method)
+
+    print('Not found, running', method_names.get(0))
+    return gradient_optimize
+
+
+def gradient_optimize(network):
     current_exposure = network.exposures[len(network.exposures)-1]
 
     while True:
         min_node, _, urn_counts = get_node(network, False)
 
         if network.nodes[min_node].red - 1 < 0:
-            # print('Negative value,  breaking.')
             break
         network.nodes[min_node].red -= 1
         network.nodes[min_node].init_total -= 1
@@ -18,7 +28,6 @@ def optimize_initial(network):
         max_node, exposure_change, _ = get_node(network, True)
 
         if exposure_change <= 0 or min_node == max_node:
-            # print('Worsened exposure, breaking.')
             network.nodes[min_node].red += 1
             network.nodes[min_node].init_total += 1
             break
@@ -47,3 +56,31 @@ def heuristic_optimize(network):
             num_balls = 0
 
         node.red = node_balls
+
+
+def random_optimize(network):
+    budget = network.n * balls_per_node
+    for i, _ in enumerate(network.nodes):
+        node_balls = randint(0, 20) if budget > 0 else 0
+        budget -= node_balls
+        if budget < 0:
+            budget = 0
+            node_balls += budget
+
+        network.nodes[i].red = node_balls
+
+    if budget > 0:
+        network.nodes[len(network.nodes)-1].red = budget
+
+
+method_names = {
+    0: 'Gradient Descent',
+    1: 'Heuristic',
+    2: 'Random'
+}
+
+methods = {
+    0: gradient_optimize,
+    1: heuristic_optimize,
+    2: random_optimize
+}

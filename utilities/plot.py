@@ -1,7 +1,7 @@
 from networkx import spring_layout, draw_networkx_nodes, draw_networkx_edges
 from matplotlib.pyplot import figure, draw, axis, show, cm, colorbar, Normalize, \
     subplot, title, savefig, plot, legend, scatter, xlabel, ylabel
-from numpy import mean, array, polyfit, poly1d, linspace, zeros
+from numpy import mean, array, polyfit, poly1d, linspace, zeros, subtract
 from utilities.io import save_frequencies
 
 
@@ -46,24 +46,29 @@ def plot_optimized_network(network, blocking=True, save_plot=True):
     show(block=blocking)  # Open matplotlib window
 
 
-def plot_exposures(default_set, gradient_set, heuristic_set):
+def plot_exposures(default_set, gradient_set, heuristic_set, random_set):
     num_steps = str(len(default_set[0]))
     _title = 'Network exposure over ' + num_steps + ' steps'
 
+    subtract(1, default_set)
+    subtract(1, gradient_set)
+    subtract(1, heuristic_set)
+
     figure('Exposure')
-    trial_opacity = .3
-    for exposures in default_set:
-        plot(exposures, alpha=trial_opacity)
+    # trial_opacity = .3
+    # for exposures in default_set:
+    #     plot(exposures, alpha=trial_opacity)
+    #
+    # for exposures in gradient_set:
+    #     plot(exposures, alpha=trial_opacity)
+    #
+    # for exposure in heuristic_set:
+    #     plot(exposure, alpha=trial_opacity)
 
-    for exposures in gradient_set:
-        plot(exposures, alpha=trial_opacity)
-
-    for exposure in heuristic_set:
-        plot(exposure, alpha=trial_opacity)
-
-    plot(mean(default_set, axis=0), label='Uniform average')
-    plot(mean(gradient_set, axis=0), label='Gradient average')
-    plot(mean(heuristic_set, axis=0), label='Heuristic average')
+    plot(mean(subtract(1, default_set), axis=0), label='Uniform average')
+    plot(mean(subtract(1, gradient_set), axis=0), label='Gradient average')
+    plot(mean(subtract(1, heuristic_set), axis=0), label='Heuristic average')
+    plot(mean(subtract(1, random_set), axis=0), label='Random average')
 
     legend()
     savefig('../results/network_exposure_' + num_steps + '.png')
@@ -72,24 +77,25 @@ def plot_exposures(default_set, gradient_set, heuristic_set):
     show()
 
 
-def plot_infection(default_set, gradient_set, heuristic_set):
+def plot_infection(default_set, gradient_set, heuristic_set, random_set):
     num_steps = str(len(default_set[0]))
     _title = 'Network infection over ' + num_steps + ' steps'
 
     figure('Exposure')
     trial_opacity = .2
-    for exposures in default_set:
-        plot(exposures, alpha=trial_opacity)
+    # for exposures in default_set:
+    #     plot(subtract(1, default_set), alpha=trial_opacity)
+    #
+    # for exposures in gradient_set:
+    #     plot(subtract(1, gradient_set), alpha=trial_opacity)
+    #
+    # for exposure in heuristic_set:
+    #     plot(subtract(1, heuristic_set), alpha=trial_opacity)
 
-    for exposures in gradient_set:
-        plot(exposures, alpha=trial_opacity)
-
-    for exposure in heuristic_set:
-        plot(exposure, alpha=trial_opacity)
-
-    plot(mean(default_set, axis=0), label='Uniform average')
-    plot(mean(gradient_set, axis=0), label='Gradient average')
-    plot(mean(heuristic_set, axis=0), label='Heuristic average')
+    plot(mean(subtract(1, default_set), axis=0), label='Uniform average')
+    plot(mean(subtract(1, gradient_set), axis=0), label='Gradient average')
+    plot(mean(subtract(1, heuristic_set), axis=0), label='Heuristic average')
+    plot(mean(subtract(1, random_set), axis=0), label='Random average')
 
     legend()
     xlabel('Time steps')
