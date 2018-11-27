@@ -124,7 +124,7 @@ def plot_network(network, blocking=True, save_plot=True, _title='Network plot'):
 
 
 # TODO generalize function
-def plot_degree_frequency(network, _title='Node Degree vs Degree Frequency', blocking=False, save=True):
+def plot_degree_frequency(network, _title='Fraction of Nodes with Difference Degree', blocking=False, save=True):
     frequencies = {}
     for node in network.nodes:
         degree = node.degree
@@ -140,7 +140,7 @@ def plot_degree_frequency(network, _title='Node Degree vs Degree Frequency', blo
     scatter(t_frequencies[:, 0], t_frequencies[:, 1])
     title(_title)
     xlabel('Node Degree')
-    ylabel('Frequency')
+    ylabel('Fraction of Nodes')
 
     if save:
         savefig('../results/degree_frequencies.png')
