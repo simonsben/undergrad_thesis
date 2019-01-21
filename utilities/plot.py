@@ -11,8 +11,8 @@ def plot_optimized_network(network, blocking=True, save_plot=True):
     figure(_title)
 
     graph = network.network_plot
-    init_weights = network.init_weights
-    weights = network.weights
+    init_weights = subtract(1, network.init_weights)
+    weights = subtract(1, network.weights)
     plot_layout = spring_layout(graph)
 
     min_val = 0
@@ -22,16 +22,16 @@ def plot_optimized_network(network, blocking=True, save_plot=True):
     color_vals = cm.ScalarMappable(cmap=cmap, norm=Normalize(vmin=min_val, vmax=max_val))
     color_vals._A = []
 
-    subplot(2, 1, 1)
-    title('Initial network')
-    colorbar(color_vals)
+    # subplot(2, 1, 1)
+    # title('Initial network')
+    # colorbar(color_vals)
+    #
+    # draw_networkx_edges(graph, plot_layout, alpha=.3)
+    # draw_networkx_nodes(graph, plot_layout, node_size=100, edgecolors='k', node_color=init_weights, cmap=cmap,
+    #                     vmin=min_val, vmax=max_val)
+    # axis('off')  # Disable axis
 
-    draw_networkx_edges(graph, plot_layout, alpha=.3)
-    draw_networkx_nodes(graph, plot_layout, node_size=100, edgecolors='k', node_color=init_weights, cmap=cmap,
-                        vmin=min_val, vmax=max_val)
-    axis('off')  # Disable axis
-
-    subplot(2, 1, 2)
+    # subplot(2, 1, 2)
     title('Optimized network')
     colorbar(color_vals)
 
