@@ -8,6 +8,7 @@ R = [0, 15, 0]
 balls_per = num_balls / len(R)
 
 
+# Define exposure function
 def exposure(x):
     B = x[0:3]
 
@@ -18,17 +19,24 @@ def exposure(x):
     return expsr
 
 
+# Define constraint function
 def cons_func(x):
     return x[0] + x[1] + x[2] - num_balls
 
 
+# Bounds on nodes
 b = (0, num_balls)
 bounds = (b, b, b)
 
+# Define constraints and options
 cons = {'type': 'eq', 'fun': cons_func}
 ops = {'disp': True}
 
+# Define initial conditions
 init = array([balls_per] * 3)
+
+# Run optimization
 optimal = minimize(exposure, init, constraints=cons, method='SLSQP', options=ops, bounds=bounds)
+
 
 print('optimal: ', optimal)
