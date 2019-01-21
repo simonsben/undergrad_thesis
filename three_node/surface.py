@@ -24,7 +24,7 @@ def generate_fig(R, num):
     x, y, z, c = [], [], [], []
 
     for i in range(num_balls):
-        for j in range(num_balls-i, num_balls):
+        for j in range(0, num_balls-i):
             k = num_balls - i - j
             exp = exposure((i, j, k), R)
             x.append(i)
@@ -32,11 +32,12 @@ def generate_fig(R, num):
             z.append(k)
             c.append(exp)
 
-    ax.scatter(x, y, z, c=c, s=50, edgecolor='black', cmap='bwr')
+    p = ax.scatter(x, y, z, c=c, s=50, edgecolor='black', cmap='bwr')
     ax.set_xlabel('Node 1')
     ax.set_ylabel('Node 2')
-    ax.set_ylabel('Node 3')
+    ax.set_zlabel('Node 3')
     ax.set_title(str(R))
+    fig.colorbar(p)
 
 
 # Possible red distributions
