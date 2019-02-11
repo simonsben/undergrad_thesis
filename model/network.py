@@ -85,6 +85,15 @@ class network:
         if lock:
             self.lock_optimization()
 
+    def set_initial_distribution(self, red=None, black=None):
+        if red is None and black is None: return
+
+        for i, node in enumerate(self.nodes):
+            _red = None if red is None else red[i]
+            _black = None if red is None else black[i]
+
+            node.set_initial(_red, _black)
+
     def calculate_weights(self):
         self.weights = zeros(self.n)
         delta_balls = balls_added * self.steps

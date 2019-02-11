@@ -62,6 +62,11 @@ class polya_node:
         self.last_black = self.black = self.init_black
         self.drawn_balls = []
 
+    def set_initial(self, red=None, black=None):
+        if red is not None: self.init_red = red
+        if black is not None: self.init_black = black
+        self.init_total = self.init_red + self.init_black
+
     # Base method to allow iteration on object
     def __iter__(self):
         self.current_n = -1

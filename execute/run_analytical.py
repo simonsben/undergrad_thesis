@@ -4,13 +4,13 @@ from numpy import array, round
 from math import floor
 
 
-N = 7
+N = 4
 balls_per = 5
 num_balls = N * balls_per
 # R = [1] * N
 # R[0] = num_balls - (N-1)
-R = [0] * N
-R[0] = num_balls
+R = [balls_per] * N
+# R[0] = num_balls
 
 B = [balls_per] * N
 rounds = 5

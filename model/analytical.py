@@ -1,10 +1,10 @@
 from scipy.optimize import minimize
-from numpy import array, sum, round
+from numpy import array, sum
 
 
 def optimize_distribution(network, num_balls, N, R=None, init=None):
     if R is None:
-        R = [num_balls] * N
+        R = [num_balls / N] * N
 
     def exposure(B):
         expsr = 0
@@ -34,7 +34,7 @@ def optimize_distribution(network, num_balls, N, R=None, init=None):
 
     # Assume uniform if no distribution given
     if init is None:
-        init = array([num_balls] * N)
+        init = array([num_balls / N] * N)
 
     # Run optimization
     optimal = minimize(exposure, init, constraints=cons, method='SLSQP', options=ops, bounds=bounds)
