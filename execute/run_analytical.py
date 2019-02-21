@@ -1,19 +1,20 @@
 from model.analytical import optimize_distribution
 from model.generator import circular_graph, line_graph, wheel_graph
-from numpy import array, round
-from math import floor
+from numpy import array, round, copy
+from utilities.utilities import balls_per_node
 
-
-N = 4
-balls_per = 5
+N = 15                          # Num nodes
+balls_per = balls_per_node
 num_balls = N * balls_per
 # R = [1] * N
 # R[0] = num_balls - (N-1)
 R = [balls_per] * N
+# R = [0] * N
 # R[0] = num_balls
 
-B = [balls_per] * N
-rounds = 5
+B = copy(R)
+# B = [balls_per] * N
+rounds = 2
 
 network = line_graph(N)
 print(array(network))

@@ -1,8 +1,8 @@
-from model.generator import star_graph
+from model.generator import star_graph, line_graph
 from model.network import network
 from networkx import from_numpy_array
 from model.analytical import optimize_distribution
-from numpy import array, round, mean
+from numpy import array, round, mean, subtract
 from utilities.utilities import balls_per_node
 from matplotlib.pyplot import figure, plot, xlabel, ylabel, title, show, legend, xlim, ylim
 
@@ -13,7 +13,10 @@ num_steps = 300
 
 # Generate graph
 raw_graph = array(star_graph(N))
+# raw_graph = array(line_graph(N))
 graph = from_numpy_array(raw_graph)
+
+print('Graph', raw_graph)
 
 # Generate network
 net = network(N, graph=graph)
@@ -21,6 +24,9 @@ net = network(N, graph=graph)
 # Optimize initial distribution
 optimal = round(optimize_distribution(raw_graph, balls_per_node * N, N).x)
 uniform = [balls_per_node] * N
+
+print('Optimal', optimal)
+print('Uniform', uniform)
 
 distributions = [
     [uniform, uniform],
@@ -48,6 +54,7 @@ for distribution in distributions:
 
     exposures.append(mean(dist_exposures, axis=0))
 
+exposures[2] = subtract(1, exposures[2])
 
 figure('Nash equilibrium')
 for i, exposure in enumerate(exposures):
