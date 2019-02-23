@@ -1,4 +1,4 @@
-from networkx import Graph, degree, number_of_nodes
+from networkx import Graph, degree, number_of_nodes, barabasi_albert_graph, adjacency_matrix, to_numpy_matrix
 from model.generator import sym_k_normal
 from utilities.utilities import extension_nodes
 
@@ -10,7 +10,7 @@ def gen_reg(peak=0, root_node=0, N=extension_nodes, reg_num=3):
     net = Graph()   # Initialize new graph
 
     # Add nodes to graph
-    net.add_nodes_from([i for i in range(peak+1, peak+N)])
+    net.add_nodes_from([i for i in range(peak, peak+N)])
     net.add_node(root_node)
 
     # Add edges to graph
@@ -32,10 +32,19 @@ def merge_graphs(base, ext):
 
 # Generate extension and merge in for leaf nodes
 def extend_network(base):
-    peak = N = number_of_nodes(base)
+    N = number_of_nodes(base)
+    peak = N - 1
 
     for node in range(N):
         if degree(base, node) == 1:
             extension = gen_reg(peak, node)
             merge_graphs(base, extension)
             peak += extension_nodes - 1
+
+
+# Generate extended network
+def ext_sym_k_normal(base_N):
+    net = barabasi_albert_graph(base_N, 1)
+    extend_network(net)
+
+    return net

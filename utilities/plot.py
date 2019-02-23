@@ -106,8 +106,8 @@ def plot_infection(default_set, gradient_set, heuristic_set, random_set):
 
 
 # Plot network
-def plot_network(network, blocking=True, save_plot=True, _title='Network plot', netx_plot=False):
-    figure(_title)
+def plot_network(network, blocking=True, save_plot=True, _title='Network plot', netx_plot=False, size=(8, 5)):
+    figure(_title, figsize=size)
     title(_title)
     axis('off')  # Disable axis
 

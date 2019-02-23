@@ -1,5 +1,5 @@
 from scipy.optimize import minimize
-from numpy import array, sum
+from numpy import array, sum, copy
 
 
 def optimize_distribution(network, num_balls, N, R=None, init=None):
@@ -17,8 +17,8 @@ def optimize_distribution(network, num_balls, N, R=None, init=None):
 
             if (r_sum + b_sum) != 0:  # Only add to sum if non-zero denominator.
                 expsr += r_sum / (r_sum + b_sum)
-
-        # print(B, expsr)
+            else:
+                expsr += .5
 
         return expsr
 
@@ -30,7 +30,7 @@ def optimize_distribution(network, num_balls, N, R=None, init=None):
 
     # Define constraints and options
     cons = {'type': 'eq', 'fun': cons_func}
-    ops = {'disp': False}
+    ops = {'disp': False, 'ftol': 1e-10}
 
     # Assume uniform if no distribution given
     if init is None:
@@ -39,3 +39,13 @@ def optimize_distribution(network, num_balls, N, R=None, init=None):
     # Run optimization
     optimal = minimize(exposure, init, constraints=cons, method='SLSQP', options=ops, bounds=bounds)
     return optimal
+
+
+def nash_optimize(network, num_balls, N, _R, _B):
+    R = copy(_R)
+    B = copy(_B)
+
+
+
+
+
