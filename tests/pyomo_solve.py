@@ -56,7 +56,7 @@ def optimize_dist(R, B):
     model.exposure = pyomo.Objective(rule=exposure, sense=pyomo.minimize)
     model.ball_cons = pyomo.Constraint(rule=ball_counstraint)
 
-    solver = pyomo.SolverFactory('glpk', executable='C:\\Users\\simon\\GPLK\\glpsol.exe')
+    solver = pyomo.SolverFactory('ipopt', executable='~/.ipopt/Ipopt-3.12.12/build/bin/ipopt')
     solver.solve(model)
 
     print(model)
