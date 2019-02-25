@@ -20,7 +20,7 @@ def exposure(model):
         r_sum, b_sum = 0, 0
         for i, rel in enumerate(node):  # Sum all neighbours
             if rel != 0:  # Only sum if there is a
-                r_sum += R[i]
+                r_sum += model.Red[i]
                 b_sum += model.Black[i]
 
         if (r_sum + b_sum) != 0:  # Only add to sum if non-zero denominator.
@@ -31,8 +31,12 @@ def exposure(model):
     return expsr
 
 
-def ball_counstraint(model):
+def ball_constraint(model):
     return pyomo.summation(model.Black) == num_balls
+
+
+def ball_init(_, i):
+    return R[i]
 
 
 uniform = array([num_balls / N] * N)
@@ -41,25 +45,28 @@ uniform = array([num_balls / N] * N)
 def optimize_dist(R, B):
     model = pyomo.ConcreteModel()
 
-    model.B = pyomo.RangeSet(0, N)
-    model.R = pyomo.RangeSet(0, N)
+    model.B = pyomo.RangeSet(0, N-1)
+    model.R = pyomo.RangeSet(0, N-1)
 
     # TODO write validation function(s)
     model.Red = pyomo.Param(model.R,
-                            within=pyomo.NonNegativeIntegers)
+                            within=pyomo.NonNegativeIntegers,
+                            default=ball_init)
 
     model.Black = pyomo.Var(model.B,
                             domain=pyomo.NonNegativeIntegers,
                             bounds=(0, num_balls),
-                            initialize=lambda x: balls_per_node)
+                            initialize=ball_init)
 
     model.exposure = pyomo.Objective(rule=exposure, sense=pyomo.minimize)
-    model.ball_cons = pyomo.Constraint(rule=ball_counstraint)
+    model.ball_cons = pyomo.Constraint(rule=ball_constraint)
 
     solver = pyomo.SolverFactory('ipopt', executable='~/.ipopt/Ipopt-3.12.12/build/bin/ipopt')
     solver.solve(model)
 
-    print(model)
+    print('Black_Red')
+    for i in range(N):
+        print(str(i) + ': ' + str(round(model.Black[i]())) + '_' + str(round(model.Red[i])))
 
 
 optimize_dist(B, R)
