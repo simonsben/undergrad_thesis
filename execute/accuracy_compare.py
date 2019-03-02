@@ -1,7 +1,5 @@
 from model.network import network
 from numpy import copy
-from utilities.plot import plot_infection, plot_degree_frequency
-
 
 net = network(100)
 print('Network generated')

@@ -1,6 +1,6 @@
 from model.network import network
-# from plot import animate_network
-from utilities.plot import plot_contagion
+# from plotting import animate_network
+from utilities import plot_contagion
 
 if __name__ == '__main__':
     # running_avg = 0

@@ -1,4 +1,4 @@
-from utilities.optimization import calculate_coefficients
+from utilities import calculate_coefficients
 from matplotlib.pylab import figure, plot, show, title, legend, gca, savefig, xlabel, ylabel, scatter
 from matplotlib.ticker import FormatStrFormatter
 

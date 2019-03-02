@@ -1,5 +1,5 @@
-from utilities.io import load_frequencies
-from utilities.plot import plot_w_best_fit
+from utilities import load_frequencies
+from utilities import plot_w_best_fit
 
 # times = load_frequencies('../data/execution_times.csv')
 #

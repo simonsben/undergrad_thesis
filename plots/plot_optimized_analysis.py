@@ -1,6 +1,6 @@
 from model.network import network
 from numpy import array
-from utilities.plot import plot_w_best_fit
+from utilities import plot_w_best_fit
 from time import time_ns
 
 

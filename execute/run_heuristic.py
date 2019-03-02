@@ -1,5 +1,5 @@
 from model.network import network
-from utilities.plot import plot_weight_delta
+from utilities import plot_weight_delta
 from matplotlib.pylab import show
 
 

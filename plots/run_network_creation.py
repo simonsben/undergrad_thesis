@@ -1,5 +1,5 @@
 from model.network import network
-from utilities.animate import animate_creation
+from utilities import animate_creation
 
 net = network(100)
 

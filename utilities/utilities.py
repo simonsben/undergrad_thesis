@@ -5,7 +5,7 @@ from sys import maxsize
 # Define constants
 network_memory = 10000
 balls_added = 1
-balls_per_node = 50
+balls_per_node = 5
 min_steps = 8000
 min_trials = 30
 extension_nodes = 8
@@ -34,7 +34,7 @@ def calculate_budget(n):
     return int(balls_per_node / 2) * n - n
 
 
-def calculate_exposure(network, add_exposure=True, ret_counts=False):
+def calculate_exposure(network, add_exposure=True):
     delta_balls = network.steps * balls_added
     ball_counts = zeros((network.n, 2))
     urn_counts = zeros((network.n, 2))
@@ -52,11 +52,14 @@ def calculate_exposure(network, add_exposure=True, ret_counts=False):
             network.node_exposures[i] = urn_counts[i, 0] / urn_counts[i, 1] if urn_counts[i, 1] != 0 else .5
 
     exposure = mean(network.node_exposures)
-    if add_exposure:
-        network.exposures.append(exposure)
 
-    if ret_counts:
-        return urn_counts, ball_counts
+    if add_exposure:
+        if type(network.trial_exposure) == list:
+            network.trial_exposure.append(exposure)
+        else:
+            network.trial_exposure[network.steps] = exposure
+
+    return urn_counts, ball_counts
 
 
 # Function to get the extreme index from a set (either min or max)
@@ -69,25 +72,22 @@ def pull_extreme(exposures, urn_counts, check_max):
 
     for i, num in enumerate(exposures):                                 # For each node
         if check_max and num > value or not check_max and num < value:  # If node exposure mode extreme
-            if check_max or not check_max and urn_counts[i][0] > 0:          # And non-negative (for min case)
+            if check_max or not check_max and urn_counts[i][0] > 0:     # And non-negative (for min case)
                 value = num                                             # Set new extreme value
                 indexes = [i]                                           # Re-set index list
         elif num == value:                                              # If index is same as extreme, add to list
             indexes.append(i)
 
-    if len(indexes) > 1:                                # If more then one element in extreme list
-        options = [urn_counts[ind][0] for ind in indexes]    # Calculate red ball counts
+    if len(indexes) > 1:                                    # If more then one element in extreme list
+        options = [urn_counts[ind][0] for ind in indexes]   # Calculate red ball counts
         func = argmin if check_max else argmax
-        return indexes[func(options)]                   # Take either the min or max (based on min or max func)
+        return indexes[func(options)]                       # Take either the min or max (based on min or max func)
     return indexes[0]
 
 
 # Function to get the node with min/max gradient
 def get_node(network, check_max):
-    # if len(urn_counts) == 0:
-    urn_counts, ball_counts = calculate_exposure(network, False, True)
-    # else:
-    #     print('no')
+    urn_counts, ball_counts = calculate_exposure(network, False)
     possible_exposures = zeros(len(network))
 
     for i, node in enumerate(network.nodes):

@@ -1,10 +1,9 @@
-from utilities.utilities import get_node, increment_values, balls_per_node
+from utilities import get_node, increment_values, balls_per_node
 from math import ceil
 from random import randint
 
 
 def get_optimization_method(method):
-
     if method in methods:
         print('Running', method_names.get(method))
         return methods.get(method)
@@ -14,7 +13,7 @@ def get_optimization_method(method):
 
 
 def gradient_optimize(network):
-    current_exposure = network.exposures[len(network.exposures)-1]
+    current_exposure = network.trial_exposure[network.steps]
 
     while True:
         min_node, _, urn_counts = get_node(network, False)
@@ -36,6 +35,10 @@ def gradient_optimize(network):
         network.nodes[max_node].red += 1
         network.nodes[max_node].init_total += 1
         current_exposure += exposure_change
+
+
+        print(current_exposure)
+    print(urn_counts)
 
 
 # total = m(d1 + d2 + ... + dn)

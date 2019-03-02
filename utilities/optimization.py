@@ -1,6 +1,6 @@
 from re import compile
 from glob import glob
-from utilities.io import load_frequencies, save_frequencies
+from utilities import load_frequencies, save_frequencies
 from numpy import polyfit, array
 
 

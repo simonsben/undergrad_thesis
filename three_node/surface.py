@@ -49,7 +49,7 @@ R_versions = (
     (2, 11, 2)
 )
 
-# For each version make plot
+# For each version make plotting
 for num, opt in enumerate(R_versions):
     generate_fig(opt, num+1)
 

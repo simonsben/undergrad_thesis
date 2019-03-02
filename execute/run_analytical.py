@@ -1,7 +1,7 @@
 from model.analytical import optimize_distribution
 from model.generator import circular_graph, line_graph, wheel_graph
 from numpy import array, round, copy
-from utilities.utilities import balls_per_node
+from utilities import balls_per_node
 
 N = 21                          # Num nodes
 balls_per = balls_per_node
