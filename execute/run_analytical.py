@@ -3,7 +3,7 @@ from model.generator import circular_graph, line_graph, wheel_graph
 from numpy import array, round, copy
 from utilities import balls_per_node
 
-N = 21                          # Num nodes
+N = 4                          # Num nodes
 balls_per = balls_per_node
 num_balls = N * balls_per
 # R = [1] * N
@@ -12,7 +12,7 @@ R = [balls_per] * N
 # R = [0] * N
 # R[0] = num_balls
 
-B = copy(R)
+B = [balls_per*2,  0, 0, balls_per*2]
 # B = [0, 150, 0, 0, 150, 0, 0, 150, 0]
 # B = [balls_per] * N
 rounds = 2
@@ -24,11 +24,9 @@ print(R, B)
 
 for i in range(rounds):
     print('Round', i+1)
-    optimal = optimize_distribution(network, num_balls, N, R, B)
-    B = round(optimal.x)
-    print('Black move:', 'R', R, 'B', B, optimal.fun / N)
+    B, exp = optimize_distribution(network, R, B, num_balls)
+    print('Black move:', 'R', R, 'B', B, exp)
 
     # TODO double check that optimization is flipped
-    optimal = optimize_distribution(network, num_balls, N, B, R)
-    R = round(optimal.x)
-    print('Red move:', 'R', R, 'B', B, optimal.fun / N)
+    R, exp = optimize_distribution(network, B, R, num_balls, goal='min')
+    print('Red move:', 'R', R, 'B', B, exp)

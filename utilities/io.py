@@ -1,5 +1,5 @@
 from csv import writer, reader
-from networkx import to_numpy_array, from_numpy_array
+from networkx import to_numpy_array, from_numpy_array, from_edgelist
 from numpy import array
 
 network_path = '../data/network.csv'
@@ -16,7 +16,7 @@ def save_network(network, network_file=network_path):
             wtr.writerow(row)
 
 
-def load_network(network_file=network_path):
+def load_network(network_file=network_path, edgelist=False):
     with open(network_file, 'r') as fl:
         rd = reader(fl)
         data = []
@@ -24,6 +24,8 @@ def load_network(network_file=network_path):
         for row in rd:
             data.append(row)
 
+    if edgelist:
+        return from_edgelist(data)
     return from_numpy_array(array(data))
 
 

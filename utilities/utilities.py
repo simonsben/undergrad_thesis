@@ -9,6 +9,7 @@ balls_per_node = 5
 min_steps = 8000
 min_trials = 30
 extension_nodes = 8
+ipopt_path = '~/.ipopt/Ipopt-3.12.12/build/bin/ipopt'
 ball_colour = {
     0: 'red',
     1: 'black'
