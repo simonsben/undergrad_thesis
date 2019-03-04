@@ -18,7 +18,9 @@ def beer_blend(vol, abv, data):
     model.vol = pyomo.Constraint(expr=vol == sum(model.x[c] for c in C))
     model.abv = pyomo.Constraint(expr=0 == sum(model.x[c] * (data[c]['abv'] - abv) for c in C))
 
-    solver = pyomo.SolverFactory('glpk', executable='C:\\Users\simon\GPLK\glpsol.exe')
+    # solver = pyomo.SolverFactory('glpk', executable='C:\\Users\simon\GPLK\glpsol.exe')
+    solver = pyomo.SolverFactory('ipopt', executable='~/.ipopt/Ipopt-3.12.12/build/bin/ipopt')
+    # solver = pyomo.SolverFactory('glpk')
     solver.solve(model)
 
     print('Optimal Blend')
