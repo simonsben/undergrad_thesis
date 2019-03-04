@@ -1,4 +1,4 @@
-from utilities.plot import plot_network
+# from utilities.plotting import plot_network
 from networkx import read_weighted_edgelist
 from utilities.statistics import degree_distribution
 from numpy import mean, median, min, max, std, var, array

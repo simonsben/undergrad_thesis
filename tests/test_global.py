@@ -3,8 +3,6 @@ from networkx import from_edgelist
 from utilities.statistics import degree_distribution
 from matplotlib.pyplot import figure, show
 
-bad_count = 0
-
 with open('../data/routes.dat') as fl:
     fl_reader = reader(fl)
     data = []
@@ -16,20 +14,12 @@ with open('../data/routes.dat') as fl:
 
             data.append((source, dest))
         except ValueError:
-            bad_count += 1
-            # print('Bad parse', line)
+            continue
 
-        # if i > 15:
-        #     break
-
-# dat = array(data)
 print('Data pulled')
 
 net = from_edgelist(data)
 print('Network generated')
-
-# plot_network(net, netx_plot=True)
-# print('Network plotted')
 
 dist = degree_distribution(net)
 

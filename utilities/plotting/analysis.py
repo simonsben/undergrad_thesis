@@ -23,7 +23,7 @@ def plot_degree_frequency(network, _title='Fraction of Nodes with Difference Deg
     ylabel('Fraction of Nodes')
 
     if save:
-        savefig('../results/degree_frequencies.png')
+        savefig('../../results/degree_frequencies.png')
         save_frequencies(t_frequencies)
 
     show(block=blocking)
