@@ -1,5 +1,5 @@
 from networkx import closeness_centrality, degree
-from numpy import zeros, min, max
+from numpy import zeros, histogram
 
 
 def degree_distribution(network):
@@ -10,6 +10,11 @@ def degree_distribution(network):
         node_degree[i] = node[1]
 
     return node_degree
+
+
+def degree_frequency(source, net_source=False):
+    node_degree = source if not net_source else degree_distribution(source)
+    return histogram(node_degree)
 
 
 def centrality_distribution(network):
