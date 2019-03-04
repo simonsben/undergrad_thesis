@@ -3,7 +3,7 @@ from model.generator import circular_graph, line_graph, wheel_graph
 from numpy import array, round, copy
 from utilities.utilities import balls_per_node
 
-N = 21                          # Num nodes
+N = 4                          # Num nodes
 balls_per = balls_per_node
 num_balls = N * balls_per
 # R = [1] * N
@@ -12,7 +12,7 @@ R = [balls_per] * N
 # R = [0] * N
 # R[0] = num_balls
 
-B = copy(R)
+B = [balls_per*2,  0, 0, balls_per*2]
 # B = [0, 150, 0, 0, 150, 0, 0, 150, 0]
 # B = [balls_per] * N
 rounds = 2
