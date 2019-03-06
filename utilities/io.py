@@ -47,3 +47,23 @@ def load_frequencies(filename=frequency_path, cast=True):
             data.append(tmp_row)
 
     return array(data)
+
+
+# Function to import specific columns of csv file
+def load_csv_col(file, cols=None, np_arr=True):
+    data = []
+    with open(file, encoding='utf8') as fl:
+        fl_reader = reader(fl)
+        for _, line in enumerate(fl_reader):
+            tmp = []
+            try:
+                if cols is not None:
+                    for _, cl in enumerate(cols):
+                        tmp.append(cl[1](line[cl[0]]))
+                else:
+                    tmp.append(line)
+                data.append(tmp)
+            except ValueError:
+                continue
+
+    return array(data) if np_arr else data
