@@ -1,6 +1,7 @@
 from matplotlib.pyplot import figure, show, title, savefig, plot, legend, scatter, xlabel, ylabel
 from numpy import array, polyfit, poly1d, linspace, zeros
 from utilities.io import save_frequencies
+from networkx import degree
 
 
 # TODO generalize function
@@ -68,3 +69,14 @@ def plot_weight_delta(network, save=True, blocking=False):
         filename = '../results/weight_delta_' + str(network.n) + '.png'
         savefig(filename)
     show(block=blocking)
+
+
+def plot_degree_dist(network, netx_src=False, bins=20, blocking=True):
+    net = network.network_plot if not netx_src else network
+
+    fig = figure('Node degree distribution')
+    ax = fig.gca()
+    ax.hist(array(degree(net))[:, 1], bins=bins)
+
+    if blocking:
+        show()

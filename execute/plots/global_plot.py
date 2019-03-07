@@ -1,6 +1,8 @@
-from matplotlib.pyplot import figure, show
+from matplotlib.pyplot import figure
 from utilities import load_csv_col, filter_related_data
 from numpy import array
+from utilities.plotting import plot_degree_dist
+from networkx import from_edgelist
 
 airpt_cols = [
     [0, int],       # id
@@ -22,7 +24,7 @@ routes = load_csv_col('../../data/routes.dat', cols=rt_cols)
 print('Data loaded')
 
 # Filter data
-airports_red, routes_red = filter_related_data(airports, routes, region)
+airports_red, routes_red, route_indexes = filter_related_data(airports, routes, region)
 print('Data filtered')
 
 # Plot airfield locations
@@ -31,4 +33,6 @@ ax = fig.gca()
 ax.scatter(airports_red[:, 2], airports_red[:, 1], s=15)            # Plot airports
 for _, (src, dest) in enumerate(routes_red):                        # Plot routes
     ax.plot((src[1], dest[1]), (src[0], dest[0]), 'k', alpha=.1)
-show()
+
+net = from_edgelist(route_indexes)
+plot_degree_dist(net, netx_src=True)

@@ -23,6 +23,7 @@ def filter_related_data(nodes, edges, region=None):
     node_dict = {val[0]: val[1:] for _, val in enumerate(filtered_points)}
     used_nodes = set()
     used_edges = []
+    edge_indexes = []
     for _, route in enumerate(edges):
         src = node_dict.get(route[0])
         dest = node_dict.get(route[1])
@@ -31,6 +32,7 @@ def filter_related_data(nodes, edges, region=None):
             used_nodes.add(int(route[1]))
 
             used_edges.append((src, dest))
+            edge_indexes.append(route)
 
     # Filter un-used airports
     remove = []
@@ -39,4 +41,4 @@ def filter_related_data(nodes, edges, region=None):
             remove.append(i)
     filtered_points = delete(filtered_points, remove, 0)
 
-    return filtered_points, array(used_edges)
+    return filtered_points, array(used_edges), edge_indexes
