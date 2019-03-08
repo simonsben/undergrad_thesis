@@ -1,22 +1,9 @@
-from matplotlib.pyplot import figure
-from utilities import load_csv_col, filter_related_data
-from numpy import array
+from utilities import load_csv_col, filter_related_data, region, airpt_cols, rt_cols, re_index, filter_degree, balls_per_node
 from utilities.plotting import plot_degree_dist
-from networkx import from_edgelist
-
-airpt_cols = [
-    [0, int],       # id
-    [6, float],     # lat
-    [7, float]      # long
-]
-rt_cols = [
-    [3, int],       # src id
-    [5, int]        # dest id
-]
-region = array([
-    [-130, -110],   # x - min, max
-    [30, 50]        # y - min, max
-])
+from networkx import from_edgelist, closeness_centrality
+from utilities.plotting import plot_net_w_routes
+from model import network
+from numpy import zeros, sum
 
 # Load airports
 airports = load_csv_col('../../data/airports.dat', cols=airpt_cols)
@@ -24,15 +11,27 @@ routes = load_csv_col('../../data/routes.dat', cols=rt_cols)
 print('Data loaded')
 
 # Filter data
-airports_red, routes_red, route_indexes = filter_related_data(airports, routes, region)
+# airports_red, routes_red, route_indexes = filter_related_data(airports, routes, region)
+# print(len(airports_red))
+airports_red, routes_red, route_indexes = filter_degree(airports, routes)
+re_index(airports_red, route_indexes)
+print(len(airports_red))
+
 print('Data filtered')
 
-# Plot airfield locations
-fig = figure()
-ax = fig.gca()
-ax.scatter(airports_red[:, 2], airports_red[:, 1], s=15)            # Plot airports
-for _, (src, dest) in enumerate(routes_red):                        # Plot routes
-    ax.plot((src[1], dest[1]), (src[0], dest[0]), 'k', alpha=.1)
+# plot_net_w_routes(airports_red, routes_red, plot_edges=False)
 
 net = from_edgelist(route_indexes)
-plot_degree_dist(net, netx_src=True)
+# plot_degree_dist(net, netx_src=True)
+t_cent = closeness_centrality(net)
+cent = zeros(len(airports_red))
+for i in cent:
+    cent[i] = t_cent.get(i)
+cent_total = sum(cent)
+print(cent)
+print(cent_total)
+
+B = balls_per_node * len(airports_red)
+net_c = network(len(airports_red), net)
+
+

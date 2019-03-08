@@ -29,3 +29,4 @@ def calculate_coefficients(save=True):
         save_frequencies(generator, '../data/ball_generator.csv')
 
     return lines, generator
+

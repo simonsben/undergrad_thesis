@@ -1,6 +1,6 @@
 from matplotlib.pyplot import figure, show, savefig, plot, legend, xlabel, ylabel
 from numpy import mean, subtract
-
+from utilities import fig_size
 
 def plot_exposures(default_set, gradient_set, heuristic_set, random_set):
     num_steps = str(len(default_set[0]))
@@ -31,3 +31,28 @@ def plot_exposures(default_set, gradient_set, heuristic_set, random_set):
     xlabel('Time steps')
     ylabel('Network Exposure')
     show()
+
+
+def plot_over_time(trial_exposures, blocking=True, size=fig_size, multiple=False, leg=None):
+    steps = len(trial_exposures) if not multiple else len(trial_exposures[0])
+    title = 'Exposure over ' + str(steps) + ' steps'
+    fig = figure(title, figsize=size)
+    ax = fig.gca()
+
+    if multiple:
+        for data in trial_exposures:
+            ax.plot(data)
+    else:
+        ax.plot(trial_exposures)
+
+    ax.set_ylim(0, 1)
+    ax.set_xlim(0, steps)
+    ax.set_title(title)
+    xlabel('Time steps')
+    ylabel('Exposure')
+
+    if leg is not None:
+        legend(leg)
+
+    if blocking:
+        show()

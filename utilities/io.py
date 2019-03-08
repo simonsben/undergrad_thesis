@@ -5,6 +5,8 @@ from numpy import array
 network_path = '../data/network.csv'
 state_path = '../data/state.csv'
 frequency_path = '../data/execution_times.csv'
+airport_path = '../data/airports.dat'
+route_path = '../data/routes.dat'
 
 
 def save_network(network, network_file=network_path):

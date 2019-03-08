@@ -1,19 +1,33 @@
 from networkx import barabasi_albert_graph
-from numpy import zeros, mean, argmin, argmax
+from numpy import zeros, mean, argmin, argmax, array
 from sys import maxsize
 
 # Define constants
 network_memory = 10000
 balls_added = 1
-balls_per_node = 5
-min_steps = 8000
+balls_per_node = 10
+min_steps = 2500
 min_trials = 30
 extension_nodes = 8
+fig_size = (8, 5)
 ipopt_path = '~/.ipopt/Ipopt-3.12.12/build/bin/ipopt'
 ball_colour = {
     0: 'red',
     1: 'black'
 }
+airpt_cols = [
+    [0, int],       # id
+    [6, float],     # lat
+    [7, float]      # long
+]
+rt_cols = [
+    [3, int],       # src id
+    [5, int]        # dest id
+]
+region = array([
+    [-130, -110],   # x - min, max
+    [30, 50]        # y - min, max
+])
 
 
 # Generate new network
@@ -36,13 +50,12 @@ def calculate_budget(n):
 
 
 def calculate_exposure(network, add_exposure=True):
-    delta_balls = network.steps * balls_added
-    ball_counts = zeros((network.n, 2))
-    urn_counts = zeros((network.n, 2))
+    ball_counts = zeros((network.n, 2))         # [[red], [total]]
+    urn_counts = zeros((network.n, 2))          # [[super_red], [super_total]]
 
     for i in range(network.n):
         ball_counts[i, 0] = network.nodes[i].red
-        ball_counts[i, 1] = network.nodes[i].init_total + delta_balls
+        ball_counts[i, 1] = network.nodes[i].red + network.nodes[i].black
 
     for i in range(network.n):
         urn_counts[i] = ball_counts[i]
@@ -50,7 +63,7 @@ def calculate_exposure(network, add_exposure=True):
             urn_counts[i, 0] += ball_counts[node.id, 0]
             urn_counts[i, 1] += ball_counts[node.id, 1]
 
-            network.node_exposures[i] = urn_counts[i, 0] / urn_counts[i, 1] if urn_counts[i, 1] != 0 else .5
+        network.node_exposures[i] = urn_counts[i, 0] / urn_counts[i, 1] if urn_counts[i, 1] != 0 else .5
 
     exposure = mean(network.node_exposures)
 
