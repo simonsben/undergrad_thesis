@@ -33,9 +33,9 @@ def plot_exposures(default_set, gradient_set, heuristic_set, random_set):
     show()
 
 
-def plot_over_time(trial_exposures, blocking=True, size=fig_size, multiple=False, leg=None):
+def plot_over_time(trial_exposures, blocking=True, size=fig_size, multiple=False, leg=None, title=None):
     steps = len(trial_exposures) if not multiple else len(trial_exposures[0])
-    title = 'Exposure over ' + str(steps) + ' steps'
+    title = 'Exposure over ' + str(steps) + ' steps' if title is None else title
     fig = figure(title, figsize=size)
     ax = fig.gca()
 

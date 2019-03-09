@@ -1,5 +1,5 @@
 from model import network
-from utilities import balls_per_node, dict_to_arr
+from utilities import balls_per_node, dict_to_arr, save_trials
 from networkx import from_edgelist, degree, eigenvector_centrality, closeness_centrality, betweenness_centrality
 from numpy import argmax, zeros, sum, copy, array
 from execute.run_polya import run_polya
@@ -32,6 +32,7 @@ max_d_node = argmax(degrees)
 # red = array([balls_per_node] * N)
 red = zeros(N)
 red[max_d_node] = budget
+title = 'Network exposure for single red node'
 
 exposures = []
 
@@ -47,4 +48,5 @@ for measure in measures:
     net.set_initial_distribution(red, black)
     exposures.append(run_polya(net))
 
-plot_over_time(exposures, leg=measure_names, multiple=True)
+save_trials(exposures, '../data/single_red.csv', titles=measure_names)
+plot_over_time(exposures, leg=measure_names, multiple=True, title=title)

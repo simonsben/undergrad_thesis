@@ -69,3 +69,18 @@ def load_csv_col(file, cols=None, np_arr=True):
                 continue
 
     return array(data) if np_arr else data
+
+
+def save_trials(trial_data, filename, titles=None):
+    if type(trial_data) is not array:
+        trial_data = array(trial_data)
+
+    with open(filename, 'w', newline='') as fl:
+        wtr = writer(fl)
+
+        if titles is not None:
+            wtr.writerow(titles)
+
+        steps = len(trial_data[0])
+        for i in range(steps):
+            wtr.writerow(trial_data[:, i])

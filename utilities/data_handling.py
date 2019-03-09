@@ -47,25 +47,30 @@ def filter_related_data(nodes, edges, region=None):
 def re_index(node_list, edge_list, ind_col=0):
     curr_indexes = {node[ind_col]: i for i, node in enumerate(node_list)}
 
-    for i, node in enumerate(node_list):
+    for i, _ in enumerate(node_list):
         node_list[i, ind_col] = i
 
-    for i, _ in enumerate(edge_list):
-        edge_list[i, 0] = curr_indexes.get(edge_list[i, 0])
-        edge_list[i, 1] = curr_indexes.get(edge_list[i, 1])
+    to_remove = []
+    for i, node in enumerate(edge_list):
+        ind_0 = curr_indexes.get(node[0])
+        ind_1 = curr_indexes.get(node[1])
+
+        if ind_0 is not None and ind_1 is not None:
+            edge_list[i] = (ind_0, ind_1)
+        else:
+            to_remove.append(i)
+
+    delete(edge_list, to_remove)
 
 
 def filter_degree(nodes, edges, d_cut_off=50):
     degrees = {}
     for edge in edges:
-        if edge[0] in degrees:
-            degrees[edge[0]] += 1
-        else:
-            degrees[edge[0]] = 1
-        if edge[1] in degrees:
-            degrees[edge[1]] += 1
-        else:
-            degrees[edge[1]] = 1
+        for i in range(2):
+            if edge[i] in degrees:
+                degrees[edge[i]] += 1
+            else:
+                degrees[edge[i]] = 1
 
     low_d_nodes = []
     for i, node in enumerate(nodes):
@@ -90,3 +95,11 @@ def dict_to_arr(d_vals, conv=True):
             vals[val] = d_vals[val]
 
     return vals
+
+
+def bin_midpoints(bin_edges):
+    midpoints = zeros(len(bin_edges) - 1)
+    for i, _ in enumerate(midpoints):
+        midpoints[i] = (bin_edges[i] + bin_edges[i+1]) / 2
+
+    return midpoints
