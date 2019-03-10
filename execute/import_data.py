@@ -8,12 +8,9 @@ def load_airport_and_route(filter_data=True, deep_load=False):
 
     airports = load_csv_col(a_path, cols=airpt_cols)
     routes = load_csv_col(r_path, cols=rt_cols)
-    print('Data loaded')
-
-    if not filter_data:
-        cutoff = 0
 
     # Filter data
+    cutoff = None if filter_data else 0
     airports, routes, route_indexes = filter_degree(airports, routes, d_cut_off=cutoff)
     re_index(airports, route_indexes)
 

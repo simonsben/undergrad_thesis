@@ -29,9 +29,9 @@ measure_names = [
 degrees = dict_to_arr(degree(netx))
 max_d_node = argmax(degrees)
 
-# red = array([balls_per_node] * N)
-red = zeros(N)
-red[max_d_node] = budget
+red = array([balls_per_node] * N)
+# red = zeros(N)
+# red[max_d_node] = budget
 title = 'Network exposure for single red node'
 
 exposures = []
@@ -48,5 +48,9 @@ for measure in measures:
     net.set_initial_distribution(red, black)
     exposures.append(run_polya(net))
 
-save_trials(exposures, '../data/single_red.csv', titles=measure_names)
-plot_over_time(exposures, leg=measure_names, multiple=True, title=title)
+file_name = 'single_red'
+img_name = '../results/max_entropy/' + file_name + '.png'
+data_name = '../data/' + file_name + '.csv'
+
+save_trials(exposures, data_name, titles=measure_names)
+plot_over_time(exposures, leg=measure_names, multiple=True, title=title, file_name=img_name)

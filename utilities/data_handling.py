@@ -64,6 +64,7 @@ def re_index(node_list, edge_list, ind_col=0):
 
 
 def filter_degree(nodes, edges, d_cut_off=50):
+    d_cut_off = d_cut_off if d_cut_off is not None else 50
     degrees = {}
     for edge in edges:
         for i in range(2):
@@ -93,6 +94,12 @@ def dict_to_arr(d_vals, conv=True):
             vals[val[0]] = val[1]
         else:
             vals[val] = d_vals[val]
+
+    return vals
+
+
+def dict_to_tuples(d_vals):
+    vals = [(key, d_vals[key]) for i, key in enumerate(d_vals)]
 
     return vals
 

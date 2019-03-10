@@ -85,8 +85,8 @@ class network:
         if red is None and black is None: return
 
         for i, node in enumerate(self.nodes):
-            _red = None if red is None else red[i]
-            _black = None if red is None else black[i]
+            _red = None if red is None else int(round(red[i]))
+            _black = None if black is None else int(round(black[i]))
 
             node.set_initial(_red, _black)
 
