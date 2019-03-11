@@ -1,15 +1,17 @@
-from utilities import balls_per_node, dict_to_tuples
+from utilities import balls_per_node, dict_to_tuples, metrics, metric_names
 from numpy import zeros
-from networkx import eigenvector_centrality
 
 
-def centrality_allocation(network, netx_graph=False):
+def maximum_entropy(network, netx_graph=False, metric_id=0):
     netx = network.network_plot if not netx_graph else network
     N = len(network)
     budget = balls_per_node * N
 
     # Calculate and sort centrality
-    centralities = dict_to_tuples(eigenvector_centrality(netx))
+    metric = metrics.get(metric_id)
+    if metric is None: raise ValueError('Bad metric id')
+
+    centralities = dict_to_tuples(metric(netx))
     centralities = sorted(centralities, key=lambda c: c[1], reverse=True)
 
     # Generate list of node neighbours
@@ -26,7 +28,9 @@ def centrality_allocation(network, netx_graph=False):
 
     # Place black in super urns
     for (ind, _) in centralities:
-        tmp = ball_counts[ind, 0]
+        tmp = ball_counts[ind, 0] - ball_counts[ind, 1]
+        if tmp <= 0:
+            continue
         num_added = tmp if budget > tmp else budget
         budget -= num_added
 
@@ -54,4 +58,4 @@ def centrality_allocation(network, netx_graph=False):
 
     network.set_initial_distribution(black=black_dist)
 
-    print('Centrality superurn strategy complete')
+    print('Maximum entropy strategy with ' + metric_names[metric_id] + ' complete')

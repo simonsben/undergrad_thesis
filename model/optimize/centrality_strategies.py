@@ -1,25 +1,10 @@
-from networkx import eigenvector_centrality, closeness_centrality, betweenness_centrality, \
-    degree_centrality, number_of_nodes
-from utilities import dict_to_arr, balls_per_node
+from networkx import number_of_nodes
+from utilities import dict_to_arr, balls_per_node, metrics, metric_names
 from numpy import zeros
-
-methods = {
-    0: eigenvector_centrality,
-    1: closeness_centrality,
-    2: betweenness_centrality,
-    3: degree_centrality
-}
-
-metric_names = [
-    'Closeness centrality',
-    'Eigenvector centrality',
-    'Betweenness centrality',
-    'Degree centrality'
-]
 
 
 def simple_centrality(network, method=0, netx_inp=False, red=None):
-    metric = methods.get(method)
+    metric = metrics.get(method)
     if metric is None:
         raise ValueError('Method value out of range')
 

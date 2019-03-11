@@ -1,6 +1,8 @@
 from networkx import barabasi_albert_graph
 from numpy import zeros, mean, argmin, argmax, array
 from sys import maxsize
+from networkx import eigenvector_centrality, closeness_centrality, betweenness_centrality, \
+    degree_centrality, number_of_nodes
 
 # Define constants
 network_memory = 10000
@@ -28,6 +30,19 @@ region = array([
     [-130, -110],   # x - min, max
     [30, 50]        # y - min, max
 ])
+metrics = {
+    0: eigenvector_centrality,
+    1: closeness_centrality,
+    2: betweenness_centrality,
+    3: degree_centrality
+}
+
+metric_names = [
+    'Eigenvector centrality',
+    'Closeness centrality',
+    'Betweenness centrality',
+    'Degree centrality'
+]
 
 
 # Generate new network

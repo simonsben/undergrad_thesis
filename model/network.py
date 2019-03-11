@@ -1,7 +1,7 @@
 from typing import List
 from utilities import balls_per_node, generate_plot_network, calculate_exposure, save_network
 from model.polya_node import polya_node
-from model.optimize.optimize import get_optimization_method
+# from model.optimize.optimize import get_optimization_method
 from numpy import zeros, empty, uint16
 from random import random
 from networkx import spring_layout
@@ -69,16 +69,6 @@ class network:
     # Function to export network topology
     def export_network(self):
         save_network(self.network_plot)
-
-    # Function to optimize initial ball distribution
-    def optimize_initial(self, lock=True, method=0):
-        if self.steps > 0:
-            raise ValueError('Cannot optimize initial after steps were run')
-        optimizer = get_optimization_method(method)
-        optimizer(self)
-
-        if lock:
-            self.lock_optimization()
 
     # Function to set the initial distribution of the network
     def set_initial_distribution(self, red=None, black=None):

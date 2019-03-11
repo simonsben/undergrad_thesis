@@ -5,11 +5,11 @@ from numpy import argmax, zeros, array
 from execute.run_polya import run_polya
 from utilities.plotting import plot_over_time
 from execute.import_data import load_airport_and_route
-from model.optimize import simple_centrality, metric_names, centrality_allocation, heuristic_optimize
+from model.optimize import simple_centrality, metric_names
 
 # Red distribution (uniform or single)
 uniform = False
-airports, routes = load_airport_and_route()     # Import data
+airports, routes = load_airport_and_route(deep_load=True)     # Import data
 N = len(airports)                               # Initialize N
 budget = balls_per_node * N
 
@@ -34,21 +34,11 @@ for metric_id, _ in enumerate(metric_names):
     simple_centrality(net, metric_id, red=red)
     exposures.append(run_polya(net))
 
-# Run super urn centrality strategy
-centrality_allocation(net)
-exposures.append(run_polya(net))
-
-# Run degree heuristic strategy
-heuristic_optimize(net)
-exposures.append(run_polya(net))
-
-
-headings = metric_names + ['Centrality allocation', 'Degree heuristic']
+# Define constants
 file_name = 'uniform_red' if uniform else 'single_red'
-title = 'Network exposure for' + file_name.replace('_', ' ') + ' node'
-img_name = '../results/max_entropy/' + file_name + '.png'
-data_name = '../data/' + file_name + '.csv'
+img_name = '../../results/centrality_metrics/' + file_name + '.png'
+data_name = '../../data/' + file_name + '.csv'
 
 # Save and plot data
-save_trials(exposures, data_name, titles=headings)
-plot_over_time(exposures, leg=headings, multiple=True, file_name=img_name)
+save_trials(exposures, data_name, titles=metric_names)
+plot_over_time(exposures, leg=metric_names, multiple=True, file_name=img_name)
