@@ -2,7 +2,7 @@ from networkx import barabasi_albert_graph
 from numpy import zeros, mean, argmin, argmax, array
 from sys import maxsize
 from networkx import eigenvector_centrality, closeness_centrality, betweenness_centrality, \
-    degree_centrality, number_of_nodes
+    degree_centrality
 
 # Define constants
 network_memory = 10000
