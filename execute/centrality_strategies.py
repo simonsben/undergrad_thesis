@@ -1,12 +1,14 @@
 from model import network
 from utilities import balls_per_node, dict_to_arr, save_trials
-from networkx import from_edgelist, degree, eigenvector_centrality, closeness_centrality, betweenness_centrality
-from numpy import argmax, zeros, sum, copy, array
+from networkx import from_edgelist, degree
+from numpy import argmax, zeros, array
 from execute.run_polya import run_polya
 from utilities.plotting import plot_over_time
 from execute.import_data import load_airport_and_route
+from model.optimize import simple_centrality, metric_names, centrality_allocation, heuristic_optimize
 
-
+# Red distribution (uniform or single)
+uniform = False
 airports, routes = load_airport_and_route()     # Import data
 N = len(airports)                               # Initialize N
 budget = balls_per_node * N
@@ -15,42 +17,38 @@ netx = from_edgelist(routes)                    # Generate networkx network
 net = network(N, graph=netx)                    # Generate network
 print('Data imported and network generated')
 
-measures = [
-    closeness_centrality,
-    betweenness_centrality,
-    eigenvector_centrality
-]
-measure_names = [
-    'Closeness centrality',
-    'Betweenness centrality',
-    'Eigenvector centrality'
-]
+degrees = dict_to_arr(degree(netx))             # Calculate node degrees
+max_d_node = argmax(degrees)                    # Get index of max degree
 
-degrees = dict_to_arr(degree(netx))
-max_d_node = argmax(degrees)
 
-red = array([balls_per_node] * N)
-# red = zeros(N)
-# red[max_d_node] = budget
-title = 'Network exposure for single red node'
+if uniform:
+    red = array([balls_per_node] * N)
+else:
+    red = zeros(N)
+    red[max_d_node] = budget
 
 exposures = []
 
-for measure in measures:
-    centralities = dict_to_arr(measure(netx), conv=False)
-    cent_total = sum(centralities)
-    print('Measure calculated')
-
-    black = zeros(N)
-    for i in range(N):
-        black[i] = round(budget * centralities[i] / cent_total)
-
-    net.set_initial_distribution(red, black)
+# Run basic metrics
+for metric_id, _ in enumerate(metric_names):
+    simple_centrality(net, metric_id, red=red)
     exposures.append(run_polya(net))
 
-file_name = 'single_red'
+# Run super urn centrality strategy
+centrality_allocation(net)
+exposures.append(run_polya(net))
+
+# Run degree heuristic strategy
+heuristic_optimize(net)
+exposures.append(run_polya(net))
+
+
+headings = metric_names + ['Centrality allocation', 'Degree heuristic']
+file_name = 'uniform_red' if uniform else 'single_red'
+title = 'Network exposure for' + file_name.replace('_', ' ') + ' node'
 img_name = '../results/max_entropy/' + file_name + '.png'
 data_name = '../data/' + file_name + '.csv'
 
-save_trials(exposures, data_name, titles=measure_names)
-plot_over_time(exposures, leg=measure_names, multiple=True, title=title, file_name=img_name)
+# Save and plot data
+save_trials(exposures, data_name, titles=headings)
+plot_over_time(exposures, leg=headings, multiple=True, file_name=img_name)

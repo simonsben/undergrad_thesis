@@ -2,6 +2,7 @@ from numpy import zeros, multiply
 
 
 def run_polya(network, steps=250, trials=10):
+    print('Running ' + str(trials) + ' trials.')
     trial_exposures = zeros(steps + 1)
 
     for i in range(trials):

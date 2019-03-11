@@ -53,3 +53,5 @@ def centrality_allocation(network, netx_graph=False):
         black_dist[ind] = alloc
 
     network.set_initial_distribution(black=black_dist)
+
+    print('Centrality superurn strategy complete')

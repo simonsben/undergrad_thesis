@@ -20,3 +20,5 @@ def heuristic_optimize(network):
             num_balls = 0
 
         node.red = node_balls
+
+    print('Degree heuristic calculated')

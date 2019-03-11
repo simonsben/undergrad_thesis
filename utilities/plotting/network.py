@@ -22,11 +22,19 @@ def plot_network(network, blocking=True, save_plot=True, _title='Network plottin
 
 
 # Plot airfield locations
-def plot_net_w_routes(nodes, edges, fig_title='Network', plot_edges=True):
-    fig = figure(fig_title)
+def plot_net_w_routes(nodes, edges, fig_title='Network', plot_edges=True, blocking=True, file_name=None):
+    fig = figure(fig_title, figsize=fig_size)
     ax = fig.gca()
-    ax.set_title(fig_title)
-    ax.scatter(nodes[:, 2], nodes[:, 1], s=15)  # Plot airports
+    # ax.set_title(fig_title)
+    ax.scatter(nodes[:, 2], nodes[:, 1], s=5)  # Plot airports
     if plot_edges:
         for _, (src, dest) in enumerate(edges):  # Plot routes
             ax.plot((src[1], dest[1]), (src[0], dest[0]), 'k', alpha=.1)
+
+    if file_name is not None:
+        try:
+            savefig(file_name)
+        except: pass
+
+    if blocking:
+        show()
