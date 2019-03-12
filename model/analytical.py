@@ -61,6 +61,8 @@ def optimize_distribution(network, R, B, num_balls, goal='min', print_res=False)
 
     # Initialize (ipopt) solver
     solver = SolverFactory('ipopt', executable=ipopt_path)
+    # solver = SolverFactory('bonmin', executable='~/.bonmin/Bonmin-1.8.7/build/bin/bonmin')
+
 
     # Solve model
     solver.solve(model)

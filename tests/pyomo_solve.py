@@ -60,7 +60,8 @@ def optimize_dist(network, R, B, num_balls, goal='min', print_res=False):
     model.constraint = Constraint(rule=ball_constraint)
 
     # Initialize (ipopt) solver
-    solver = SolverFactory('ipopt', executable=ipopt_path)
+    # solver = SolverFactory('ipopt', executable=ipopt_path)
+    solver = SolverFactory('bonmin', executable='~/.bonmin/Bonmin-1.8.7/build/bin/bonmin')
 
     # Solve model
     solver.solve(model)
@@ -70,9 +71,9 @@ def optimize_dist(network, R, B, num_balls, goal='min', print_res=False):
     if print_res: print('Variable_Fixed')
 
     for i in range(N):
-        optimal[i] = round(model.Variable[i]())
+        optimal[i] = model.Variable[i]() # round()
 
-        if print_res: print(str(i) + ': ' + str(optimal[i]) + '_' + str(round(model.Fixed[i])))
+        if print_res: print(str(i) + ': ' + str(optimal[i]) + '_' + str(model.Fixed[i]))
     if print_res: print('Final exposure: ' + str(round(model.exposure() * 1000) / 1000))
 
     return optimal
