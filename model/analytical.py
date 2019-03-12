@@ -1,7 +1,7 @@
 from pyomo.environ import minimize, maximize, summation, NonNegativeIntegers, \
     Var, Param, Objective, Constraint, SolverFactory, ConcreteModel, RangeSet
 from numpy import copy
-from utilities.utilities import ipopt_path
+from utilities.utilities import ipopt_path, glpk_win_path
 
 
 def optimize_distribution(network, R, B, num_balls, goal='min', print_res=False):
@@ -60,7 +60,8 @@ def optimize_distribution(network, R, B, num_balls, goal='min', print_res=False)
     model.constraint = Constraint(rule=ball_constraint)
 
     # Initialize (ipopt) solver
-    solver = SolverFactory('ipopt', executable=ipopt_path)
+    # solver = SolverFactory('ipopt', executable=ipopt_path)
+    solver = SolverFactory('glpk', executable=glpk_win_path)
 
     # Solve model
     solver.solve(model)

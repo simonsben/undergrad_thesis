@@ -13,6 +13,7 @@ min_trials = 30
 extension_nodes = 8
 fig_size = (8, 5)
 ipopt_path = '~/.ipopt/Ipopt-3.12.12/build/bin/ipopt'
+glpk_win_path = 'C:\\Users\\simon\\GPLK\\glpsol.exe'
 ball_colour = {
     0: 'red',
     1: 'black'
