@@ -4,7 +4,7 @@ from model.network import network
 from networkx import to_numpy_array, number_of_nodes, from_numpy_array, barabasi_albert_graph
 from model.analytical import optimize_distribution
 from numpy import round, mean, min, max, array
-from utilities.utilities import balls_per_node
+from utilities import balls_per_node
 from matplotlib.pyplot import figure, plot, xlabel, ylabel, title, show, legend, xlim, ylim, savefig
 
 # Define constants

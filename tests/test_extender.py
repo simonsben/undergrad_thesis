@@ -1,6 +1,6 @@
 from model.extension import extend_network
 from networkx import barabasi_albert_graph
-from utilities.plot import plot_network
+from utilities import plot_network
 
 NUM_NODES = 20
 EDGE_COUNT = 1

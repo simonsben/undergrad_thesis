@@ -1,123 +1,108 @@
 from typing import List
-from utilities.utilities import balls_per_node, balls_added, generate_plot_network, calculate_exposure
+from utilities import balls_per_node, generate_plot_network, calculate_exposure, save_network
 from model.polya_node import polya_node
-from numpy import zeros, copy, mean
-from utilities.io import save_network
+# from model.optimize.optimize import get_optimization_method
+from numpy import zeros, empty, uint16
 from random import random
-from utilities.plot import plot_optimized_network
 from networkx import spring_layout
-from model.optimize import get_optimization_method
+from utilities.plotting import plot_optimized_network
 
 
 class network:
     nodes: List[polya_node]
 
-    def __init__(self, n, fix_start=True, graph=None):
+    def __init__(self, n, graph=None):
         self.network_plot = generate_plot_network(n) if graph is None else graph
-        self.graph_layout = None
-        self.nodes = []
-        self.weights = []
-        self.trial_weights = []
-        self.init_weights = []
-        self.exposures = []
-        self.node_exposures = zeros(n)
+        self.graph_layout = None                    # Networkx layout
+        self.nodes = empty(n, dtype=polya_node)     # Array of nodes
+        self.node_exposures = zeros(n)              # Array of node exposures
+        self.ref_distribution = None                # Array of reference exposures
+        self.trial_exposure = []                    # List of trial exposures
 
-        self.n = n
-        self.steps = 0
-        self.current = 0
+        self.n = n              # Number of nodes
+        self.steps = 0          # Polya step counter
+        self.current = 0        # Iteration index
 
-        self.generate_network(fix_start)
-        self.calculate_exposure()
+        self.generate_network()     # Generate network
+        self.calculate_exposure()   # Calculate network exposure
 
-    def generate_network(self, fix_start):
-        for i, node in enumerate(self.network_plot):
-            if fix_start:
-                new_node = polya_node(balls_per_node, balls_per_node, i)
-            else:
-                # TODO implement this case
-                raise ValueError('Havent implemented this yet...')
+    # Function to generate network
+    def generate_network(self):
+        for i, node in enumerate(self.network_plot):    # Generate nodes
+            new_node = polya_node(balls_per_node, balls_per_node, i)
+            self.nodes[i] = new_node
 
-            self.nodes.append(new_node)
-
-        for i, node in enumerate(self.nodes):
+        for i, node in enumerate(self.nodes):   # Add neighbours to nodes
             neighbour_indexes = [ind for ind in self.network_plot.neighbors(i)]
             self.nodes[i].add_neighbours([self.nodes[ind] for ind in neighbour_indexes])
 
+    # Function to calculate the exposure of the graph
     def calculate_exposure(self):
         return calculate_exposure(self)
 
+    # Function to run one Polya step
     def run_step(self):
-        picked_balls = zeros(self.n)
-        for i in range(self.n):
-            picked_balls[i] = 0 if random() < self.node_exposures[i] else 1
-
         for i, node in enumerate(self.nodes):
-            node.add_ball(picked_balls[i])
+            node.add_ball(random() <= self.node_exposures[i])
 
-        self.steps += 1
         self.calculate_exposure()
+        self.steps += 1
 
-    def run_n_steps(self, n, track_infection=False):
-        for i in range(n):
+    # Function to run n Polya steps
+    def run_n_steps(self, n):
+        if self.steps == 1:     # When possible, pre-allocate array
+            trial_exposure = zeros(n)
+            trial_exposure[0] = self.trial_exposure[0]
+            self.trial_exposure = trial_exposure
+
+        for i in range(n):      # Run steps
             self.run_step()
-            if track_infection:
-                self.calculate_weights()
-                self.trial_weights.append(mean(self.weights))
 
+    # Function to plotting network before and after optimization
     def plot_network(self, index, blocking=True):
         if index == 1:
-            self.calculate_weights()
-            self.init_weights = copy(self.weights)
+            self.ref_distribution = self.get_ball_distribution()
         else:
-            self.calculate_weights()
             self.graph_layout = spring_layout(self.network_plot)
             plot_optimized_network(self, blocking)
 
+    # Function to export network topology
     def export_network(self):
         save_network(self.network_plot)
 
-    def optimize_initial(self, lock=True, method=0):
-        if self.steps > 0:
-            raise ValueError('Cannot optimize initial after steps were run')
-        optimizer = get_optimization_method(method)
-        optimizer(self)
-
-        if lock:
-            self.lock_optimization()
-
+    # Function to set the initial distribution of the network
     def set_initial_distribution(self, red=None, black=None):
         if red is None and black is None: return
 
         for i, node in enumerate(self.nodes):
-            _red = None if red is None else red[i]
-            _black = None if red is None else black[i]
+            _red = None if red is None else int(round(red[i]))
+            _black = None if black is None else int(round(black[i]))
 
             node.set_initial(_red, _black)
 
-    def calculate_weights(self):
-        self.weights = zeros(self.n)
-        delta_balls = balls_added * self.steps
-
-        for i, node in enumerate(self.nodes):
-            self.weights[i] = node.red / (node.init_total + delta_balls)
-
+    # Function to bring the network back to time 1
     def clear_network(self):
         for i, node in enumerate(self.nodes):
             self.nodes[i].clear_node()
         self.steps = 0
-        self.exposures = []
-        self.trial_weights = []
+        self.trial_exposure.clear()
         self.calculate_exposure()
 
-    def reset_network(self):
-        total_value = 2 * balls_per_node
-        for i, _ in enumerate(self.nodes):
-            self.nodes[i].red = self.nodes[i].black = balls_per_node
-            self.nodes[i].init_total = total_value
-
+    # Function to load current ball count into node initial counters
     def lock_optimization(self):
         for i, _ in enumerate(self.nodes):
             self.nodes[i].lock_optimization()
+
+    # Function to get ball distributions
+    def get_ball_distribution(self, initial=True, black=True):
+        balls = zeros(self.n, dtype=uint16)
+        for i, node in enumerate(self.nodes):
+            if initial:
+                balls[i] = node.init_black if black else node.init_red
+            else:
+                balls[i] = node.black if black else node.red
+
+        return balls
 
     # Utility function for starting iteration
     def __iter__(self):

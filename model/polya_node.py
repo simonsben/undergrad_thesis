@@ -1,4 +1,4 @@
-from utilities.utilities import balls_added
+from utilities import balls_added
 
 
 # Class definition for a polya node
@@ -25,10 +25,8 @@ class polya_node:
         self.drawn_balls.append(ball)  # Add drawn ball
 
         # Add ball to node's current count
-        if ball == 0:
-            self.red += balls_added
-        else:
-            self.black += balls_added
+        if ball:    self.red += balls_added
+        else:   self.black += balls_added
 
         if not full_memory:
             # TODO implement finite memory thang
@@ -38,7 +36,6 @@ class polya_node:
     def add_neighbour(self, neighbour):
         self.neighbours.append(neighbour)
         self.degree = len(self.neighbours)
-        self.super_urn_balls += neighbour.init_total
 
     def add_neighbours(self, neighbours):
         self.neighbours = neighbours
@@ -63,9 +60,11 @@ class polya_node:
         self.drawn_balls = []
 
     def set_initial(self, red=None, black=None):
-        if red is not None: self.init_red = red
-        if black is not None: self.init_black = black
-        self.init_total = self.init_red + self.init_black
+        if red is not None:
+            self.init_red = self.red = red
+        if black is not None:
+            self.init_black = self.black = black
+        self.init_total = self.red + self.black
 
     # Base method to allow iteration on object
     def __iter__(self):

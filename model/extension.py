@@ -1,6 +1,6 @@
 from networkx import Graph, degree, number_of_nodes, barabasi_albert_graph, adjacency_matrix, to_numpy_matrix
 from model.generator import sym_k_normal
-from utilities.utilities import extension_nodes
+from utilities import extension_nodes
 
 
 # TODO re-write to make faster

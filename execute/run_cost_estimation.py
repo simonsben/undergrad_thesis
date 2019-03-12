@@ -3,7 +3,7 @@ from matplotlib.pylab import scatter, figure, show, savefig
 from time import time_ns, time
 from numpy import array
 from multiprocessing import Pool
-from utilities.io import save_frequencies
+from utilities import save_frequencies
 
 
 def run_trial(n):

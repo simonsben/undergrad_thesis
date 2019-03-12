@@ -1,10 +1,12 @@
 from csv import writer, reader
-from networkx import to_numpy_array, from_numpy_array
+from networkx import to_numpy_array, from_numpy_array, from_edgelist
 from numpy import array
 
 network_path = '../data/network.csv'
 state_path = '../data/state.csv'
 frequency_path = '../data/execution_times.csv'
+airport_path = '../data/airports.dat'
+route_path = '../data/routes.dat'
 
 
 def save_network(network, network_file=network_path):
@@ -16,7 +18,7 @@ def save_network(network, network_file=network_path):
             wtr.writerow(row)
 
 
-def load_network(network_file=network_path):
+def load_network(network_file=network_path, edgelist=False):
     with open(network_file, 'r') as fl:
         rd = reader(fl)
         data = []
@@ -24,6 +26,8 @@ def load_network(network_file=network_path):
         for row in rd:
             data.append(row)
 
+    if edgelist:
+        return from_edgelist(data)
     return from_numpy_array(array(data))
 
 
@@ -45,3 +49,38 @@ def load_frequencies(filename=frequency_path, cast=True):
             data.append(tmp_row)
 
     return array(data)
+
+
+# Function to import specific columns of csv file
+def load_csv_col(file, cols=None, np_arr=True):
+    data = []
+    with open(file, encoding='utf8') as fl:
+        fl_reader = reader(fl)
+        for _, line in enumerate(fl_reader):
+            tmp = []
+            try:
+                if cols is not None:
+                    for _, cl in enumerate(cols):
+                        tmp.append(cl[1](line[cl[0]]))
+                else:
+                    tmp.append(line)
+                data.append(tmp)
+            except ValueError:
+                continue
+
+    return array(data) if np_arr else data
+
+
+def save_trials(trial_data, filename, titles=None):
+    if type(trial_data) is not array:
+        trial_data = array(trial_data)
+
+    with open(filename, 'w', newline='') as fl:
+        wtr = writer(fl)
+
+        if titles is not None:
+            wtr.writerow(titles)
+
+        steps = len(trial_data[0])
+        for i in range(steps):
+            wtr.writerow(trial_data[:, i])

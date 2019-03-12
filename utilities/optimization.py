@@ -1,6 +1,6 @@
 from re import compile
 from glob import glob
-from utilities.io import load_frequencies, save_frequencies
+from utilities import load_frequencies, save_frequencies
 from numpy import polyfit, array
 
 
@@ -29,3 +29,4 @@ def calculate_coefficients(save=True):
         save_frequencies(generator, '../data/ball_generator.csv')
 
     return lines, generator
+

@@ -1,5 +1,5 @@
 from model.network import network
-from utilities.io import save_network, load_network
+from utilities import save_network, load_network
 from networkx import to_numpy_array
 
 net = network(10)
