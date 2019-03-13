@@ -4,9 +4,8 @@ from utilities import fig_size
 
 
 # Plot network
-def plot_network(network, blocking=True, save_plot=True, _title='Network plotting', netx_plot=False, size=fig_size):
-    figure(_title, figsize=size)
-    title(_title)
+def plot_network(network, blocking=True, save_plot=True, netx_plot=False, size=fig_size):
+    figure(figsize=size)
     axis('off')  # Disable axis
 
     graph = network if netx_plot else network.network_plot
@@ -29,6 +28,9 @@ def plot_net_w_routes(nodes, edges, fig_title='Network', plot_edges=True, blocki
     ax.scatter(nodes[:, 2], nodes[:, 1], s=5)  # Plot airports
     if plot_edges:
         for _, (src, dest) in enumerate(edges):  # Plot routes
+            if type(src) is not list:
+                src = nodes[src, 1:]
+                dest = nodes[dest, 1:]
             ax.plot((src[1], dest[1]), (src[0], dest[0]), 'k', alpha=.1)
 
     if file_name is not None:

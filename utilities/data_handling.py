@@ -1,4 +1,4 @@
-from numpy import array, delete, zeros
+from numpy import array, delete, zeros, take
 
 
 def within_region(points, region, cols=None, np_arr=True):
@@ -60,7 +60,8 @@ def re_index(node_list, edge_list, ind_col=0):
         else:
             to_remove.append(i)
 
-    delete(edge_list, to_remove)
+    edge_list = delete(edge_list, to_remove, axis=0)
+    return node_list, edge_list
 
 
 def filter_degree(nodes, edges, d_cut_off=50):
@@ -78,7 +79,7 @@ def filter_degree(nodes, edges, d_cut_off=50):
         degree = degrees.get(node[0])
         if degree is None or degree < d_cut_off:
             low_d_nodes.append(i)
-    nodes = delete(nodes, low_d_nodes, 0)
+    nodes = delete(nodes, low_d_nodes, axis=0)
 
     nodes, edge_points, edges = filter_related_data(nodes, edges)
 
@@ -96,6 +97,14 @@ def dict_to_arr(d_vals, conv=True):
             vals[val] = d_vals[val]
 
     return vals
+
+
+def compress_graph_data(nodes, edges, indexes):
+    nodes = take(nodes, indexes, axis=0)
+    nodes, _, edges = filter_degree(nodes, edges, d_cut_off=2)
+    nodes, edges = re_index(nodes, edges)
+
+    return nodes, edges
 
 
 def dict_to_tuples(d_vals):

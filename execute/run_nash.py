@@ -1,4 +1,4 @@
-from model.generator import star_graph, line_graph
+from model.generator import star_graph, path_graph
 from model.extension import ext_sym_k_normal
 from model.network import network
 from networkx import to_numpy_array, number_of_nodes, from_numpy_array, barabasi_albert_graph
@@ -15,7 +15,7 @@ net_type = 'path'
 
 # Generate graph
 # raw_graph = array(star_graph(BASE_N))
-raw_graph = array(line_graph(BASE_N))
+raw_graph = array(path_graph(BASE_N))
 # raw_graph = to_numpy_array(ext_sym_k_normal(BASE_N))
 # raw_graph = to_numpy_array(barabasi_albert_graph(BASE_N, 1))
 graph = from_numpy_array(raw_graph)

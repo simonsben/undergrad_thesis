@@ -3,13 +3,13 @@ from numpy import zeros
 
 
 # Function to generate a line network
-def line_graph(N):
+def path_graph(N):
     return [[(1 if fabs(i - j) <= 1 else 0) for j in range(N)] for i in range(N)]
 
 
 # Function to generate a circular network
-def circular_graph(N):
-    network = line_graph(N)
+def cycle_graph(N):
+    network = path_graph(N)
     network[0][N-1] = 1
     network[N-1][0] = 1
 
@@ -42,7 +42,7 @@ def wheel_graph(N):
 def sym_k_normal(N, k=3):
     network = None
     if k == 2:
-        return circular_graph(N)
+        return cycle_graph(N)
     elif k == 3:
         if N % 2 != 0:
             raise ValueError('N must be divisible by 2')
