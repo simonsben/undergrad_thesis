@@ -1,10 +1,10 @@
 from execute.import_data import load_airport_and_route
-from networkx import from_edgelist, number_of_nodes, nodes
+from networkx import from_edgelist, nodes
 from model.optimize.colapse import simplify_net
-from utilities.plotting import plot_network, plot_net_w_routes
+from utilities.plotting import plot_net_w_routes
 from utilities import compress_graph_data
 
-airports, routes = load_airport_and_route()
+airports, routes = load_airport_and_route(deep_load=True)
 print('Data loaded')
 
 netx = from_edgelist(routes)
