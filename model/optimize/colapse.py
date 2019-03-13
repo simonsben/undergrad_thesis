@@ -1,5 +1,4 @@
-from networkx import find_cliques, contracted_nodes, degree
-from numpy import delete
+from networkx import find_cliques, contracted_nodes, degree, generate_edgelist
 
 
 def check_nodes(affected, clique):
@@ -13,8 +12,8 @@ def check_nodes(affected, clique):
 
 def simplify_net(network, netx_inp=False):
     netx = network.network_plot if not netx_inp else network
+    degrees = degree(netx)
 
-    # for i in range(10):
     while True:
         action = False
         affected_nodes = set()
@@ -38,7 +37,7 @@ def simplify_net(network, netx_inp=False):
                 netx = contracted_nodes(netx, base, clique[j])
                 affected_nodes.add(clique[j])
 
-        if not action:
+        if not action:  # If not action in the last pass, done
             break
 
     return netx

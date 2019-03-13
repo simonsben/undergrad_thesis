@@ -36,7 +36,8 @@ def plot_net_w_routes(nodes, edges, fig_title='Network', plot_edges=True, blocki
     if file_name is not None:
         try:
             savefig(file_name)
-        except: pass
+        except:
+            print('Bad save!')
 
     if blocking:
         show()

@@ -101,7 +101,7 @@ def dict_to_arr(d_vals, conv=True):
 
 def compress_graph_data(nodes, edges, indexes):
     nodes = take(nodes, indexes, axis=0)
-    nodes, _, edges = filter_degree(nodes, edges, d_cut_off=2)
+    # nodes, _, edges = filter_degree(nodes, edges, d_cut_off=1)
     nodes, edges = re_index(nodes, edges)
 
     return nodes, edges
