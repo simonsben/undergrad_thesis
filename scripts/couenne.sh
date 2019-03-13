@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Make folder
-#mkdir ~/.bonmin
-#cd ~/.bonmin
+mkdir ~/.couenne
+cd ~/.couenne
 
 # Download solver
 wget https://www.coin-or.org/download/source/Couenne/Couenne-0.5.7.tgz

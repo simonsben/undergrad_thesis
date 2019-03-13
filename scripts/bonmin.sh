@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Make folder
-#mkdir ~/.bonmin
-#cd ~/.bonmin
+mkdir ~/.bonmin
+cd ~/.bonmin
 
 # Download solver
 wget https://www.coin-or.org/download/source/Bonmin/Bonmin-1.8.7.tgz
