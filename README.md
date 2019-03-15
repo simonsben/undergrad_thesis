@@ -1,5 +1,7 @@
 # Undergraduate Thesis
 
+Done with [Tom](https://github.com/morrisht) and [Joey](https://github.com/joey-blumenstein).
+
 ## Purpose
 
 This repo is for work related to our 4th year thesis project on network contagion modelling.
