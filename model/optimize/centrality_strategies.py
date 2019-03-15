@@ -23,7 +23,5 @@ def simple_centrality(network, method=0, netx_inp=False, red=None, budget_ratio=
     if sum(black) <= budget:
         black[argmax(centralities)] += budget - black_total
 
-    print(sum(red), sum(black))
-
     network.set_initial_distribution(red, black)
     print(metric_names[method] + ' with ' + str(budget_ratio) + ' ratio complete')
