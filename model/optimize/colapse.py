@@ -1,4 +1,4 @@
-from networkx import find_cliques, contracted_nodes, degree, generate_edgelist
+from networkx import find_cliques, contracted_nodes, degree
 
 
 def check_nodes(affected, clique):

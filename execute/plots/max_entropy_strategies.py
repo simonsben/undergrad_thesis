@@ -37,7 +37,7 @@ for metric_id, _ in enumerate(metric_names):
 
 # Define constants
 file_name = 'uniform_red' if uniform else 'single_red'
-img_name = '../../results/max_entropy/' + file_name + '_2.png'
+img_name = '../../results/max_entropy/' + file_name + '.png'
 data_name = '../../data/max_entropy_' + file_name + '.csv'
 
 # Save and plot data

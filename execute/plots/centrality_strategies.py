@@ -8,7 +8,7 @@ from execute.import_data import load_airport_and_route
 from model.optimize import simple_centrality, metric_names
 
 # Red distribution (uniform or single)
-uniform = True
+uniform = False
 airports, routes = load_airport_and_route(deep_load=True)     # Import data
 N = len(airports)                               # Initialize N
 budget = balls_per_node * N
@@ -36,8 +36,8 @@ for metric_id, _ in enumerate(metric_names):
 
 # Define constants
 file_name = 'uniform_red' if uniform else 'single_red'
-img_name = '../../results/centrality_metrics/' + file_name + '_2.png'
-data_name = '../../data/' + file_name + '.csv'
+img_name = '../../results/centrality_metrics/' + file_name + '.png'
+data_name = '../../data/centrality_metrics' + file_name + '.csv'
 
 # Save and plot data
 save_trials(exposures, data_name, titles=metric_names)

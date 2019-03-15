@@ -23,7 +23,7 @@ def plot_infection(trial_exposures, blocking=True, size=fig_size, multiple=False
         ax.set_title(title)
 
     if leg is not None:
-        legend(leg)
+        legend(leg, loc='upper right')
 
     if file_name is not None:
         try:

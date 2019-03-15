@@ -5,8 +5,8 @@ from numpy import array
 network_path = '../data/network.csv'
 state_path = '../data/state.csv'
 frequency_path = '../data/execution_times.csv'
-airport_path = '../data/airports.dat'
-route_path = '../data/routes.dat'
+airport_path = '../data/source/airports.dat'
+route_path = '../data/source/routes.dat'
 
 
 def save_network(network, network_file=network_path):
@@ -52,10 +52,13 @@ def load_frequencies(filename=frequency_path, cast=True):
 
 
 # Function to import specific columns of csv file
-def load_csv_col(file, cols=None, np_arr=True):
+def load_csv_col(file, cols=None, np_arr=True, with_headers=False):
     data = []
+    headers = None
     with open(file, encoding='utf8') as fl:
         fl_reader = reader(fl)
+        if with_headers:
+            headers = next(fl_reader)
         for _, line in enumerate(fl_reader):
             tmp = []
             try:
@@ -63,12 +66,15 @@ def load_csv_col(file, cols=None, np_arr=True):
                     for _, cl in enumerate(cols):
                         tmp.append(cl[1](line[cl[0]]))
                 else:
-                    tmp.append(line)
+                    tmp = line
                 data.append(tmp)
             except ValueError:
                 continue
 
-    return array(data) if np_arr else data
+    data = array(data) if np_arr else data
+    if with_headers:
+        return data, headers
+    return data
 
 
 def save_trials(trial_data, filename, titles=None):
