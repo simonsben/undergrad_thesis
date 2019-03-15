@@ -1,10 +1,10 @@
 from pyomo.environ import minimize, maximize, summation, NonNegativeIntegers, \
-    Var, Param, Objective, Constraint, SolverFactory, ConcreteModel, RangeSet
+    Var, Param, Objective, Constraint, SolverFactory, ConcreteModel, RangeSet, NonNegativeReals
 from numpy import copy
 from utilities.utilities import ipopt_path, glpk_win_path
 
 
-def optimize_distribution(network, R, B, num_balls, goal='min', print_res=False):
+def optimize_distribution(network, R, B, num_balls, goal='min', print_res=False, debug=False):
     N = len(network)
     goal = minimize if goal == 'min' else maximize
 
@@ -14,16 +14,16 @@ def optimize_distribution(network, R, B, num_balls, goal='min', print_res=False)
         for node in network:  # For each node
             r_sum, b_sum = 0, 0
             for i, rel in enumerate(node):  # Sum all neighbours
-                if rel != 0:  # Only sum if there is a connection
-                    r_sum += model.Fixed[i]
-                    b_sum += model.Variable[i]
+                # if rel != 0:  # Only sum if there is a connection
+                r_sum += model.Fixed[rel]
+                b_sum += model.Variable[rel]
 
             if (r_sum + b_sum) != 0:  # Only add to sum if non-zero denominator.
                 exp += r_sum / (r_sum + b_sum)
             else:
                 exp += .5
 
-        return exp
+        return exp / N
 
     # Constraint function for problem
     def ball_constraint(model):
@@ -44,12 +44,12 @@ def optimize_distribution(network, R, B, num_balls, goal='min', print_res=False)
 
     # Initialize fixed balls
     model.Fixed = Param(model.F,
-                        within=NonNegativeIntegers,
+                        within=NonNegativeReals,
                         default=red_init)
 
     # Initialize variable balls
     model.Variable = Var(model.V,
-                         domain=NonNegativeIntegers,
+                         domain=NonNegativeReals,
                          bounds=(0, num_balls),
                          initialize=black_init)
 
@@ -64,7 +64,7 @@ def optimize_distribution(network, R, B, num_balls, goal='min', print_res=False)
     # solver = SolverFactory('bonmin', executable='~/.bonmin/Bonmin-1.8.7/build/bin/bonmin')
 
     # Solve model
-    solver.solve(model)
+    solver.solve(model, tee=debug)
 
     # Print resulting distribution
     optimal = [0] * N
@@ -80,6 +80,7 @@ def optimize_distribution(network, R, B, num_balls, goal='min', print_res=False)
     return optimal, final_exp
 
 
+# TODO finish writing nash function
 def nash_optimize(network, num_balls, N, _R, _B):
     R = copy(_R)
     B = copy(_B)

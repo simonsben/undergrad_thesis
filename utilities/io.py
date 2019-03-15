@@ -90,3 +90,14 @@ def save_trials(trial_data, filename, titles=None):
         steps = len(trial_data[0])
         for i in range(steps):
             wtr.writerow(trial_data[:, i])
+
+
+def save_distribution(dist, deep_save=False):
+    path = '../data/optimal_distribution/analytical.csv'
+    if deep_save:
+        path = '../' + path
+
+    with open(path, 'w', newline='') as fl:
+        wtr = writer(fl)
+
+        wtr.writerow(dist)
