@@ -1,6 +1,6 @@
 from csv import writer, reader
 from networkx import to_numpy_array, from_numpy_array, from_edgelist
-from numpy import array
+from numpy import array, transpose
 
 network_path = '../data/network.csv'
 state_path = '../data/state.csv'
@@ -52,7 +52,7 @@ def load_frequencies(filename=frequency_path, cast=True):
 
 
 # Function to import specific columns of csv file
-def load_csv_col(file, cols=None, np_arr=True, with_headers=False):
+def load_csv_col(file, cols=None, np_arr=True, with_headers=False, trans=False, parse=None):
     data = []
     headers = None
     with open(file, encoding='utf8') as fl:
@@ -72,6 +72,9 @@ def load_csv_col(file, cols=None, np_arr=True, with_headers=False):
                 continue
 
     data = array(data) if np_arr else data
+    if trans: data = transpose(data)
+    if parse is not None: data = data.astype(parse)
+
     if with_headers:
         return data, headers
     return data

@@ -14,7 +14,7 @@ def plot_infection(trial_exposures, blocking=True, size=fig_size, multiple=False
     else:
         ax.plot(trial_exposures)
 
-    ax.set_ylim(0, 1)
+    ax.set_ylim(.2, .8)
     ax.set_xlim(0, steps)
     xlabel('Time steps')
     ylabel('Network infection')
