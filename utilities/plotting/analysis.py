@@ -1,33 +1,6 @@
-from matplotlib.pyplot import figure, show, title, savefig, plot, legend, scatter, xlabel, ylabel
-from numpy import array, polyfit, poly1d, linspace, zeros
+from matplotlib.pyplot import figure, show, title, savefig, plot, legend, xlabel, ylabel
+from numpy import polyfit, poly1d, linspace, min, max
 from utilities.io import save_frequencies
-from networkx import degree
-
-
-# TODO generalize function
-def plot_degree_frequency(network, _title='Fraction of Nodes with Difference Degree', blocking=False, save=True):
-    frequencies = {}
-    for node in network.nodes:
-        degree = node.degree
-        if degree in frequencies:
-            frequencies[degree] += 1
-        else:
-            frequencies[degree] = 1
-
-    n = network.n
-    t_frequencies = array([(degree, frequencies[degree] / n) for degree in frequencies])
-
-    figure(_title)
-    scatter(t_frequencies[:, 0], t_frequencies[:, 1])
-    title(_title)
-    xlabel('Node Degree')
-    ylabel('Fraction of Nodes')
-
-    if save:
-        savefig('../../results/degree_frequencies.png')
-        save_frequencies(t_frequencies)
-
-    show(block=blocking)
 
 
 def plot_w_best_fit(data, _title='Fitted data', filename='', blocking=False, x_label='', y_label='', data_name='', degree=2):
@@ -51,32 +24,38 @@ def plot_w_best_fit(data, _title='Fitted data', filename='', blocking=False, x_l
     show(block=blocking)
 
 
-def plot_weight_delta(network, save=True, blocking=False):
-    _title = 'Node weight differences'
-    differences = zeros(network.n)
-
-    for i, node in enumerate(network.nodes):
-        differences[i] = network.weights[i] - network.init_weights[i]
-
-    figure(_title)
-    scatter(list(range(network.n)), differences, label='Residuals')
-    legend()
-    xlabel('Node')
-    ylabel('Difference of red balls')
-    title(_title)
-
-    if save:
-        filename = '../results/weight_delta_' + str(network.n) + '.png'
-        savefig(filename)
-    show(block=blocking)
-
-
-def plot_degree_dist(network, netx_src=False, bins=20, blocking=True):
-    net = network.network_plot if not netx_src else network
-
-    fig = figure('Node degree distribution')
+def plot_scatter_data(data, multiple=False, file_name=None, leg=None, blocking=True, x_label=None, y_label=None):
+    fig = figure()
     ax = fig.gca()
-    ax.hist(array(degree(net))[:, 1], bins=bins)
 
-    if blocking:
-        show()
+    min_x, max_x, min_y, max_y = 0, 0, 0, 0
+
+    if multiple:
+        for run in data:
+            tmp_min_x, tmp_max_x = min(run[0, :]), max(run[0, :])
+            tmp_min_y, tmp_max_y = min(run[1, :]), max(run[1, :])
+            min_x = tmp_min_x if min_x > tmp_min_x else min_x
+            max_x = tmp_max_x if max_x < tmp_max_x else max_x
+            min_y = tmp_min_y if min_y > tmp_min_x else min_y
+            max_y = tmp_max_y if max_y < tmp_max_y else max_y
+
+            ax.scatter(run[0, :], run[1, :])
+    else:
+        ax.scatter(data[0, :], data[1, :])
+        min_x, max_x = min(data[0, :]), max(data[0, :])
+        min_y, max_y = min(data[1, :]), max(data[1, :])
+
+    print(min_x, min_y, max_x, max_y)
+
+    ax.set_xlim(min_x, max_x)
+    y_delta = (max_y - min_y) * .05
+    ax.set_ylim(min_y - y_delta, max_y + y_delta)
+
+    if x_label is not None: ax.set_xlabel(x_label)
+    if y_label is not None: ax.set_ylabel(y_label)
+    if leg is not None: legend(leg)
+    if file_name is not None:
+        try: savefig(file_name)
+        except: pass
+
+    if blocking: show()
