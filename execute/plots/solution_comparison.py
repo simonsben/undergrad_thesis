@@ -9,7 +9,7 @@ centrality_path = data_path + 'centrality_metrics/'
 max_entropy_path = data_path + 'max_entropy/'
 
 versions = ['single_red', 'uniform_red']
-optimal_headers = ['Optimal centrality strategy', 'Optimal max entropy strategy', 'Optimal analytical strategy']
+optimal_headers = ['Maximum Entropy Principle', 'Centrality', 'Gradient Descent']
 
 for version in versions:
     # Get data
@@ -32,7 +32,7 @@ for version in versions:
                    leg=centrality_headers, file_name=centrality_plot_path)
     plot_infection(max_entropy_data[:4], blocking=False, multiple=True,
                    leg=max_entropy_headers, file_name=entropy_plot_path)
-    plot_infection([opt_centrality, opt_entropy, opt_analytical],
+    plot_infection([opt_entropy, opt_centrality, opt_analytical],
                    blocking=False, multiple=True, leg=optimal_headers, file_name=optimal_plot_path)
 
 show()  # Keep figures open

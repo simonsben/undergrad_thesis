@@ -1,6 +1,7 @@
 from matplotlib.pyplot import figure, show, title, savefig, plot, legend, xlabel, ylabel
 from numpy import polyfit, poly1d, linspace, min, max
 from utilities.io import save_frequencies
+from utilities import fig_size
 
 
 def plot_w_best_fit(data, _title='Fitted data', filename='', blocking=False, x_label='', y_label='', data_name='', degree=2):
@@ -24,8 +25,8 @@ def plot_w_best_fit(data, _title='Fitted data', filename='', blocking=False, x_l
     show(block=blocking)
 
 
-def plot_scatter_data(data, multiple=False, file_name=None, leg=None, blocking=True, x_label=None, y_label=None):
-    fig = figure()
+def plot_scatter_data(data, multiple=False, file_name=None, leg=None, blocking=True, x_label=None, y_label=None, x_log=False):
+    fig = figure(figsize=fig_size)
     ax = fig.gca()
 
     min_x, max_x, min_y, max_y = 0, 0, 0, 0
@@ -45,17 +46,16 @@ def plot_scatter_data(data, multiple=False, file_name=None, leg=None, blocking=T
         min_x, max_x = min(data[0, :]), max(data[0, :])
         min_y, max_y = min(data[1, :]), max(data[1, :])
 
-    print(min_x, min_y, max_x, max_y)
-
     ax.set_xlim(min_x, max_x)
     y_delta = (max_y - min_y) * .05
     ax.set_ylim(min_y - y_delta, max_y + y_delta)
 
     if x_label is not None: ax.set_xlabel(x_label)
     if y_label is not None: ax.set_ylabel(y_label)
+    if x_log: ax.set_xscale('log')
     if leg is not None: legend(leg)
     if file_name is not None:
         try: savefig(file_name)
-        except: pass
+        except FileExistsError: pass
 
     if blocking: show()
