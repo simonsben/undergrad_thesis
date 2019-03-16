@@ -15,7 +15,6 @@ file_name = 'uniform_red' if uniform else 'single_red'
 img_name = '../../results/budget_impact/' + file_name + '.png'
 scatter_name = '../../results/budget_impact/time_N.png'
 data_name = '../../data/budget_impact/' + file_name + '.csv'
-ratios = array([.25, .5, .75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 5, 10, 25, 50])
 
 if fresh_data:
     airports, routes = load_airport_and_route(deep_load=True)
@@ -24,6 +23,7 @@ if fresh_data:
     N = number_of_nodes(netx)
     net = network(N, graph=netx)
     trial_infection = []
+    ratios = array([.25, .5, .75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 5, 10, 25, 50])
 
     budget = balls_per_node * N
     if uniform:
@@ -50,4 +50,5 @@ if fresh_data:
 plot_infection(trial_infection, leg=ratios, multiple=True, file_name=img_name, blocking=False)
 
 data = array([ratios, time_N_infections])
-plot_scatter_data(data, x_log=True, x_label='Budget Ratio', y_label='Time-N infection', file_name=scatter_name)
+plot_scatter_data(data, x_log=True, x_label='Black Budget / Red Budget',
+                  y_label='Time-N Infection', file_name=scatter_name)
