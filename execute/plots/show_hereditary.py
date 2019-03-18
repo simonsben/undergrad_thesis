@@ -10,6 +10,7 @@ leg = [
     'Unfiltered data',
     'Filtered data',
 ]
+with_best_fit = False
 
 # Raw data
 airports, routes = load_airport_and_route(filter_data=False, deep_load=True)
@@ -38,12 +39,13 @@ for ind in to_delete:
     f_h_data = delete(f_h_data, ind)
     f_midpoints = delete(f_midpoints, ind)
 
-fit_degree = 2
-uf_domain = linspace(min(raw_midpoints), max(raw_midpoints))
-f_domain = linspace(min(f_midpoints), max(f_midpoints))
+if with_best_fit:
+    fit_degree = 2
+    uf_domain = linspace(min(raw_midpoints), max(raw_midpoints))
+    f_domain = linspace(min(f_midpoints), max(f_midpoints))
 
-uf_best_fit = poly1d(polyfit(raw_midpoints, log(raw_h_data), fit_degree))
-f_best_fit = poly1d(polyfit(f_midpoints, log(f_h_data), fit_degree))
+    uf_best_fit = poly1d(polyfit(raw_midpoints, log(raw_h_data), fit_degree))
+    f_best_fit = poly1d(polyfit(f_midpoints, log(f_h_data), fit_degree))
 
 # Plot results
 fig = figure('Node degree distribution', figsize=fig_size)
@@ -53,8 +55,9 @@ ax.set_title('Node degree distribution')
 ax.scatter(raw_midpoints, raw_h_data)
 ax.scatter(f_midpoints, f_h_data)
 
-ax.plot(uf_domain, exp(uf_best_fit(uf_domain)))
-ax.plot(f_domain, exp(f_best_fit(f_domain)))
+if with_best_fit:
+    ax.plot(uf_domain, exp(uf_best_fit(uf_domain)))
+    ax.plot(f_domain, exp(f_best_fit(f_domain)))
 
 ax.set_yscale('log')
 ax.set_ylabel('Number of nodes')

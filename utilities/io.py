@@ -80,7 +80,7 @@ def load_csv_col(file, cols=None, np_arr=True, with_headers=False, trans=False, 
     return data
 
 
-def save_trials(trial_data, filename, titles=None):
+def save_trials(trial_data, filename, titles=None, single_line=False):
     if type(trial_data) is not array:
         trial_data = array(trial_data)
 
@@ -90,13 +90,16 @@ def save_trials(trial_data, filename, titles=None):
         if titles is not None:
             wtr.writerow(titles)
 
-        steps = len(trial_data[0])
-        for i in range(steps):
-            wtr.writerow(trial_data[:, i])
+        if not single_line:
+            steps = len(trial_data[0])
+            for i in range(steps):
+                wtr.writerow(trial_data[:, i])
+        else:
+            wtr.writerow(trial_data)
 
 
-def save_distribution(dist, deep_save=False):
-    path = '../data/optimal_distribution/analytical.csv'
+def save_distribution(dist, deep_save=False, alt_file_name=None):
+    path = '../data/optimal_distribution/analytical.csv' if alt_file_name is None else alt_file_name
     if deep_save:
         path = '../' + path
 

@@ -3,7 +3,7 @@ from utilities import dict_to_arr, balls_per_node, metrics, metric_names
 from numpy import zeros, sum, argmax
 
 
-def simple_centrality(network, method=0, netx_inp=False, red=None, budget_ratio=1):
+def simple_centrality(network, method=0, netx_inp=False, red=None, budget_ratio=1, quiet=False):
     metric = metrics.get(method)
     if metric is None:
         raise ValueError('Method value out of range')
@@ -23,5 +23,7 @@ def simple_centrality(network, method=0, netx_inp=False, red=None, budget_ratio=
     if sum(black) <= budget:
         black[argmax(centralities)] += budget - black_total
 
-    network.set_initial_distribution(red, black)
-    print(metric_names[method] + ' with ' + str(budget_ratio) + ' ratio complete')
+    if not netx_inp:
+        network.set_initial_distribution(red, black)
+    if not quiet:
+        print(metric_names[method] + ' with ' + str(budget_ratio) + ' ratio complete')

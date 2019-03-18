@@ -54,5 +54,4 @@ if fresh_data:
 plot_infection(trial_infection, leg=delay, multiple=True, file_name=img_name, blocking=False)
 
 data = array([delay, time_N_infections])
-plot_scatter_data(data, x_label='Time step delay',
-                  y_label='Time-N Infection', file_name=scatter_name)
+plot_scatter_data(data, x_label='Time step delay', y_label='Time-N Infection', file_name=scatter_name)

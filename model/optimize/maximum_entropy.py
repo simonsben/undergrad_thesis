@@ -2,7 +2,7 @@ from utilities import balls_per_node, dict_to_tuples, metrics, metric_names
 from numpy import zeros
 
 
-def maximum_entropy(network, netx_graph=False, metric_id=0):
+def maximum_entropy(network, netx_graph=False, metric_id=0, quiet=False):
     netx = network.network_plot if not netx_graph else network
     N = len(network)
     budget = balls_per_node * N
@@ -58,4 +58,5 @@ def maximum_entropy(network, netx_graph=False, metric_id=0):
 
     network.set_initial_distribution(black=black_dist)
 
-    print('Maximum entropy strategy with ' + metric_names[metric_id] + ' complete')
+    if not quiet:
+        print('Maximum entropy strategy with ' + metric_names[metric_id] + ' complete')
