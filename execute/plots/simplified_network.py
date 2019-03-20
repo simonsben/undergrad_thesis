@@ -16,4 +16,4 @@ routes = array(edges(s_net))
 print('Network simplified')
 
 airports, routes = compress_graph_data(airports, routes, nodes(s_net))
-plot_net_w_routes(airports, routes, file_name='../../results/simplified_network.png')
+plot_net_w_routes(airports, routes, file_name='../../results/network/simplified_network.png')

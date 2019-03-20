@@ -31,7 +31,7 @@ It should also be noted that we are minimizing for N=1 (time 1) network infectio
 Generating random (ex. barabasi) and standard (ex. path, cycle, etc.) graphs.
 Importing data, filtering, and generating a network (see below).
 
-![alt text](results/airport_locations.png)
+![alt text](results/network/airport_locations.png)
 
 Run various heuristics in comparison to the optimal solution
 

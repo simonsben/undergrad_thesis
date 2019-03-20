@@ -21,11 +21,16 @@ def plot_network(network, blocking=True, save_plot=True, netx_plot=False, size=f
 
 
 # Plot airfield locations
-def plot_net_w_routes(nodes, edges, fig_title='Network', plot_edges=True, blocking=True, file_name=None):
-    fig = figure(fig_title, figsize=fig_size)
+def plot_net_w_routes(nodes, edges, plot_edges=True, blocking=True, file_name=None, single=-1):
+    fig = figure(figsize=fig_size)
     ax = fig.gca()
-    # ax.set_title(fig_title)
-    ax.scatter(nodes[:, 2], nodes[:, 1], s=5)  # Plot airports
+    ax.axis('off')
+    colour = 'r' if single is None else 'k'
+    ax.scatter(nodes[:, 2], nodes[:, 1], c=colour, s=5)  # Plot airports
+
+    if single is not None and single > -1:
+        ax.scatter(nodes[single, 2], nodes[single, 1], c='r', s=25)  # Plot airports
+
     if plot_edges:
         for _, (src, dest) in enumerate(edges):  # Plot routes
             if type(src) is not list:
