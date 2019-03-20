@@ -50,10 +50,11 @@ else:
 
 
 # Save and plot data
+time_n = len(trial_exposures[0]) - 1
 save_trials(trial_exposures, data_path, titles=num_nodes)
 plot_infection(trial_exposures, multiple=True, leg=num_nodes, file_name=fig_path, blocking=False)
 
 time_N_infections = trial_exposures[:, len(trial_exposures) - 1]
 data = array([num_nodes, time_N_infections])
 plot_scatter_data(data, x_label='Number of Nodes with Black Balls',
-                  y_label='Time-N Infection', x_log=True, file_name=scat_path)
+                  y_label='Time n=' + str(time_n) + ' Infection', x_log=True, file_name=scat_path, size=(10, 7.5))

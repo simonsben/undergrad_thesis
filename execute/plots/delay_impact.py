@@ -45,7 +45,8 @@ else:
     delay = array(delay).astype(float)
 
 trial_infection = array(trial_infection)
-time_N_infections = trial_infection[:, len(trial_infection[0]) - 1]
+time_n = len(trial_infection[0]) - 1
+time_N_infections = trial_infection[:, time_n]
 
 # Save and plot data
 if fresh_data:
@@ -54,4 +55,5 @@ if fresh_data:
 plot_infection(trial_infection, leg=delay, multiple=True, file_name=img_name, blocking=False)
 
 data = array([delay, time_N_infections])
-plot_scatter_data(data, x_label='Time step delay', y_label='Time-N Infection', file_name=scatter_name)
+plot_scatter_data(data, x_label='Time step delay', y_label='Time n=' + str(time_n) + ' Infection',
+                  file_name=scatter_name, size=(10, 7.5))

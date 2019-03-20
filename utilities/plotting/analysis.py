@@ -1,32 +1,13 @@
-from matplotlib.pyplot import figure, show, title, savefig, plot, legend, xlabel, ylabel
-from numpy import polyfit, poly1d, linspace, min, max
-from utilities.io import save_frequencies
-from utilities import fig_size
+from matplotlib.pyplot import figure, show, savefig, legend, rcParams
+from numpy import min, max
+from utilities import plot_font_size, data_fig_size
 
 
-def plot_w_best_fit(data, _title='Fitted data', filename='', blocking=False, x_label='', y_label='', data_name='', degree=2):
-    figure(_title)
-    x, y = data[:, 0], data[:, 1]
-    plot(x, y, '.k', label='Execution times')
-
-    domain = linspace(min(x), max(x))
-    plot(domain, poly1d(polyfit(x, y, degree))(domain), label='Line of best fit')
-    legend()
-
-    title(_title)
-    xlabel(x_label)
-    ylabel(y_label)
-
-    if filename != '':
-        savefig(filename)
-    if data_name != '':
-        save_frequencies(data, data_name)
-
-    show(block=blocking)
-
-
-def plot_scatter_data(data, multiple=False, file_name=None, leg=None, blocking=True, x_label=None, y_label=None, x_log=False):
-    fig = figure(figsize=fig_size)
+def plot_scatter_data(data, multiple=False, file_name=None, leg=None, blocking=True, x_label=None, y_label=None, x_log=False, size=None, font_size=None):
+    size = data_fig_size if size is None else size
+    font_size = plot_font_size if font_size is None else font_size
+    fig = figure(figsize=size)
+    rcParams.update({'font.size': font_size})
     ax = fig.gca()
 
     min_x, max_x, min_y, max_y = 0, 0, 0, 0
@@ -54,8 +35,9 @@ def plot_scatter_data(data, multiple=False, file_name=None, leg=None, blocking=T
     if y_label is not None: ax.set_ylabel(y_label)
     if x_log: ax.set_xscale('log')
     if leg is not None: legend(leg)
+
     if file_name is not None:
-        try: savefig(file_name)
+        try: savefig(file_name, bbox_inches='tight', pad_inches=0)
         except FileExistsError: pass
 
     if blocking: show()

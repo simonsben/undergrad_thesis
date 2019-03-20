@@ -10,6 +10,7 @@ max_entropy_path = data_path + 'max_entropy/'
 
 versions = ['single_red', 'uniform_red']
 optimal_headers = ['Maximum Entropy Principle', 'Centrality', 'Gradient Descent']
+time_limit = 100
 
 for version in versions:
     # Get data
@@ -17,6 +18,11 @@ for version in versions:
                                                        with_headers=True, trans=True, parse=float)
     max_entropy_data, max_entropy_headers = load_csv_col(max_entropy_path + version + '.csv',
                                                          with_headers=True, trans=True, parse=float)
+
+    # Remove data after time-limit for clarity
+    centrality_data, centrality_headers = centrality_data[:, :time_limit], centrality_headers[1:3]
+    max_entropy_data, max_entropy_headers = max_entropy_data[:, :time_limit], max_entropy_headers[1:3]
+
     # Take optimal metrics
     opt_centrality = centrality_data[2]
     opt_entropy = max_entropy_data[1]
@@ -28,9 +34,9 @@ for version in versions:
     optimal_plot_path = figure_path + 'optimal/' + version + '.png'
 
     # Plot results
-    plot_infection(centrality_data[:4], blocking=False, multiple=True,
+    plot_infection(centrality_data[1:3], blocking=False, multiple=True,
                    leg=centrality_headers, file_name=centrality_plot_path)
-    plot_infection(max_entropy_data[:4], blocking=False, multiple=True,
+    plot_infection(max_entropy_data[1:3], blocking=False, multiple=True,
                    leg=max_entropy_headers, file_name=entropy_plot_path)
     plot_infection([opt_entropy, opt_centrality, opt_analytical],
                    blocking=False, multiple=True, leg=optimal_headers, file_name=optimal_plot_path)

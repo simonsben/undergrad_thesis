@@ -1,5 +1,5 @@
 from execute.import_data import load_airport_and_route
-from matplotlib.pyplot import figure, show, legend, savefig
+from matplotlib.pyplot import figure, show, legend, savefig, rcParams
 from utilities import dict_to_arr, bin_midpoints, filter_degree, re_index, fig_size
 from networkx import degree, from_edgelist
 from numpy import histogram, min, max, polyfit, poly1d, linspace, log, delete, exp
@@ -46,11 +46,14 @@ if with_best_fit:
 
     uf_best_fit = poly1d(polyfit(raw_midpoints, log(raw_h_data), fit_degree))
     f_best_fit = poly1d(polyfit(f_midpoints, log(f_h_data), fit_degree))
+else:
+    del leg[0]
+    del leg[0]
 
 # Plot results
-fig = figure('Node degree distribution', figsize=fig_size)
+fig = figure(figsize=(9, 6.5))
+rcParams.update({'font.size': 18})
 ax = fig.gca()
-ax.set_title('Node degree distribution')
 
 ax.scatter(raw_midpoints, raw_h_data)
 ax.scatter(f_midpoints, f_h_data)
@@ -64,6 +67,6 @@ ax.set_ylabel('Number of nodes')
 ax.set_xlabel('Degree')
 legend(leg)
 
-savefig('../../results/hereditary.png')
+savefig('../../results/hereditary.png', bbox_inches='tight', pad_inches=0)
 
 show()
