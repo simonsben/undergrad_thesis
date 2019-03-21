@@ -87,14 +87,14 @@ def filter_degree(nodes, edges, d_cut_off=50):
 
 
 def dict_to_arr(d_vals, conv=True):
+    vals = zeros(len(d_vals)) if conv else zeros((len(d_vals), 2))
     d_vals = array(d_vals) if conv else d_vals
-    vals = zeros(len(d_vals))
 
-    for val in d_vals:
+    for i, val in enumerate(d_vals):
         if conv:
             vals[val[0]] = val[1]
         else:
-            vals[val] = d_vals[val]
+            vals[i] = [val, d_vals[val]]
 
     return vals
 

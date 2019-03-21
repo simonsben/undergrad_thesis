@@ -9,7 +9,7 @@ from model.optimize import simple_centrality, metric_names
 from execute.optimal_distribution import optimal_distribution
 
 # Red distribution (uniform or single)
-uniform = False
+uniform = True
 airports, routes = load_airport_and_route(deep_load=True)     # Import data
 N = len(airports)                               # Initialize N
 budget = balls_per_node * N
@@ -32,7 +32,7 @@ exposures = []
 
 # Run basic metrics
 for metric_id, _ in enumerate(metric_names):
-    simple_centrality(net, metric_id, red=red)
+    simple_centrality(net, 2, red=red)
     exposures.append(run_polya(net))
 
 # Run optimal strategy

@@ -1,6 +1,6 @@
 from networkx import number_of_nodes
 from utilities import dict_to_arr, balls_per_node, metrics, metric_names
-from numpy import zeros, sum, argmax
+from numpy import zeros, sum, argmax, array
 
 
 def simple_centrality(network, method=0, netx_inp=False, red=None, budget_ratio=1, quiet=False):
@@ -13,6 +13,7 @@ def simple_centrality(network, method=0, netx_inp=False, red=None, budget_ratio=
     budget = int(balls_per_node * N * budget_ratio)
 
     centralities = dict_to_arr(metric(netx), conv=False)
+    centralities = array(sorted(centralities, key=lambda c: c[0]))[:, 1]
     cent_total = sum(centralities)
 
     black = zeros(N)
@@ -20,10 +21,6 @@ def simple_centrality(network, method=0, netx_inp=False, red=None, budget_ratio=
         black[i] = round(budget * centralities[i] / cent_total)
 
     black_total = sum(black)
-    if sum(black) <= budget:
-        black[argmax(centralities)] += budget - black_total
-
-    if not netx_inp:
-        network.set_initial_distribution(red, black)
-    if not quiet:
-        print(metric_names[method] + ' with ' + str(budget_ratio) + ' ratio complete')
+    if sum(black) <= budget: black[argmax(centralities)] += budget - black_total
+    if not netx_inp: network.set_initial_distribution(red, black)
+    if not quiet: print(metric_names[method] + ' with ' + str(budget_ratio) + ' ratio complete')

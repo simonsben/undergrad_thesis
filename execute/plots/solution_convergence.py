@@ -7,7 +7,7 @@ from numpy import sum, array, float
 from utilities import balls_per_node, save_trials, load_csv_col
 
 # uniform = True
-fresh_data = False
+fresh_data = True
 
 # Define paths
 data_path = '../../data/centrality_metrics/solution_convergence.csv'
@@ -32,18 +32,22 @@ if fresh_data:
     # Define constants
     budget = balls_per_node * N
     trial_exposures = []
-    num_nodes = [1, 2, 3, 5, 10, 25, 50]
+    num_nodes = [1, 2, 3, 5, 10, 15, 25, 50]
+    R = [balls_per_node] * N
 
     # Run trials
     for num in num_nodes:
         total = sum(cents[:num, 1])
         B = [0] * N
         for i in range(num):
-            B[int(cents[i, 0])] = cents[i, 1] / total * budget
+            ind = int(round(cents[i, 0]))
+            B[ind] = cents[i, 1] / total * budget
 
-        net.set_initial_distribution(black=B)
+        print(sum(B))
+        net.set_initial_distribution(black=B, red=R)
 
         trial_exposures.append(run_polya(net))
+    trial_exposures = array(trial_exposures)
 else:
     trial_exposures, num_nodes = load_csv_col(data_path, with_headers=True, trans=True, parse=float)
     num_nodes = array(num_nodes).astype(float)

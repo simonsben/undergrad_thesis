@@ -5,7 +5,7 @@ from numpy import min, max, array
 
 
 # Plot network
-def plot_network(network, blocking=True, netx_plot=False, size=fig_size, weights=None, file_name=None, plot_edges=False):
+def plot_network(network, blocking=True, netx_plot=False, size=fig_size, weights=None, file_name=None, plot_edges=False, alph=.05):
     fig = figure(figsize=size)
     ax = fig.gca()
     ax.axis('off')  # Disable axis
@@ -18,7 +18,7 @@ def plot_network(network, blocking=True, netx_plot=False, size=fig_size, weights
         sizes = [50 if weight == 0 else 80 for weight in weights]
         node_colors = weights
 
-    if plot_edges: draw_networkx_edges(graph, plot_layout, alpha=.05)
+    if plot_edges: draw_networkx_edges(graph, plot_layout, alpha=alph)
     draw_networkx_nodes(graph, plot_layout, node_size=sizes, linewidths=.5, edgecolors='k', node_color=node_colors,
                         cmap=cm.get_cmap('coolwarm'))
     draw()
