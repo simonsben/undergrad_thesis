@@ -48,8 +48,8 @@ time_N_infections = trial_infection[:, time_n]
 if fresh_data:
     save_trials(trial_infection, data_name, titles=ratios)
 
-plot_infection(trial_infection, leg=ratios, multiple=True, file_name=img_name, blocking=False)
+# plot_infection(trial_infection, leg=ratios, multiple=True, file_name=img_name, blocking=False)
 
 data = array([ratios, time_N_infections])
 plot_scatter_data(data, x_log=True, x_label='Black Budget / Red Budget',
-                  y_label='Time n=' + str(time_n) + ' Infection', file_name=scatter_name, size=(10, 7.5))
+                  y_label='$I_{' + str(time_n) + '}$', file_name=scatter_name, size=(10, 7.5))

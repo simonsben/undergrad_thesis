@@ -55,8 +55,8 @@ fig = figure(figsize=(9, 6.5))
 rcParams.update({'font.size': 18})
 ax = fig.gca()
 
-ax.scatter(raw_midpoints, raw_h_data)
-ax.scatter(f_midpoints, f_h_data)
+ax.scatter(raw_midpoints, raw_h_data, s=80)
+ax.scatter(f_midpoints, f_h_data, s=80)
 
 if with_best_fit:
     ax.plot(uf_domain, exp(uf_best_fit(uf_domain)))

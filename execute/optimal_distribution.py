@@ -6,8 +6,8 @@ from model import network
 from utilities import balls_per_node
 
 
-def optimal_distribution(deep_load=False):
-    path = '../data/optimal_distribution/analytical.csv'
+def optimal_distribution(deep_load=False, alt_file=None):
+    path = '../data/optimal_distribution/analytical.csv' if alt_file is None else alt_file
     if deep_load:
         path = '../' + path
     with open(path, 'r') as fl:

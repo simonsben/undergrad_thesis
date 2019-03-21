@@ -7,7 +7,7 @@ def plot_scatter_data(data, multiple=False, file_name=None, leg=None, blocking=T
     size = data_fig_size if size is None else size
     font_size = plot_font_size if font_size is None else font_size
     fig = figure(figsize=size)
-    rcParams.update({'font.size': font_size})
+    rcParams.update({'font.size': font_size, 'mathtext.default':  'regular'})
     ax = fig.gca()
 
     min_x, max_x, min_y, max_y = 0, 0, 0, 0
@@ -21,9 +21,9 @@ def plot_scatter_data(data, multiple=False, file_name=None, leg=None, blocking=T
             min_y = tmp_min_y if min_y > tmp_min_x else min_y
             max_y = tmp_max_y if max_y < tmp_max_y else max_y
 
-            ax.scatter(run[0, :], run[1, :])
+            ax.scatter(run[0, :], run[1, :], s=80)
     else:
-        ax.scatter(data[0, :], data[1, :])
+        ax.scatter(data[0, :], data[1, :], s=80)
         min_x, max_x = min(data[0, :]), max(data[0, :])
         min_y, max_y = min(data[1, :]), max(data[1, :])
 

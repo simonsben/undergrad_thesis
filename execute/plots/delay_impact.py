@@ -52,8 +52,8 @@ time_N_infections = trial_infection[:, time_n]
 if fresh_data:
     save_trials(trial_infection, data_name, titles=delay)
 
-plot_infection(trial_infection, leg=delay, multiple=True, file_name=img_name, blocking=False)
+# plot_infection(trial_infection, leg=delay, multiple=True, file_name=img_name, blocking=False)
 
 data = array([delay, time_N_infections])
-plot_scatter_data(data, x_label='Time step delay', y_label='Time n=' + str(time_n) + ' Infection',
+plot_scatter_data(data, x_label='Time step delay', y_label='$I_{' + str(time_n) + '}$',
                   file_name=scatter_name, size=(10, 7.5))

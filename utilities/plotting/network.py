@@ -1,4 +1,4 @@
-from networkx import spring_layout, draw_networkx_nodes, draw_networkx_edges
+from networkx import spring_layout, draw_networkx_nodes, draw_networkx_edges, kamada_kawai_layout, rescale_layout
 from matplotlib.pyplot import figure, draw, axis, show, savefig, cm
 from utilities import fig_size
 from numpy import min, max, array
@@ -11,19 +11,19 @@ def plot_network(network, blocking=True, netx_plot=False, size=fig_size, weights
     ax.axis('off')  # Disable axis
 
     graph = network if netx_plot else network.network_plot
-    plot_layout = spring_layout(graph)
+    plot_layout = kamada_kawai_layout(graph)
 
     sizes, edge_colors, node_colors = 80, 'k', 'w'
     if weights is not None:
-        sizes = [10 if weight == 0 else 25 for weight in weights]
+        sizes = [50 if weight == 0 else 80 for weight in weights]
         node_colors = weights
 
-    if plot_edges: draw_networkx_edges(graph, plot_layout, alpha=.1)
+    if plot_edges: draw_networkx_edges(graph, plot_layout, alpha=.05)
     draw_networkx_nodes(graph, plot_layout, node_size=sizes, linewidths=.5, edgecolors='k', node_color=node_colors,
-                        cmap=cm.get_cmap('Blues'))
+                        cmap=cm.get_cmap('coolwarm'))
     draw()
 
-    if file_name is not None: savefig(file_name)
+    if file_name is not None: savefig(file_name, bbox_inches='tight', pad_inches=0)
     show(block=blocking)  # Open matplotlib window
 
 
@@ -63,7 +63,7 @@ def plot_net_w_routes(nodes, edges, plot_edges=True, blocking=True, file_name=No
 
     if file_name is not None:
         try:
-            savefig(file_name)
+            savefig(file_name, bbox_inches='tight', pad_inches=0)
         except:
             print('Bad save!')
 
