@@ -26,4 +26,4 @@ def gradient_optimize(network):
         current_exposure += exposure_change
 
         # print(current_exposure)
-    print(urn_counts)
+    # print(urn_counts)

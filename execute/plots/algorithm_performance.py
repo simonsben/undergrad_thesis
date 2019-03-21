@@ -1,18 +1,13 @@
 from networkx import barabasi_albert_graph
-from time import time_ns
+from time import time
 from utilities.plotting import plot_scatter_data
 from utilities import save_trials
-from model.optimize import simple_centrality, maximum_entropy
+from model.optimize import simple_centrality, maximum_entropy, gradient_optimize
 from numpy import array
 from model import network
 
-img_name = '../../results/algorithm_performance/comparison.png'
-data_path = '../../data/algorithm_performance/comparison.csv'
-
-strategies = [
-    simple_centrality,
-    maximum_entropy
-]
+img_name = '../../results/algorithm_performance/gradient.png'
+data_path = '../../data/algorithm_performance/gradient.csv'
 
 net_sizes = [10, 20, 30, 50, 100, 150, 200, 250, 500, 750, 1000]
 optimize_times = []
@@ -24,10 +19,15 @@ for size in net_sizes:
     tmp = 0
     for i in range(trials):
         net = network(size, graph=netx)
-        start = time_ns()
+
+        # start = time()
         # simple_centrality(net, 2, quiet=True)
-        maximum_entropy(net, metric_id=1, quiet=True)
-        end = time_ns()
+        # # maximum_entropy(net, metric_id=1, quiet=True)
+        # end = time()
+
+        start = time()
+        gradient_optimize(net)
+        end = time()
         tmp += end - start
 
     optimize_times.append(tmp / trials)

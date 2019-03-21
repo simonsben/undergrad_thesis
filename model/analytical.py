@@ -13,10 +13,10 @@ def optimize_distribution(network, R, B, num_balls, goal='min', print_res=False,
         exp = 0
         for node in network:  # For each node
             r_sum, b_sum = 0, 0
-            for i, rel in enumerate(node):  # Sum all neighbours
+            for ind in node:  # Sum all neighbours
                 # if rel != 0:  # Only sum if there is a connection
-                r_sum += model.Fixed[rel]
-                b_sum += model.Variable[rel]
+                r_sum += model.Fixed[ind]
+                b_sum += model.Variable[ind]
 
             if (r_sum + b_sum) != 0:  # Only add to sum if non-zero denominator.
                 exp += r_sum / (r_sum + b_sum)
@@ -60,8 +60,9 @@ def optimize_distribution(network, R, B, num_balls, goal='min', print_res=False,
     model.constraint = Constraint(rule=ball_constraint)
 
     # Initialize (ipopt) solver
-    solver = SolverFactory('ipopt', executable=ipopt_path)
-    # solver = SolverFactory('bonmin', executable='~/.bonmin/Bonmin-1.8.7/build/bin/bonmin')
+    # solver = SolverFactory('ipopt', executable=ipopt_path)
+    solver = SolverFactory('bonmin', executable='~/.couenne/Couenne-0.5.7/build/bin/bonmin')
+    # solver = SolverFactory('couenne', executable='~/.couenne/Couenne-0.5.7/build/bin/couenne')
 
     # Solve model
     solver.solve(model, tee=debug)
