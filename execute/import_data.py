@@ -14,7 +14,7 @@ def load_airport_and_route(filter_data=True, deep_load=False):
     # Filter data
     cutoff = None if filter_data else 0
     airports, routes, route_indexes = filter_degree(airports, routes, d_cut_off=cutoff)
-    re_index(airports, route_indexes)
+    airports, route_indexes = re_index(airports, route_indexes)
 
     return airports, route_indexes
 

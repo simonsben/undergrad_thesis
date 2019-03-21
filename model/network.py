@@ -79,6 +79,7 @@ class network:
             _black = None if black is None else int(round(black[i]))
 
             node.set_initial(_red, _black)
+        self.clear_network()
 
     # Function to bring the network back to time 1
     def clear_network(self):

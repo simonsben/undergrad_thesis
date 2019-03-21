@@ -6,10 +6,11 @@ from execute.import_data import load_airport_and_route
 from execute.run_polya import run_polya
 from utilities.plotting import plot_infection
 from utilities import save_trials, load_csv_col
+from numpy import array
 
 # Define constants
 fresh_data = False
-time_limit = 50
+time_limit = 25
 fig_path = '../../results/nash/optimal.png'
 data_path = '../../data/nash/optimal.png'
 
@@ -45,9 +46,12 @@ if fresh_data:
     for i, distribution in enumerate(distributions):
         print('Starting' + distribution_names[i])
         net.set_initial_distribution(distribution[0], distribution[1])
-        exposures.append(run_polya(net))
+        exposures.append(run_polya(net, steps=time_limit+1))
+    exposures = array(exposures)
 else:
     exposures, distribution_names = load_csv_col(data_path, trans=True, parse=float, with_headers=True)
+    if len(exposures[0]) < time_limit:
+        raise ValueError('Not enough data for given time limit choice.')
 
 exposures = exposures[:, :time_limit]
 
