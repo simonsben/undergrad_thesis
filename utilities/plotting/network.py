@@ -1,27 +1,35 @@
 from networkx import spring_layout, draw_networkx_nodes, draw_networkx_edges, kamada_kawai_layout, rescale_layout
-from matplotlib.pyplot import figure, draw, axis, show, savefig, cm
+from matplotlib.pyplot import figure, draw, axis, show, savefig, cm, colorbar, imshow, Normalize
 from utilities import fig_size
 from numpy import min, max, array
 
 
 # Plot network
-def plot_network(network, blocking=True, netx_plot=False, size=fig_size, weights=None, file_name=None, plot_edges=False, alph=.05):
+def plot_network(network, blocking=True, netx_plot=False, size=fig_size, weights=None, file_name=None, plot_edges=False, alph=.05, color_bar=False):
     fig = figure(figsize=size)
     ax = fig.gca()
     ax.axis('off')  # Disable axis
 
     graph = network if netx_plot else network.network_plot
     plot_layout = kamada_kawai_layout(graph)
+    cmap = cm.get_cmap('coolwarm_r')
 
     sizes, edge_colors, node_colors = 80, 'k', 'w'
     if weights is not None:
         sizes = [50 if weight == 0 else 80 for weight in weights]
         node_colors = weights
 
+        min_val, max_val = min(weights), max(weights)
+
     if plot_edges: draw_networkx_edges(graph, plot_layout, alpha=alph)
     draw_networkx_nodes(graph, plot_layout, node_size=sizes, linewidths=.5, edgecolors='k', node_color=node_colors,
-                        cmap=cm.get_cmap('coolwarm'))
+                        cmap=cmap)
     draw()
+
+    if weights is not None:
+        plt = cm.ScalarMappable(cmap=cmap, norm=Normalize(vmin=min_val, vmax=max_val))
+        plt._A = []
+        colorbar(plt)
 
     if file_name is not None: savefig(file_name, bbox_inches='tight', pad_inches=0)
     show(block=blocking)  # Open matplotlib window
@@ -38,7 +46,7 @@ def plot_net_w_routes(nodes, edges, plot_edges=True, blocking=True, file_name=No
         ax.scatter(nodes[:, 2], nodes[:, 1], c=colour, s=5)  # Plot airports
 
         if single is not None and single > -1:
-            ax.scatter(nodes[single, 2], nodes[single, 1], c='r', s=25)  # Plot airports
+            ax.scatter(nodes[single, 2], nodes[single, 1], c='r', s=40)  # Plot airports
     else:
         cmap = cm.get_cmap('Blues')
         min_val = min(weights)

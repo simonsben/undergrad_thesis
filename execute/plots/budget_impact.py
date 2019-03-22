@@ -5,10 +5,11 @@ from model import network
 from execute.run_polya import run_polya
 from utilities import balls_per_node, save_trials, load_csv_col, dict_to_arr
 from utilities.plotting import plot_infection, plot_scatter_data
-from numpy import argmax, zeros, array, float
+from numpy import argmax, zeros, array, float, linspace
 
 uniform = True
 fresh_data = False
+time_limit = 250
 
 # Define constants
 file_name = 'uniform_red' if uniform else 'single_red'
@@ -23,11 +24,11 @@ if fresh_data:
     N = number_of_nodes(netx)
     net = network(N, graph=netx)
     trial_infection = []
-    ratios = array([.25, .5, .75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 5, 10, 25, 50])
+    ratios = array(linspace(1, 20, 20))
 
     budget = balls_per_node * N
     if uniform:
-        red = [budget] * N
+        red = [balls_per_node] * N
     else:
         degrees = dict_to_arr(degree(netx))
         red = zeros(N)
@@ -36,11 +37,13 @@ if fresh_data:
     for ratio in ratios:
         simple_centrality(net, 2, budget_ratio=ratio, red=red)
 
-        vals = run_polya(net)
+        vals = run_polya(net, steps=time_limit)
         trial_infection.append(vals)
+    trial_infection = array(trial_infection)
 else:
     trial_infection, ratios = load_csv_col(data_name, with_headers=True, trans=True, parse=float)
     ratios = array(ratios).astype(float)
+
 time_n = len(trial_infection[0]) - 1
 time_N_infections = trial_infection[:, time_n]
 
@@ -51,5 +54,5 @@ if fresh_data:
 # plot_infection(trial_infection, leg=ratios, multiple=True, file_name=img_name, blocking=False)
 
 data = array([ratios, time_N_infections])
-plot_scatter_data(data, x_log=True, x_label='Black Budget / Red Budget',
+plot_scatter_data(data, x_label='Black Budget / Red Budget', connect=True,
                   y_label='$I_{' + str(time_n) + '}$', file_name=scatter_name, size=(10, 7.5))

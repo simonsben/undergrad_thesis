@@ -2,7 +2,7 @@ from matplotlib.pyplot import figure, show, savefig, legend, xlabel, ylabel, rcP
 from utilities import data_fig_size, plot_font_size, plot_line_width, fig_size
 
 
-def plot_infection(trial_exposures, blocking=True, multiple=False, leg=None, title=None, file_name=None, size=None, font_size=None):
+def plot_infection(trial_exposures, blocking=True, multiple=False, leg=None, title=None, file_name=None, size=None, font_size=None, leg_loc=None):
     size = fig_size if size is None else size
     font_size = plot_font_size if font_size is None else font_size
     steps = len(trial_exposures) if not multiple else len(trial_exposures[0])
@@ -22,7 +22,8 @@ def plot_infection(trial_exposures, blocking=True, multiple=False, leg=None, tit
     ylabel('Network infection')
 
     if title is not None: ax.set_title(title)
-    if leg is not None: legend(leg, loc='upper right')
+    if leg is not None and leg_loc is None: legend(leg, loc='upper right')
+    elif leg_loc is not None: legend(leg, bbox_to_anchor=leg_loc, loc='upper left')
 
     if file_name is not None:
         try: savefig(file_name, bbox_inches='tight', pad_inches=0)

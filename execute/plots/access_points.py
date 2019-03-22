@@ -3,11 +3,11 @@ from networkx import from_edgelist, number_of_nodes, betweenness_centrality
 from model import network
 from utilities.plotting import plot_infection, plot_scatter_data
 from execute.run_polya import run_polya
-from numpy import sum, array, float
+from numpy import sum, array, float, linspace
 from utilities import balls_per_node, save_trials, load_csv_col
 
-# uniform = True
-fresh_data = True
+fresh_data = False
+time_limit = 250
 
 # Define paths
 data_path = '../../data/centrality_metrics/solution_convergence.csv'
@@ -32,7 +32,8 @@ if fresh_data:
     # Define constants
     budget = balls_per_node * N
     trial_exposures = []
-    num_nodes = [1, 2, 3, 5, 10, 15, 25, 50]
+    # num_nodes = [1, 2, 3, 5, 10, 15, 25, 50]
+    num_nodes = linspace(1, 100, 20, dtype=int)
     R = [balls_per_node] * N
 
     # Run trials
@@ -46,7 +47,7 @@ if fresh_data:
         print(sum(B))
         net.set_initial_distribution(black=B, red=R)
 
-        trial_exposures.append(run_polya(net))
+        trial_exposures.append(run_polya(net, steps=time_limit))
     trial_exposures = array(trial_exposures)
 else:
     trial_exposures, num_nodes = load_csv_col(data_path, with_headers=True, trans=True, parse=float)
@@ -60,5 +61,5 @@ save_trials(trial_exposures, data_path, titles=num_nodes)
 
 time_N_infections = trial_exposures[:, len(trial_exposures) - 1]
 data = array([num_nodes, time_N_infections])
-plot_scatter_data(data, x_label='Number of Nodes with Black Balls',
-                  y_label='$I_{' + str(time_n) + '}$', x_log=True, file_name=scat_path, size=(10, 7.5))
+plot_scatter_data(data, x_label='Number of Nodes with Black Balls', connect=True,
+                  y_label='$I_{' + str(time_n) + '}$', file_name=scat_path, size=(10, 7.5))

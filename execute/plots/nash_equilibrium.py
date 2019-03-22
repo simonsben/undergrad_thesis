@@ -57,4 +57,4 @@ exposures = exposures[:, :time_limit]
 
 # Save and plot data
 if fresh_data: save_trials(exposures, data_path, titles=distribution_names)
-plot_infection(exposures, multiple=True, leg=distribution_names, file_name=fig_path, size=(9, 6), font_size=18)
+plot_infection(exposures, multiple=True, leg=distribution_names, file_name=fig_path, size=(9, 6), font_size=18, leg_loc=(.7, .9))
