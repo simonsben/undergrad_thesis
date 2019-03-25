@@ -31,15 +31,15 @@ It should also be noted that we are minimizing for N=1 (time 1) network infectio
 Generating random (ex. barabasi) and standard (ex. path, cycle, etc.) graphs.
 Importing data, filtering, and generating a network (see below).
 
-![alt text](results/network/airport_locations.png)
+![alt text](results/network/network.png)
 
 Run various heuristics in comparison to the optimal solution
 
-![alt text](results/centrality_metrics/uniform_red.png)
+![alt text](results/optimal/uniform_red.png)
 
 Assess the impact of varying the allocation budget
 
-![alt text](results/budget_impact/uniform_red.png)
+![alt text](results/budget_impact/time_N.png)
 
 Numerically confirms the existance of a nash equilibrium
 

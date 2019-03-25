@@ -20,7 +20,7 @@ cd Ipopt-3.12.12/ThirdParty
 cd ASL
 ./get.ASL
 cd ../Blas
-./Blas
+./get.Blas
 cd ../Lapack
 ./get.Lapack
 cd ../Metis
