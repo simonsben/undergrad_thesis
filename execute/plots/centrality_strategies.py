@@ -9,7 +9,7 @@ from model.optimize import simple_centrality, metric_names
 from execute.optimal_distribution import optimal_distribution
 
 # Red distribution (uniform or single)
-uniform = True
+uniform = False
 airports, routes = load_airport_and_route(deep_load=True)     # Import data
 N = len(airports)                               # Initialize N
 budget = balls_per_node * N

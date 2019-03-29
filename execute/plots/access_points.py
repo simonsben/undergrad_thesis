@@ -4,15 +4,15 @@ from model import network
 from utilities.plotting import plot_infection, plot_scatter_data
 from execute.run_polya import run_polya
 from numpy import sum, array, float, linspace
-from utilities import balls_per_node, save_trials, load_csv_col
+from utilities import balls_per_node, save_trials, load_csv_col, metrics, metric_names
 
 fresh_data = False
 time_limit = 250
 
 # Define paths
-data_path = '../../data/centrality_metrics/solution_convergence.csv'
-fig_path = '../../results/centrality_metrics/solution_convergence.png'
-scat_path = '../../results/centrality_metrics/time_N.png'
+data_path = '../../data/analysis/solution_convergence.csv'
+fig_path = '../../results/analysis/solution_convergence.png'
+scat_path = '../../results/analysis/ac_time_N.png'
 
 if fresh_data:
     # Import data and generate network
@@ -23,6 +23,7 @@ if fresh_data:
     print('Data imported and network generated')
 
     # Calculate and sort node centralities
+
     raw_cent = betweenness_centrality(netx)
     cents = [0] * N
     for key in raw_cent:
@@ -32,7 +33,6 @@ if fresh_data:
     # Define constants
     budget = balls_per_node * N
     trial_exposures = []
-    # num_nodes = [1, 2, 3, 5, 10, 15, 25, 50]
     num_nodes = linspace(1, 100, 20, dtype=int)
     R = [balls_per_node] * N
 

@@ -20,8 +20,8 @@ for version in versions:
                                                          with_headers=True, trans=True, parse=float)
 
     # Remove data after time-limit for clarity
-    centrality_data, centrality_headers = centrality_data[:, :time_limit], centrality_headers[1:3]
-    max_entropy_data, max_entropy_headers = max_entropy_data[:, :time_limit], max_entropy_headers[1:3]
+    centrality_data, centrality_headers = centrality_data[:, :time_limit], centrality_headers[0:4]
+    max_entropy_data, max_entropy_headers = max_entropy_data[:, :time_limit], max_entropy_headers[0:4]
 
     # Take optimal metrics
     opt_centrality = centrality_data[2]
@@ -34,9 +34,9 @@ for version in versions:
     optimal_plot_path = figure_path + 'optimal/' + version + '.png'
 
     # Plot results
-    plot_infection(centrality_data[1:3], blocking=False, multiple=True,
+    plot_infection(centrality_data[0:4], blocking=False, multiple=True,
                    leg=centrality_headers, file_name=centrality_plot_path)
-    plot_infection(max_entropy_data[1:3], blocking=False, multiple=True,
+    plot_infection(max_entropy_data[0:4], blocking=False, multiple=True,
                    leg=max_entropy_headers, file_name=entropy_plot_path)
     plot_infection([opt_entropy, opt_centrality, opt_analytical],
                    blocking=False, multiple=True, leg=optimal_headers, file_name=optimal_plot_path)
