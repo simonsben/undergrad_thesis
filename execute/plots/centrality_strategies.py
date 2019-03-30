@@ -32,7 +32,7 @@ exposures = []
 
 # Run basic metrics
 for metric_id, _ in enumerate(metric_names):
-    simple_centrality(net, 2, red=red)
+    simple_centrality(net, metric_id, red=red)
     exposures.append(run_polya(net))
 
 # Run optimal strategy

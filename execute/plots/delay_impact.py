@@ -3,7 +3,7 @@ from model.optimize import simple_centrality
 from networkx import from_edgelist, number_of_nodes, degree
 from model import network
 from execute.run_polya import run_polya
-from utilities import balls_per_node, save_trials, load_csv_col, dict_to_arr
+from utilities import balls_per_node, save_trials, load_csv_col, dict_to_arr, fig_size
 from utilities.plotting import plot_infection, plot_scatter_data
 from numpy import argmax, zeros, array, float, linspace
 
@@ -58,4 +58,4 @@ if fresh_data:
 
 data = array([delay, time_N_infections])
 plot_scatter_data(data, x_label='Time step delay', y_label='$I_{' + str(time_n) + '}$', connect=True,
-                  file_name=scatter_name, size=(10, 7.5))
+                  file_name=scatter_name, size=fig_size)
