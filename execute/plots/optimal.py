@@ -8,6 +8,7 @@ from execute.optimal_distribution import optimal_distribution
 
 # Red distribution (uniform or single)
 uniform = True
+num_steps = 250
 airports, routes = load_airport_and_route(deep_load=True)     # Import data
 N = len(airports)                               # Initialize N
 budget = balls_per_node * N
@@ -30,7 +31,7 @@ exposures = []
 
 # Run optimal strategy
 net.set_initial_distribution(black=optimal, red=red)
-exposures.append(run_polya(net))
+exposures.append(run_polya(net, steps=num_steps))
 
 # Define constants
 file_name = 'uniform_red' if uniform else 'single_red'

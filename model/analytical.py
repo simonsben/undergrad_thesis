@@ -60,8 +60,8 @@ def optimize_distribution(network, R, B, num_balls, goal='min', print_res=False,
     model.constraint = Constraint(rule=ball_constraint)
 
     # Initialize (ipopt) solver
-    # solver = SolverFactory('ipopt', executable=ipopt_path)
-    solver = SolverFactory('bonmin', executable='~/.couenne/Couenne-0.5.7/build/bin/bonmin')
+    solver = SolverFactory('ipopt', executable=ipopt_path)
+    # solver = SolverFactory('bonmin', executable='~/.couenne/Couenne-0.5.7/build/bin/bonmin')
     # solver = SolverFactory('couenne', executable='~/.couenne/Couenne-0.5.7/build/bin/couenne')
 
     # Solve model
