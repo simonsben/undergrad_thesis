@@ -7,6 +7,7 @@ data_path = '../../data/'
 figure_path = '../../results/'
 centrality_path = data_path + 'centrality_metrics/'
 max_entropy_path = data_path + 'max_entropy/'
+opt_path = data_path + 'optimal_distribution/'
 
 versions = ['single_red', 'uniform_red']
 optimal_headers = ['Maximum Entropy Principle', 'Centrality', 'Gradient Descent']
@@ -19,6 +20,7 @@ for version in versions:
     max_entropy_data, max_entropy_headers = load_csv_col(max_entropy_path + version + '.csv',
                                                          with_headers=True, trans=True, parse=float)
     opt_centrality = load_csv_col(centrality_path + 'opt_' + version + '.csv', trans=True, parse=float)
+    opt_analytical = load_csv_col(opt_path + version + '_trial.csv', parse=float)
 
     # Remove data after time-limit for clarity
     centrality_data, centrality_headers = centrality_data[:, :time_limit], centrality_headers[0:4]
@@ -26,7 +28,6 @@ for version in versions:
 
     # Take optimal metrics
     opt_entropy = max_entropy_data[1]
-    opt_analytical = centrality_data[4]
 
     # Define paths
     centrality_plot_path = figure_path + 'centrality_metrics/' + version + '.png'

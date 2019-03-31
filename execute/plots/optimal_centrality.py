@@ -1,13 +1,14 @@
 from model import network
 from utilities import balls_per_node, dict_to_arr, save_trials
 from networkx import from_edgelist, degree
-from numpy import argmax, zeros, array, sum
+from numpy import argmax, zeros, array
 from execute.run_polya import run_polya
 from execute.import_data import load_airport_and_route
 from model.optimize import simple_centrality
 
 # Red distribution (uniform or single)
-uniform = False
+uniform = True
+steps = 250
 airports, routes = load_airport_and_route(deep_load=True)     # Import data
 N = len(airports)                               # Initialize N
 budget = balls_per_node * N
@@ -28,7 +29,7 @@ else:
 
 # Run basic metrics
 simple_centrality(net, 2, red=red, node_restriction=11)
-exposures = run_polya(net)
+exposures = run_polya(net, steps=steps)
 
 # Define constants
 file_name = 'uniform_red' if uniform else 'single_red'

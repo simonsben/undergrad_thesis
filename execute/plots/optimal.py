@@ -17,9 +17,9 @@ netx = from_edgelist(routes)                    # Generate networkx network
 net = network(N, graph=netx)                    # Generate network
 print('Data imported and network generated')
 
-degrees = dict_to_arr(degree(netx))             # Calculate node degrees
+degrees = dict_to_arr(degree(netx))
 max_d_node = argmax(degrees)                    # Get index of max degree
-optimal = optimal_distribution(deep_load=True)
+optimal = optimal_distribution(True, deep_load=True)
 
 if uniform:
     red = array([balls_per_node] * N)
@@ -34,10 +34,8 @@ net.set_initial_distribution(black=optimal, red=red)
 exposures.append(run_polya(net, steps=num_steps))
 
 # Define constants
-file_name = 'uniform_red' if uniform else 'single_red'
-img_name = '../../results/optimal_distribution/' + file_name + '.png'
+file_name = ('uniform_red' if uniform else 'single_red') + '_trial'
 data_name = '../../data/optimal_distribution/' + file_name + '.csv'
-labels = ['Optimal']
 
 # Save and plot data
-save_trials(exposures, data_name, titles=labels)
+save_trials(exposures, data_name)
