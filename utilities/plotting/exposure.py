@@ -22,7 +22,7 @@ def plot_infection(trial_exposures, blocking=True, multiple=False, leg=None, tit
     ylabel('Network infection')
 
     if title is not None: ax.set_title(title)
-    if leg is not None and leg_loc is None: legend(leg, loc='upper right')
+    if leg is not None and leg_loc is None: legend(leg)
     elif leg_loc is not None: legend(leg, bbox_to_anchor=leg_loc, loc='upper left')
 
     if file_name is not None:

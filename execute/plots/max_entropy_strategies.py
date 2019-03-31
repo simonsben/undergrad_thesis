@@ -9,7 +9,7 @@ from model.optimize import metric_names, maximum_entropy
 from execute.optimal_distribution import optimal_distribution
 
 # Red distribution (uniform or single)
-uniform = False
+uniform = True
 airports, routes = load_airport_and_route(deep_load=True)     # Import data
 N = len(airports)                               # Initialize N
 budget = balls_per_node * N

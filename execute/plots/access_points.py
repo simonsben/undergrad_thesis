@@ -6,7 +6,7 @@ from execute.run_polya import run_polya
 from numpy import sum, array, float, linspace
 from utilities import balls_per_node, save_trials, load_csv_col, metrics, metric_names
 
-fresh_data = True
+fresh_data = False
 time_limit = 250
 
 # Define paths
@@ -66,4 +66,5 @@ for trial in trial_exposures:
 data = array(data)
 
 plot_scatter_data(data, x_label='Number of Nodes with Black Balls', connect=True,
-                  y_label='$I_{' + str(time_limit) + '}$', file_name=scat_path, size=(10, 7.5), multiple=True, leg=metric_names)
+                  y_label='$I_{' + str(time_limit) + '}$', file_name=scat_path, size=(10, 7.5), multiple=True,
+                  leg=metric_names)

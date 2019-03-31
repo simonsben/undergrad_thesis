@@ -18,13 +18,13 @@ for version in versions:
                                                        with_headers=True, trans=True, parse=float)
     max_entropy_data, max_entropy_headers = load_csv_col(max_entropy_path + version + '.csv',
                                                          with_headers=True, trans=True, parse=float)
+    opt_centrality = load_csv_col(centrality_path + 'opt_' + version + '.csv', trans=True, parse=float)
 
     # Remove data after time-limit for clarity
     centrality_data, centrality_headers = centrality_data[:, :time_limit], centrality_headers[0:4]
     max_entropy_data, max_entropy_headers = max_entropy_data[:, :time_limit], max_entropy_headers[0:4]
 
     # Take optimal metrics
-    opt_centrality = centrality_data[2]
     opt_entropy = max_entropy_data[1]
     opt_analytical = centrality_data[4]
 
