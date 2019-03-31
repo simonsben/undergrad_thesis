@@ -26,10 +26,6 @@
     * Tz
     * Type
     * Source
-* `us_airports.dat`
-    * Flight source
-    * Flight destination
-    * Number of flights per year
 * `openflights*.png`
     * These two files are visualizations of the data in `airports.dat` and `routes.dat`
     * NOTE: They are directly from the the [source](https://openflights.org/data.html)
