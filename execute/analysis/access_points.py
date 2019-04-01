@@ -65,6 +65,6 @@ for trial in trial_exposures:
     data.append([num_nodes, trial])
 data = array(data)
 
-plot_scatter_data(data, x_label='Number of Nodes with Black Balls', connect=True,
+plot_scatter_data(data, x_label='Number of Nodes with Black Balls, $\\Lambda$', connect=True,
                   y_label='$I_{' + str(time_limit) + '}$', file_name=scat_path, size=(10, 7.5), multiple=True,
                   leg=metric_names)
