@@ -9,7 +9,6 @@ from model import network
 img_name = '../../results/algorithm_performance/bonmin.png'
 data_path = '../../data/algorithm_performance/bonmin.csv'
 
-# net_sizes = [10, 20, 30, 50, 100, 150, 200, 250, 500, 750, 1000]
 net_sizes = logspace(1, 3, 10)
 optimize_times = []
 trials = 10

@@ -10,7 +10,7 @@ max_entropy_path = data_path + 'max_entropy/'
 opt_path = data_path + 'optimal_distribution/'
 
 versions = ['single_red', 'uniform_red']
-optimal_headers = ['Maximum Entropy Principle', 'Centrality', 'Gradient Descent']
+optimal_headers = ['Maximum Entropy', 'Centrality', 'Adapted Centrality', 'Gradient Descent']
 time_limit = 100
 
 for version in versions:
@@ -39,7 +39,7 @@ for version in versions:
                    leg=centrality_headers, file_name=centrality_plot_path)
     plot_infection(max_entropy_data[0:4], blocking=False, multiple=True,
                    leg=max_entropy_headers, file_name=entropy_plot_path)
-    plot_infection([opt_entropy, opt_centrality, opt_analytical],
+    plot_infection([opt_entropy, centrality_data[2], opt_centrality, opt_analytical],
                    blocking=False, multiple=True, leg=optimal_headers, file_name=optimal_plot_path)
 
 show()  # Keep figures open

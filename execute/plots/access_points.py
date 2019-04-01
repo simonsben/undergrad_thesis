@@ -1,7 +1,7 @@
 from execute.import_data import load_airport_and_route
-from networkx import from_edgelist, number_of_nodes, betweenness_centrality
+from networkx import from_edgelist, number_of_nodes
 from model import network
-from utilities.plotting import plot_infection, plot_scatter_data
+from utilities.plotting import plot_scatter_data
 from execute.run_polya import run_polya
 from numpy import sum, array, float, linspace
 from utilities import balls_per_node, save_trials, load_csv_col, metrics, metric_names

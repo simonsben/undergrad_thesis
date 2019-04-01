@@ -3,7 +3,7 @@ from numpy import min, max
 from utilities import plot_font_size, data_fig_size
 
 
-def plot_scatter_data(data, multiple=False, file_name=None, leg=None, blocking=True, x_label=None, y_label=None, x_log=False, size=None, font_size=None, connect=False, y_format=False, dot_size=80):
+def plot_scatter_data(data, multiple=False, file_name=None, leg=None, blocking=True, x_label=None, y_label=None, x_log=False, size=None, font_size=None, connect=False, y_format=False, dot_size=80, leg_loc=None):
     size = data_fig_size if size is None else size
     font_size = plot_font_size if font_size is None else font_size
     fig = figure(figsize=size)
@@ -38,7 +38,8 @@ def plot_scatter_data(data, multiple=False, file_name=None, leg=None, blocking=T
     if y_label is not None: ax.set_ylabel(y_label)
 
     if x_log: ax.set_xscale('log')
-    if leg is not None: legend(leg)
+    if leg is not None and leg_loc is None: legend(leg)
+    elif leg_loc is not None: legend(leg, bbox_to_anchor=leg_loc, loc='upper left')
 
     if file_name is not None:
         try: savefig(file_name, bbox_inches='tight', pad_inches=0)

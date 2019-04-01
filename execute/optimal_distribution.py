@@ -6,7 +6,7 @@ from model import network
 from utilities import balls_per_node
 
 
-def optimal_distribution(uniform, deep_load=False, alt_file=None):
+def optimal_distribution(uniform=True, deep_load=False, alt_file=None):
     base_path = '../data/optimal_distribution/'
     path = base_path + ('uniform_red.csv' if uniform else 'single_red.csv') if alt_file is None else alt_file
     if deep_load:
