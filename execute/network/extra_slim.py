@@ -5,8 +5,8 @@ from numpy import array
 from utilities.plotting import plot_network
 
 # Define constants
-cut_off = 25
-fig_path = '../../results/centrality_metrics/slim.png'
+cut_off = 11
+fig_path = '../../results/network/slim.png'
 
 # Import data and generate network
 nodes, edges = load_airport_and_route(deep_load=True)
@@ -20,7 +20,6 @@ cents = array(sorted(cents, key=lambda c: c[1], reverse=True))
 slim_set = []
 for i in range(cut_off):
     ind = int(round(cents[i, 0]))
-    print(ind)
     slim_set.append(nodes[ind])
 slim_set = array(slim_set)
 
@@ -34,7 +33,7 @@ budget = balls_per_node * N
 total = sum(cents[:cut_off, 1])
 B = [0] * cut_off
 for i in range(cut_off):
-    B[i] = cents[i, 1] / total * budget
+    B[i] = cents[i, 1] / total
 
 # Plot network
 plot_network(n_netx, netx_plot=True, plot_edges=True, alph=.15, weights=B, file_name=fig_path, size=(10, 5))

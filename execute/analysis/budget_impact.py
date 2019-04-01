@@ -8,7 +8,7 @@ from utilities.plotting import plot_infection, plot_scatter_data
 from numpy import argmax, zeros, array, float, linspace
 
 uniform = True
-fresh_data = False
+fresh_data = True
 time_limit = 250
 
 # Define constants
@@ -35,7 +35,7 @@ if fresh_data:
         red[argmax(degrees)] = budget
 
     for ratio in ratios:
-        simple_centrality(net, 2, budget_ratio=ratio, red=red)
+        simple_centrality(net, 2, budget_ratio=ratio, red=red, node_restriction=11)
 
         vals = run_polya(net, steps=time_limit)
         trial_infection.append(vals)
