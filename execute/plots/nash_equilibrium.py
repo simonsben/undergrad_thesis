@@ -1,11 +1,11 @@
 from model.network import network
-from networkx import number_of_nodes, from_edgelist
+from networkx import number_of_nodes, from_edgelist, degree
 from execute.optimal_distribution import optimal_distribution
 from utilities import balls_per_node
 from execute.import_data import load_airport_and_route
 from execute.run_polya import run_polya
 from utilities.plotting import plot_infection
-from utilities import save_trials, load_csv_col
+from utilities import save_trials, load_csv_col, dict_to_arr
 from numpy import array
 
 # Define constants

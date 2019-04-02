@@ -7,7 +7,7 @@ from execute.import_data import load_airport_and_route
 from execute.optimal_distribution import optimal_distribution
 
 # Red distribution (uniform or single)
-uniform = True
+uniform = False
 num_steps = 250
 airports, routes = load_airport_and_route(deep_load=True)     # Import data
 N = len(airports)                               # Initialize N
@@ -19,7 +19,7 @@ print('Data imported and network generated')
 
 degrees = dict_to_arr(degree(netx))
 max_d_node = argmax(degrees)                    # Get index of max degree
-optimal = optimal_distribution(True, deep_load=True)
+optimal = optimal_distribution(uniform, deep_load=True)
 
 if uniform:
     red = array([balls_per_node] * N)

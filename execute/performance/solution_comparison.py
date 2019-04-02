@@ -10,7 +10,7 @@ max_entropy_path = data_path + 'max_entropy/'
 opt_path = data_path + 'optimal_distribution/'
 
 versions = ['single_red', 'uniform_red']
-optimal_headers = ['Maximum Entropy', 'Centrality', 'Adapted Centrality', 'Gradient Descent']
+optimal_headers = ['Maximum Entropy', 'Centrality', 'Adapted Centrality', 'Numerical Optimal']
 time_limit = 100
 
 for version in versions:

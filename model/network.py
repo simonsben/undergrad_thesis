@@ -28,9 +28,9 @@ class network:
 
     # Function to generate network
     def generate_network(self):
-        for i, node in enumerate(self.network_plot):    # Generate nodes
-            new_node = polya_node(balls_per_node, balls_per_node, i)
-            self.nodes[i] = new_node
+        for i, ind in enumerate(self.network_plot):    # Generate nodes
+            new_node = polya_node(balls_per_node, balls_per_node, ind)
+            self.nodes[ind] = new_node
 
         for i, node in enumerate(self.nodes):   # Add neighbours to nodes
             neighbour_indexes = [ind for ind in self.network_plot.neighbors(i)]

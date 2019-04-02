@@ -2,7 +2,7 @@
 
 ## Soon
 * look at solutions from alternate solvers
-* Replot restricted point network with optimal
+* show time n network
 
 ## Less Soon
 * clean up and document better

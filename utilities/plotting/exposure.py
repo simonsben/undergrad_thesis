@@ -1,5 +1,5 @@
 from matplotlib.pyplot import figure, show, savefig, legend, xlabel, ylabel, rcParams
-from utilities import data_fig_size, plot_font_size, plot_line_width, fig_size
+from utilities import plot_font_size, plot_line_width, fig_size
 
 
 def plot_infection(trial_exposures, blocking=True, multiple=False, leg=None, title=None, file_name=None, size=None, font_size=None, leg_loc=None):

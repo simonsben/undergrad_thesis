@@ -18,7 +18,7 @@ opt_cent_path = base_path + 'opt_cent_variance.csv'
 opt_path = base_path + 'opt_variance.csv'
 max_ent_path = base_path + 'max_ent_variance.csv'
 fig_path = '../../results/analysis/variance.png'
-labels = ['Centrality', 'Adapted Centrality', 'Maximum Entropy', 'Gradient Descent']
+labels = ['Centrality', 'Adapted Centrality', 'Maximum Entropy', 'Numerical Optimal']
 
 if fresh_data:
     nodes, edges = load_airport_and_route(deep_load=True)
