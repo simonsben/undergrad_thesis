@@ -5,13 +5,12 @@ from execute.run_polya import run_polya
 from utilities.plotting import plot_scatter_data
 from numpy import linspace, array
 from utilities import balls_per_node, save_trials, fig_size, load_csv_col
-from model.optimize import simple_cliques
+from model.optimize import popularity_contest
 
 # Define Constants
 fresh_data = True
-single_place = True
-data_path = '../../data/clique/simple' + ('_single' if single_place else '') + '.csv'
-fig_path = '../../results/clique/simple' + ('_single' if single_place else '') + '.png'
+data_path = '../../data/clique/popular.csv'
+fig_path = '../../results/clique/popular.png'
 
 if fresh_data:
     # Import data and generate network
@@ -26,15 +25,15 @@ if fresh_data:
     cliques = sorted(find_cliques(netx), key=lambda c: len(c), reverse=True)
 
     trial_infections = []
-    num_cliques = linspace(1, 250, 40).astype(int)
+    num_cliques = linspace(3, 35, 20).astype(int)
     for num in num_cliques:
-        simple_cliques(net, num, budget, cliques=cliques, single_place=single_place)
+        popularity_contest(net, num, budget)
         trial = run_polya(net, trials=2)
         trial_infections.append(trial[len(trial) - 1])
 else:
     trial_infections, num_cliques = load_csv_col(data_path, with_headers=True, parse=float, trans=True)
 
 data = array([num_cliques, trial_infections])
-save_trials(trial_infections, data_path, titles=num_cliques, single_line=True)
-plot_scatter_data(data, file_name=fig_path, x_label='Number of Cliques', y_label='Time n infection', size=fig_size,
-                  connect=True)
+save_trials(trial_infections, data_path, titles=num_cliques)
+plot_scatter_data(data, x_label='Number of Cliques', y_label='Time n infection', size=fig_size,
+                  connect=True, file_name=fig_path)

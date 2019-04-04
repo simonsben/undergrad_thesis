@@ -1,18 +1,19 @@
-from networkx import spring_layout, draw_networkx_nodes, draw_networkx_edges, kamada_kawai_layout, rescale_layout
-from matplotlib.pyplot import figure, draw, axis, show, savefig, cm, colorbar, imshow, Normalize
-from utilities import fig_size
+from networkx import draw_networkx_nodes, draw_networkx_edges, kamada_kawai_layout
+from matplotlib.pyplot import figure, draw, show, savefig, cm, colorbar, Normalize, rcParams
+from utilities import fig_size, plot_font_size
 from numpy import min, max, array
 
 
 # Plot network
-def plot_network(network, blocking=True, netx_plot=False, size=fig_size, weights=None, file_name=None, plot_edges=False, alph=.05, color_bar=False):
+def plot_network(network, blocking=True, netx_plot=False, size=fig_size, weights=None, file_name=None, plot_edges=False, alph=.05):
     fig = figure(figsize=size)
+    rcParams.update({'font.size': plot_font_size, 'mathtext.default':  'regular'})
     ax = fig.gca()
     ax.axis('off')  # Disable axis
 
     graph = network if netx_plot else network.network_plot
     plot_layout = kamada_kawai_layout(graph)
-    cmap = cm.get_cmap('coolwarm_r')
+    cmap = cm.get_cmap('coolwarm')
 
     sizes, edge_colors, node_colors = 80, 'k', 'w'
     if weights is not None:
@@ -27,7 +28,7 @@ def plot_network(network, blocking=True, netx_plot=False, size=fig_size, weights
     draw()
 
     if weights is not None:
-        plt = cm.ScalarMappable(cmap=cmap, norm=Normalize(vmin=min_val, vmax=max_val))
+        plt = cm.ScalarMappable(cmap=cmap, norm=Normalize(vmin=0, vmax=1))
         plt._A = []
         colorbar(plt)
 

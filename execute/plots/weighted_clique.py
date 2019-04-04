@@ -7,12 +7,12 @@ from utilities.plotting import plot_scatter_data
 from numpy import linspace, array
 from execute.run_polya import run_polya
 
-fresh_data = False
-fig_path = 'weighted.png'
-data_path = 'weighted.csv'
+fresh_data = True
+fig_path = '../../data/clique/weighted.png'
+data_path = '../../results/clique/weighted.csv'
 
 if fresh_data:
-    _, edges = load_airport_and_route()
+    _, edges = load_airport_and_route(deep_load=True)
     netx = from_edgelist(edges)
     N = number_of_nodes(netx)
     net = network(N, graph=netx)

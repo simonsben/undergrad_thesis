@@ -18,7 +18,7 @@ netx = from_edgelist(routes)                    # Generate networkx network
 net = network(N, graph=netx)                    # Generate network
 print('Data imported and network generated')
 
-degrees = dict_to_arr(degree(netx))             # Calculate node degrees
+degrees = array(degree(netx))             # Calculate node degrees
 max_d_node = argmax(degrees)                    # Get index of max degree
 optimal = optimal_distribution(deep_load=True)  # Get optimal distribution
 
