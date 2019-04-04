@@ -34,6 +34,6 @@ else:
     trial_infections, num_cliques = load_csv_col(data_path, with_headers=True, parse=float, trans=True)
 
 data = array([num_cliques, trial_infections])
-save_trials(trial_infections, data_path, titles=num_cliques)
+save_trials(trial_infections, data_path, titles=num_cliques, single_line=True)
 plot_scatter_data(data, x_label='Number of Cliques', y_label='Time n infection', size=fig_size,
                   connect=True, file_name=fig_path)
