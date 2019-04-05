@@ -26,7 +26,7 @@ if fresh_data:
     cliques = sorted(find_cliques(netx), key=lambda c: len(c), reverse=True)
 
     trial_infections = []
-    num_cliques = linspace(1, 250, 40).astype(int)
+    num_cliques = linspace(1, 120, 40).astype(int)
     for num in num_cliques:
         simple_cliques(net, num, budget, cliques=cliques, single_place=single_place)
         trial = run_polya(net, trials=2)

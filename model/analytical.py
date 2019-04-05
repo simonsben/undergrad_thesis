@@ -79,14 +79,3 @@ def optimize_distribution(network, R, B, num_balls, goal='min', print_res=False,
     if print_res: print('Final exposure: ' + str(final_exp))
 
     return optimal, final_exp
-
-
-# TODO finish writing nash function
-def nash_optimize(network, num_balls, N, _R, _B):
-    R = copy(_R)
-    B = copy(_B)
-
-
-
-
-

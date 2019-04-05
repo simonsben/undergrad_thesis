@@ -19,7 +19,7 @@ if fresh_data:
     print('Data imported')
 
     budget = balls_per_node * N
-    num_cliques = linspace(1, 30, 20).astype(int)
+    num_cliques = linspace(1, 30, 10).astype(int)
     infections = []
 
     for metric_id in metrics:
