@@ -5,14 +5,14 @@ from utilities import balls_per_node
 from execute.import_data import load_airport_and_route
 from execute.run_polya import run_polya
 from utilities.plotting import plot_infection
-from utilities import save_trials, load_csv_col, dict_to_arr
+from utilities import save_trials, load_csv_col
 from numpy import array
 
 # Define constants
 fresh_data = False
-time_limit = 25
+time_limit = 250
 fig_path = '../../results/nash/optimal.png'
-data_path = '../../data/nash/optimal.png'
+data_path = '../../data/nash/optimal.csv'
 
 if fresh_data:
     # Generate graph
@@ -35,10 +35,10 @@ if fresh_data:
 
     # Associate names to distributions
     distribution_names = [
-        '(R, B)',
-        '(R*, B)',
-        '(R, B*)',
-        '(R*, B*)'
+        '$(R, B)$',
+        '$(R^*, B)$',
+        '$(R, B^*)$',
+        '$(R^*, B^*)$'
     ]
 
     # Calculate exposures
@@ -57,4 +57,4 @@ exposures = exposures[:, :time_limit]
 
 # Save and plot data
 if fresh_data: save_trials(exposures, data_path, titles=distribution_names)
-plot_infection(exposures, multiple=True, leg=distribution_names, file_name=fig_path, size=(9, 6), font_size=18, leg_loc=(.7, .9))
+plot_infection(exposures, multiple=True, leg=distribution_names, file_name=fig_path, size=(9, 6), font_size=18, leg_loc=(.7, .95))

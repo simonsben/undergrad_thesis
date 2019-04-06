@@ -1,8 +1,7 @@
 from typing import List
 from utilities import balls_per_node, generate_plot_network, calculate_exposure, save_network
 from model.polya_node import polya_node
-# from model.optimize.optimize import get_optimization_method
-from numpy import zeros, empty, uint16
+from numpy import zeros, empty, uint16, array
 from random import random
 from networkx import spring_layout
 from utilities.plotting import plot_optimized_network

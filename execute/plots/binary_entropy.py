@@ -6,7 +6,7 @@ x = linspace(0, 1, 101)
 y = array([-a * log(a) + -(1-a) * log(1-a) if a != 0 and a != 1 else 0 for a in x])
 
 fig = figure(figsize=fig_size)
-rcParams.update({'font.size': 12, 'mathtext.default': 'regular'})
+rcParams.update({'font.size': 16, 'mathtext.default': 'regular'})
 ax = fig.gca()
 
 ax.plot(x, y, linewidth=3)

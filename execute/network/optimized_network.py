@@ -17,7 +17,7 @@ weights = multiply(add(weights, -min_val), 1/delt)
 
 print(len(airports))
 
-path = '../../results/network/optimal.png'
+path = '../../results/network/optimal.csv'
 # plot_net_w_routes(airports, routes, plot_edges=False, weights=weights, file_name=path)
 netx = from_edgelist(routes)
 plot_network(netx, netx_plot=True, weights=weights, file_name=path, plot_edges=True, size=(10, 6))
