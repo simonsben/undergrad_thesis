@@ -18,12 +18,16 @@ def simple_cliques(net, num_cliques, budget, netx_plot=False, cliques=None, sing
 
     # Allocate balls
     B = zeros(N)
+    allocated = 0
     for i in range(num_cliques):
         clique_budget = len(cliques[i]) / total_nodes * budget
 
         if not single_place:
             per_node = clique_budget / len(cliques[i])
             for ind in cliques[i]:
+                if allocated >= budget: break
+                allocated += round(per_node)
+
                 B[ind] += round(per_node)
         else:
             clique_degrees = take(degrees, cliques[i])
@@ -85,8 +89,10 @@ def popularity_contest(net, num_cliques, budget):
     N = number_of_nodes(netx)
     print('Num cliques: ' + str(num_cliques))
 
+    # Find and sort cliques by size
     cliques = sorted(find_cliques(netx), key=lambda c: len(c), reverse=True)
 
+    # Figure out how many of the cliques each of the nodes is in
     popular = {}
     for i in range(num_cliques):
         clique = cliques[i]
@@ -98,13 +104,19 @@ def popularity_contest(net, num_cliques, budget):
     popular = [[ind, popular[ind]] for ind in popular]
     popular = sorted(popular, key=lambda p: p[1], reverse=True)
 
+    # Total the number of nodes in cliques
     total = 0
     for pop in popular:
         if pop[1] > 1: total += pop[1]
 
+    # Allocate balls proportionately by the number of cliques the node is in
     B = zeros(N)
+    allocated = 0
     for pop in popular:
         if pop[1] > 1:
+            if allocated >= budget: break
+            allocated += round(pop[1] / total * budget)
+
             B[pop[0]] += round(pop[1] / total * budget)
 
     print(sum(B))

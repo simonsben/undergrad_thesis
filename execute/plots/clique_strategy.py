@@ -9,7 +9,7 @@ from model.optimize import simple_cliques
 
 # Define Constants
 fresh_data = True
-single_place = True
+single_place = False
 data_path = '../../data/clique/simple' + ('_single' if single_place else '') + '.csv'
 fig_path = '../../results/clique/simple' + ('_single' if single_place else '') + '.png'
 

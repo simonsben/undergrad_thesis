@@ -1,14 +1,14 @@
 from execute.import_data import load_airport_and_route
 from matplotlib.pyplot import figure, show, legend, savefig, rcParams
-from utilities import dict_to_arr, bin_midpoints, filter_degree, re_index, fig_size
+from utilities import bin_midpoints, filter_degree, re_index
 from networkx import degree, from_edgelist
-from numpy import histogram, min, max, polyfit, poly1d, linspace, log, delete, exp
+from numpy import histogram, min, max, polyfit, poly1d, linspace, log, delete, exp, array
 
 leg = [
     'Unfiltered line of best fit',
     'Filtered line of best fit',
-    'Unfiltered data',
-    'Filtered data',
+    'Unfiltered Airport Network',
+    'Filtered Airport Network',
 ]
 with_best_fit = False
 
@@ -16,7 +16,7 @@ with_best_fit = False
 airports, routes = load_airport_and_route(filter_data=False, deep_load=True)
 netx = from_edgelist(routes)
 
-degrees = dict_to_arr(degree(netx))
+degrees = array(sorted(degree(netx), key=lambda d: d[0]))[:, 1]
 raw_h_data, bins = histogram(degrees, bins=20)
 raw_midpoints = bin_midpoints(bins)
 
@@ -26,7 +26,7 @@ f_airports, _, f_routes = filter_degree(airports, routes)
 re_index(f_airports, f_routes)
 netx = from_edgelist(f_routes)
 
-degrees = dict_to_arr(degree(netx))
+degrees = array(sorted(degree(netx), key=lambda d: d[0]))[:, 1]
 f_h_data, bins = histogram(degrees, bins=20)
 f_midpoints = bin_midpoints(bins)
 
@@ -65,8 +65,8 @@ if with_best_fit:
     ax.plot(f_domain, exp(f_best_fit(f_domain)))
 
 ax.set_yscale('log')
-ax.set_ylabel('Number of nodes')
-ax.set_xlabel('Degree')
+ax.set_ylabel('Number of Nodes')
+ax.set_xlabel('Node Degree')
 legend(leg)
 
 savefig('../../results/hereditary.png', bbox_inches='tight', pad_inches=0)

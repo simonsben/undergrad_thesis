@@ -10,7 +10,7 @@ max_entropy_path = data_path + 'max_entropy/'
 opt_path = data_path + 'optimal_distribution/'
 
 versions = ['single_red', 'uniform_red']
-optimal_headers = ['Maximum Entropy', 'Centrality', 'Adapted Centrality', 'Numerical Optimal']
+optimal_headers = ['Maximum Entropy', 'Centrality', 'Adapted Centrality', 'Clique', 'Numerical Optimal']
 time_limit = 100
 
 for version in versions:
@@ -21,6 +21,7 @@ for version in versions:
                                                          with_headers=True, trans=True, parse=float)
     opt_centrality = load_csv_col(centrality_path + 'opt_' + version + '.csv', trans=True, parse=float)
     opt_analytical = load_csv_col(opt_path + version + '_trial.csv', parse=float)
+    opt_clique = load_csv_col(data_path + 'clique/' + version + '.csv', parse=float)[0]
 
     # Remove data after time-limit for clarity
     centrality_data, centrality_headers = centrality_data[:, :time_limit], centrality_headers[0:4]
@@ -39,7 +40,7 @@ for version in versions:
                    leg=centrality_headers, file_name=centrality_plot_path)
     plot_infection(max_entropy_data[0:4], blocking=False, multiple=True,
                    leg=max_entropy_headers, file_name=entropy_plot_path)
-    plot_infection([opt_entropy, centrality_data[2], opt_centrality, opt_analytical],
+    plot_infection([opt_entropy, centrality_data[2], opt_centrality, opt_clique, opt_analytical],
                    blocking=False, multiple=True, leg=optimal_headers, file_name=optimal_plot_path)
 
 show()  # Keep figures open
