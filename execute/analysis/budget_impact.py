@@ -4,9 +4,10 @@ from networkx import from_edgelist, number_of_nodes, degree
 from model import network
 from execute.run_polya import run_polya
 from utilities import balls_per_node, save_trials, load_csv_col, dict_to_arr
-from utilities.plotting import plot_infection, plot_scatter_data
+from utilities.plotting import plot_scatter_data
 from numpy import argmax, zeros, array, float, linspace
 
+# Choose simulation options
 uniform = True
 fresh_data = True
 time_limit = 250
@@ -18,15 +19,18 @@ scatter_name = '../../results/budget_impact/time_N.png'
 data_name = '../../data/budget_impact/' + file_name + '.csv'
 
 if fresh_data:
-    airports, routes = load_airport_and_route(deep_load=True)
-
+    # Load data and generate network
+    _, routes = load_airport_and_route(deep_load=True)
     netx = from_edgelist(routes)
     N = number_of_nodes(netx)
     net = network(N, graph=netx)
+
+    # Define setup values
     trial_infection = []
     ratios = array(linspace(1, 20, 20))
-
     budget = balls_per_node * N
+
+    # Define opponent distribution
     if uniform:
         red = [balls_per_node] * N
     else:
@@ -34,6 +38,7 @@ if fresh_data:
         red = zeros(N)
         red[argmax(degrees)] = budget
 
+    # Run trial for set of budget ratios
     for ratio in ratios:
         simple_centrality(net, 2, budget_ratio=ratio, red=red, node_restriction=11)
 
@@ -44,14 +49,13 @@ else:
     trial_infection, ratios = load_csv_col(data_name, with_headers=True, trans=True, parse=float)
     ratios = array(ratios).astype(float)
 
+# Prepare data
 time_n = len(trial_infection[0]) - 1
 time_N_infections = trial_infection[:, time_n]
 
 # Save and plot data
 if fresh_data:
     save_trials(trial_infection, data_name, titles=ratios)
-
-# plot_infection(trial_infection, leg=ratios, multiple=True, file_name=img_name, blocking=False)
 
 data = array([ratios, time_N_infections])
 plot_scatter_data(data, x_label='Black Budget / Red Budget', connect=True,

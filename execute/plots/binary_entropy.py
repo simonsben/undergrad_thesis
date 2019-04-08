@@ -13,7 +13,7 @@ ax.plot(x, y, linewidth=3)
 ax.set_xlim(0, 1)
 ax.set_ylim(0, .8)
 ax.set_xlabel('$\\bar{B}_i$')
-ax.set_ylabel('$I_0$ = $\\bar{R}_i$ / $\\bar{R}_i + \\bar{B}_i$')
+ax.set_ylabel('$I_0$ = $\\frac{ \\bar{R}_i }{ \\bar{R}_i + \\bar{B}_i }$')
 
 path = '../../results/binary_entropy.png'
 savefig(path)

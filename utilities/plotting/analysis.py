@@ -3,7 +3,7 @@ from numpy import min, max
 from utilities import plot_font_size, data_fig_size
 
 
-def plot_scatter_data(data, multiple=False, file_name=None, leg=None, blocking=True, x_label=None, y_label=None, x_log=False, size=None, font_size=None, connect=False, y_format=False, dot_size=80, leg_loc=None):
+def plot_scatter_data(data, multiple=False, file_name=None, leg=None, blocking=True, x_label=None, y_label=None, x_log=False, size=None, font_size=None, connect=False, y_format=False, dot_size=80, leg_loc=None, y_bnd=None):
     size = data_fig_size if size is None else size
     font_size = plot_font_size if font_size is None else font_size
     fig = figure(figsize=size)
@@ -31,7 +31,10 @@ def plot_scatter_data(data, multiple=False, file_name=None, leg=None, blocking=T
 
     ax.set_xlim(min_x, max_x)
     y_delta = (max_y - min_y) * .05
-    ax.set_ylim(min_y - y_delta, max_y + y_delta)
+    if y_bnd is None:
+        ax.set_ylim(min_y - y_delta, max_y + y_delta)
+    else:
+        ax.set_ylim(y_bnd[0], y_bnd[1])
 
     if y_format: ticklabel_format(style='sci', axis='y', scilimits=(-5, 1))
     if x_label is not None: ax.set_xlabel(x_label)

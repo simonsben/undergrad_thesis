@@ -82,7 +82,7 @@ def calculate_exposure(network, add_exposure=True):
             urn_counts[i, 0] += ball_counts[node.id, 0]
             urn_counts[i, 1] += ball_counts[node.id, 1]
 
-        network.node_exposures[i] = urn_counts[i, 0] / urn_counts[i, 1] if urn_counts[i, 1] != 0 else .5
+        network.node_exposures[i] = urn_counts[i, 0] / urn_counts[i, 1] if urn_counts[i, 1] != 0 else 0
 
     exposure = mean(network.node_exposures)
 

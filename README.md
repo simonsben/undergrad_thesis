@@ -7,7 +7,7 @@ Done with [Tom](https://github.com/morrisht) and [Joey](https://github.com/joey-
 This repo is for work related to our 4th year thesis project on network contagion modelling.
 We use the Polya contagion model to allow for easy computation and micro level modelling (vs. macro level in more 
 commonly used techniques sych as SIS).
-Specifically, we look at optimizing the initial distribution of balls to minimize the network infection at time N.
+Specifically, we look at optimizing the initial distribution of balls to minimize the network infection at time n.
 
 ## Mathematical background
 
@@ -24,7 +24,7 @@ Network infection is defined as the average infection across all nodes in the ne
 **NOTE**: it can be seen that the minimization of network infection is a non-linear optimization problem with 
 a convex objective function.
 See `model.analytical` for specific setup of objective and constraint functions.
-It should also be noted that we are minimizing for N=1 (time 1) network infection for simplicity.
+It should also be noted that we are minimizing for n=1 (time 1) network infection for simplicity.
 
 ## Results
 
@@ -33,17 +33,10 @@ Importing data, filtering, and generating a network (see below).
 
 ![alt text](results/network/network.png)
 
-Run various heuristics in comparison to the optimal solution
+Run various heuristics in comparison to the numerically optimal solution
 
 ![alt text](results/optimal/uniform_red.png)
 
-Assess the impact of varying the allocation budget
-
-![alt text](results/budget_impact/time_N.png)
-
-Numerically confirms the existance of a nash equilibrium
-
-![alt text](results/nash/optimal.png)
 
 see [`results`](results/) for more figures and [`data`](data/) for the raw data from the figure.
 

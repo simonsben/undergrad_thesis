@@ -1,7 +1,6 @@
 from pyomo.environ import minimize, maximize, summation, NonNegativeIntegers, \
     Var, Param, Objective, Constraint, SolverFactory, ConcreteModel, RangeSet, NonNegativeReals
-from numpy import copy
-from utilities.utilities import ipopt_path, glpk_win_path
+from utilities.utilities import ipopt_path
 
 
 def optimize_distribution(network, R, B, num_balls, goal='min', print_res=False, debug=False):
@@ -14,7 +13,6 @@ def optimize_distribution(network, R, B, num_balls, goal='min', print_res=False,
         for node in network:  # For each node
             r_sum, b_sum = 0, 0
             for ind in node:  # Sum all neighbours
-                # if rel != 0:  # Only sum if there is a connection
                 r_sum += model.Fixed[ind]
                 b_sum += model.Variable[ind]
 

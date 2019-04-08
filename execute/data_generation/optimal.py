@@ -1,41 +1,43 @@
 from model import network
-from utilities import balls_per_node, dict_to_arr, save_trials
-from networkx import from_edgelist, degree
+from utilities import balls_per_node, save_trials
+from networkx import from_edgelist, degree, number_of_nodes
 from numpy import argmax, zeros, array
 from execute.run_polya import run_polya
 from execute.import_data import load_airport_and_route
 from execute.optimal_distribution import optimal_distribution
 
-# Red distribution (uniform or single)
+# Choose simulation options
 uniform = False
 num_steps = 250
-airports, routes = load_airport_and_route(deep_load=True)     # Import data
-N = len(airports)                               # Initialize N
-budget = balls_per_node * N
 
-netx = from_edgelist(routes)                    # Generate networkx network
-net = network(N, graph=netx)                    # Generate network
+# Load data and generate network
+_, routes = load_airport_and_route(deep_load=True)
+netx = from_edgelist(routes)
+N = number_of_nodes(netx)
+net = network(N, graph=netx)
+budget = balls_per_node * N
 print('Data imported and network generated')
 
-degrees = dict_to_arr(degree(netx))
-max_d_node = argmax(degrees)                    # Get index of max degree
+# Get optimal distribution
 optimal = optimal_distribution(uniform, deep_load=True)
 
+# Initialize opponent distribution
 if uniform:
     red = array([balls_per_node] * N)
 else:
+    degrees = array(sorted(degree(netx), key=lambda d: d[0]))[:, 1]
+    max_d_node = argmax(degrees)
     red = zeros(N)
     red[max_d_node] = budget
 
-exposures = []
 
 # Run optimal strategy
 net.set_initial_distribution(black=optimal, red=red)
-exposures.append(run_polya(net, steps=num_steps))
+exposures = run_polya(net, steps=num_steps)
 
 # Define constants
 file_name = ('uniform_red' if uniform else 'single_red') + '_trial'
 data_name = '../../data/optimal_distribution/' + file_name + '.csv'
 
 # Save and plot data
-save_trials(exposures, data_name)
+save_trials(exposures, data_name, single_line=True)

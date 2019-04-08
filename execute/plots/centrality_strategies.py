@@ -9,7 +9,7 @@ from model.optimize import simple_centrality, metric_names
 from execute.optimal_distribution import optimal_distribution
 
 # Red distribution (uniform or single)
-uniform = True
+uniform = False
 airports, routes = load_airport_and_route(deep_load=True)     # Import data
 N = len(airports)                               # Initialize N
 budget = balls_per_node * N
@@ -18,7 +18,7 @@ netx = from_edgelist(routes)                    # Generate networkx network
 net = network(N, graph=netx)                    # Generate network
 print('Data imported and network generated')
 
-degrees = dict_to_arr(degree(netx))             # Calculate node degrees
+degrees = array(sorted(degree(netx), key=lambda d: d[0]))[:, 1]
 max_d_node = argmax(degrees)                    # Get index of max degree
 optimal = optimal_distribution(deep_load=True)
 

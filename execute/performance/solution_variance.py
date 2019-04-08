@@ -1,14 +1,14 @@
 from execute.import_data import load_airport_and_route
 from networkx import from_edgelist, number_of_nodes
 from model import network
-from model.optimize import maximum_entropy
+# from model.optimize import maximum_entropy
 from utilities import balls_per_node, save_trials, load_csv_col, fig_size
 from numpy import var, array, zeros
 from utilities.plotting import plot_scatter_data
 from execute.run_polya import run_polya
 
 # Define constants
-fresh_data = False
+fresh_data = True
 num_steps = 250
 num_trials = 15
 max_ent_path = '../../data/analysis/max_ent_variance.csv'
@@ -24,7 +24,7 @@ if fresh_data:
     R = [balls_per_node] * N
 
     # Maximum Entropy
-    maximum_entropy(net, metric_id=1)
+    # maximum_entropy(net, metric_id=1)
     max_ent_infections = run_polya(net, steps=num_steps, combine=False, trials=num_trials)
 else:
     max_ent_infections = load_csv_col(max_ent_path, parse=float, trans=True)

@@ -4,8 +4,9 @@ from model import network
 from utilities.plotting import plot_scatter_data
 from execute.run_polya import run_polya
 from numpy import sum, array, float, linspace
-from utilities import balls_per_node, save_trials, load_csv_col, metrics, metric_names
+from utilities import balls_per_node, save_trials, load_csv_col, metrics
 
+# Choose simulation options
 fresh_data = False
 time_limit = 250
 
@@ -13,6 +14,7 @@ time_limit = 250
 data_path = '../../data/analysis/solution_convergence.csv'
 fig_path = '../../results/analysis/solution_convergence.png'
 scat_path = '../../results/analysis/ac_time_N.png'
+headers = ['Eigenvalue Centrality', 'Closeness Centrality', 'Degree Centrality', 'Betweenness Centrality']
 
 if fresh_data:
     # Import data and generate network
@@ -65,6 +67,6 @@ for trial in trial_exposures:
     data.append([num_nodes, trial])
 data = array(data)
 
-plot_scatter_data(data, x_label='Number of Nodes with Black Balls, $\\Lambda$', connect=True,
+plot_scatter_data([data[0], data[1], data[3], data[2]], x_label='Number of Nodes with Black Balls, $m$', connect=True,
                   y_label='$I_{' + str(time_limit) + '}$', file_name=scat_path, size=(10, 7.5), multiple=True,
-                  leg=metric_names)
+                  leg=headers, y_bnd=(.21, .420))

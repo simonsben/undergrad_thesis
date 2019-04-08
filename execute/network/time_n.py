@@ -26,7 +26,7 @@ weights = array([node.red / (node.black + node.red) for node in net.nodes])
 plot_network(net, blocking=False, size=fig_size, weights=weights, plot_edges=True, file_name=time_1_path)
 
 # Run polya process
-net.run_n_steps(250)
+net.run_n_steps(10000)
 
 # Calculate final exposure (sanity check)
 final = net.trial_exposure[len(net.trial_exposure)-1]

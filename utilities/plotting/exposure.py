@@ -18,8 +18,8 @@ def plot_infection(trial_exposures, blocking=True, multiple=False, leg=None, tit
 
     ax.set_ylim(.2, .8)
     ax.set_xlim(0, steps)
-    xlabel('Time steps')
-    ylabel('Network infection')
+    xlabel('Time Steps, n')
+    ylabel('Network Infection')
 
     if title is not None: ax.set_title(title)
     if leg is not None and leg_loc is None: legend(leg)

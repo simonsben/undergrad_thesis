@@ -24,5 +24,5 @@ data = array([
 ]).astype(float)[:, :, 1:]
 
 # Plot data
-plot_scatter_data(data, multiple=True, leg=headers, x_label='Number of Cliques', y_label='$I_{120}$', connect=True,
+plot_scatter_data(data, multiple=True, leg=headers, x_label='Number of Cliques, $L$', y_label='$I_{250}$', connect=True,
                   size=fig_size, file_name=fig_path)
